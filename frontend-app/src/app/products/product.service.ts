@@ -14,12 +14,12 @@ export class ProductService {
   //   const token= sessionStorage.getItem("jwt");
   //   return this.http.get("https://localhost:7279/WeatherForecast", {headers: {'Authorization':'Bearer '+token, 'Content-Type': 'application/json'} })
   // }
-  GetForecast(): Observable<any>{
-    return this.http.get("https://localhost:7279/Products")
+  GetProducts(): Observable<any>{
+    return this.http.get("https://localhost:7279/Product")
   }
 
-  GetForecastTwee(): Observable<any>{
-    return this.http.get("https://localhost:7279/Products/Admin")
+  GetAdminProducts(): Observable<any>{
+    return this.http.get("https://localhost:7279/Product/Admin")
   }
 
 }

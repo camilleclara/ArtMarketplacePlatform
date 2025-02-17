@@ -1,1 +1,20 @@
-<p>Admin works!</p>
+<p>Table is just a mapping of objects to table rows with <code>&#64;for</code></p>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (p of products; track p.date; let i = $index) {
+			<tr>
+				<th scope="row">{{ i + 1 }}</th>
+				<!--TODO: change to product model-->
+				<td>{{ p.id }}</td>
+				<td>{{ p.name }}</td>
+			</tr>
+		}
+	</tbody>
+</table>

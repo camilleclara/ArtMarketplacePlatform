@@ -10,14 +10,16 @@ import { ProductService } from '../products/product.service';
 })
 export class AdminComponent {
   products: any;
-    /**
-     *
-     */
-    constructor(private productService: ProductService) {
-      this.productService.GetForecast()
-          .subscribe(response => {
-            this.products=response
-          });
-      
-    }
+  /**
+   *
+   */
+  constructor(private productService: ProductService) {
+    this.productService.GetAdminProducts()
+        .subscribe(response => {
+          console.log("response", response)
+          this.products=response
+  
+        });
+    
+  }
 }

@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { ForcastService } from '../weatherforcast/forcast.service';
 
 @Component({
-  selector: 'app-weather-forecast-twee',
+  selector: 'app-admin',
   standalone: true,
   imports: [],
-  templateUrl: './weather-forecast-twee.component.html',
-  styleUrl: './weather-forecast-twee.component.css'
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css'
 })
-export class WeatherForecastTweeComponent {
+export class AdminComponent {
   weatherForecast: any;
     /**
      *
@@ -16,9 +16,7 @@ export class WeatherForecastTweeComponent {
     constructor(private weatherService: ForcastService) {
       this.weatherService.GetForecast()
           .subscribe(response => {
-            console.log("response", response)
             this.weatherForecast=response
-    
           });
       
     }

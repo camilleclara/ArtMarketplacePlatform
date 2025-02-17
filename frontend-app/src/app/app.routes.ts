@@ -4,10 +4,10 @@ import { WeatherForecastComponent } from './weatherforcast/weatherforcast.compon
 import { authGuard } from './login/auth.guard';
 import { admGuard } from './login/adm.guard';
 import { userGuard } from './login/user.guard';
-import { WeatherForecastTweeComponent } from './weather-forecast-twee/weather-forecast-twee.component';
+import { AdminComponent } from './admin/admin.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'weather', component: WeatherForecastComponent, canActivate: [authGuard, userGuard]},
-    {path: 'twee', component: WeatherForecastTweeComponent, canActivate: [authGuard, admGuard]}
+    {path: 'admin', component: AdminComponent, canActivate: [authGuard, admGuard]}
 ];

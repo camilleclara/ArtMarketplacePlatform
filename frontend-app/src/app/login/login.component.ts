@@ -28,6 +28,7 @@ export class LoginComponent {
       if(response.token){
         sessionStorage.setItem("jwt", response.token);
         this.router.navigate(["/"]);
+        //TODO: redirect to page you came from
       }
     })
     console.log(this.loginForm.value);

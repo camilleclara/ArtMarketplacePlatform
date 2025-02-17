@@ -9,9 +9,9 @@ namespace Authentication.Authentication{
     public class AuthenticationService{
         
         private readonly List<User> users = new List<User> {
-            new User("user1","829792F8543443A91F7E","Sunday", "USER"),  //test
-            new User("user2","EE1D043DE283E12CD10A","Sunday", "USER"), //password
-            new User("user3","A06EE0913A1EBFCE55EF","Sunday", "USER") //secret
+            new User("user1","EE1D043DE283E12CD10A","Sunday", "USER"),  //test
+            new User("user2","EE1D043DE283E12CD10A","Sunday", "ADMIN"), //password
+            new User("user3","EE1D043DE283E12CD10A","Sunday", "USER") //secret
         };
 
         IConfiguration _config;

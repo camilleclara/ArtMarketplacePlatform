@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ForcastService } from '../weatherforcast/forcast.service';
+import { ProductService } from '../products/product.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,14 +9,14 @@ import { ForcastService } from '../weatherforcast/forcast.service';
   styleUrl: './admin.component.css'
 })
 export class AdminComponent {
-  weatherForecast: any;
+  products: any;
     /**
      *
      */
-    constructor(private weatherService: ForcastService) {
-      this.weatherService.GetForecast()
+    constructor(private productService: ProductService) {
+      this.productService.GetForecast()
           .subscribe(response => {
-            this.weatherForecast=response
+            this.products=response
           });
       
     }

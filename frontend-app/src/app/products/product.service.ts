@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ForcastService {
+export class ProductService {
 
   constructor(private http:HttpClient) {
     
@@ -15,11 +15,11 @@ export class ForcastService {
   //   return this.http.get("https://localhost:7279/WeatherForecast", {headers: {'Authorization':'Bearer '+token, 'Content-Type': 'application/json'} })
   // }
   GetForecast(): Observable<any>{
-    return this.http.get("https://localhost:7279/WeatherForecast")
+    return this.http.get("https://localhost:7279/Products")
   }
 
   GetForecastTwee(): Observable<any>{
-    return this.http.get("https://localhost:7279/WeatherForecast/GetTwee")
+    return this.http.get("https://localhost:7279/Products/Admin")
   }
 
 }

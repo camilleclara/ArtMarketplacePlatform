@@ -2,21 +2,23 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Authentication.Authentication{
     public class AuthenticationService{
         
         private readonly List<User> users = new List<User> {
-            new User("user1","829792F8543443A91F7E","Sunday"),  //test
-            new User("user2","EE1D043DE283E12CD10A","Sunday"), //password
-            new User("user3","A06EE0913A1EBFCE55EF","Sunday") //secret
+            new User("user1","829792F8543443A91F7E","Sunday", "USER"),  //test
+            new User("user2","EE1D043DE283E12CD10A","Sunday", "USER"), //password
+            new User("user3","A06EE0913A1EBFCE55EF","Sunday", "USER") //secret
         };
 
         IConfiguration _config;
         public AuthenticationService(IConfiguration config)
         {
             _config=config;
+            RegisterUser("User4", "password");
         }
         private string GenerateJSONWebToken(string username)
         {
@@ -27,7 +29,8 @@ namespace Authentication.Authentication{
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim("custom_info", "info"),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, users.FirstOrDefault(x=>x.Username==username).Role)
             };
 
             var jwtIssuer= _config["Jwt:Issuer"];
@@ -62,7 +65,7 @@ namespace Authentication.Authentication{
             }
             var salt= DateTime.Now.ToString("dddd"); // get the day of week. Ex: Sunday
             var passwordHash= HashPassword(password, salt );
-            var newUser= new User(username, passwordHash, salt);
+            var newUser= new User(username, passwordHash, salt, "USER");
             users.Add(newUser);
         }
 
@@ -84,20 +87,23 @@ namespace Authentication.Authentication{
     {
         public string Username { get; set; }
 
-        public User(string username, string password, string salt)
+        public User(string username, string password, string salt, string role)
         {
             Username = username;
             Password= password;
             Salt= salt;
+            Role = role;
         }
 
         public User(string username, string password)
         {
             Username = username;
             Password= password;
+            Role= Role;
         }
 
         public string Password { get; set; }
         public string Salt { get; set; }
+        public string Role { get; set; }
     }
 }

@@ -20,7 +20,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [Authorize]
+    [Authorize(Roles = "ADM")]
     [HttpGet]
     public IEnumerable<WeatherForecast> Get()
     {
@@ -33,6 +33,7 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
+    [Authorize(Roles ="USER")]
     [HttpGet("GetTwee")]
     public IEnumerable<WeatherForecast> GetTwee()
     {

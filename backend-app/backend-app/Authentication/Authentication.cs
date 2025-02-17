@@ -18,7 +18,7 @@ namespace Authentication.Authentication{
         public AuthenticationService(IConfiguration config)
         {
             _config=config;
-            RegisterUser("User4", "password");
+           
         }
         private string GenerateJSONWebToken(string username)
         {

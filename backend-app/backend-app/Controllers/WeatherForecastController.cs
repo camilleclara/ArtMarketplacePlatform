@@ -1,3 +1,4 @@
+using backend_app.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +34,7 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
-    [Authorize(Roles ="USER")]
+    [Authorize(Roles = nameof(Roles.USER))]
     [HttpGet("GetTwee")]
     public IEnumerable<WeatherForecast> GetTwee()
     {

@@ -2,6 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
+using backend_app.Models;
+using backend_app.Models.DTO;
+using backend_app.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,17 +13,15 @@ namespace backend_app.Services.Authentication
 {
     public class AuthenticationService
     {
-
-        private static readonly List<User> users = new List<User> {
-            new User("user1","EE1D043DE283E12CD10A","Sunday", "CUSTOMER"),  //test
-            new User("user2","EE1D043DE283E12CD10A","Sunday", "ADMIN"), //password
-            new User("user3","EE1D043DE283E12CD10A","Sunday", "USER") //secret
-        };
-
         IConfiguration _config;
-        public AuthenticationService(IConfiguration config)
+
+        private readonly MarketPlaceContext _context;
+        private readonly IMapper _mapper;
+        public AuthenticationService(IConfiguration config, MarketPlaceContext context, IMapper mapper)
         {
             _config = config;
+            _context = context;
+            _mapper = mapper;
 
         }
         private string GenerateJSONWebToken(string username)
@@ -28,11 +30,12 @@ namespace backend_app.Services.Authentication
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+  
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim("custom_info", "info"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role, users.FirstOrDefault(x=>x.Username==username).Role)
+                new Claim(ClaimTypes.Role, _context.Users.FirstOrDefault(x=>x.Login==username).UserType)
             };
 
             var jwtIssuer = _config["Jwt:Issuer"];
@@ -61,26 +64,29 @@ namespace backend_app.Services.Authentication
             return Convert.ToHexString(hash);
         }
 
-        public void RegisterUser(string username, string password)
+        public async Task<UserDTO> RegisterUser(string login, string firstName, string lastName,string password)
         {
-
-            if (users.Any(user => user.Username.ToLower() == username.ToLower()))
-            {
-                throw new Exception("User already exist");
-            }
+            //if (users.Any(user => user.Username.ToLower() == username.ToLower()))
+            //{
+            //    throw new Exception("User already exist");
+            //}
             var salt = DateTime.Now.ToString("dddd"); // get the day of week. Ex: Sunday
             var passwordHash = HashPassword(password, salt);
-            var newUser = new User(username, passwordHash, salt, "USER");
-            users.Add(newUser);
+            var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, "CUSTOMER");
+            await _context.Users.AddAsync(_mapper.Map<User>(newUser));
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserDTO>(newUser);
+
         }
 
         public string Login(string username, string password)
         {
-            var user = users.FirstOrDefault(user => user.Username.ToLower() == username.ToLower()) ??
+
+            var user = _context.Users.FirstOrDefault(user => user.Login.ToLower() == username.ToLower()) ??
                             throw new Exception("Login failed; Invalid userID or password");
 
             var passwordHash = HashPassword(password, user.Salt);
-            if (user.Password == passwordHash)
+            if (user.HashedPassword == passwordHash)
             {
                 var token = GenerateJSONWebToken(username);
                 return token;
@@ -90,27 +96,27 @@ namespace backend_app.Services.Authentication
 
     }
 
-    public class User
-    {
-        public string Username { get; set; }
+    //public class User
+    //{
+    //    public string Username { get; set; }
 
-        public User(string username, string password, string salt, string role)
-        {
-            Username = username;
-            Password = password;
-            Salt = salt;
-            Role = role;
-        }
+    //    public User(string username, string password, string salt, string role)
+    //    {
+    //        Username = username;
+    //        Password = password;
+    //        Salt = salt;
+    //        Role = role;
+    //    }
 
-        public User(string username, string password)
-        {
-            Username = username;
-            Password = password;
-            Role = Role;
-        }
+    //    public User(string username, string password)
+    //    {
+    //        Username = username;
+    //        Password = password;
+    //        Role = Role;
+    //    }
 
-        public string Password { get; set; }
-        public string Salt { get; set; }
-        public string Role { get; set; }
-    }
+    //    public string Password { get; set; }
+    //    public string Salt { get; set; }
+    //    public string Role { get; set; }
+    //}
 }

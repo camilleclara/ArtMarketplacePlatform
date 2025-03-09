@@ -1,4 +1,4 @@
-﻿namespace backend_app.Authentication
+﻿namespace backend_app.Models.Enums
 {
     public enum Roles
     {

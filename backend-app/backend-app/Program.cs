@@ -1,6 +1,12 @@
 using System.Text;
-using Authentication.Authentication;
+using System.Text.Json.Serialization;
+using backend_app.Mapper;
+using backend_app.Models;
+using backend_app.Services;
+using backend_app.Services.Authentication;
+using backend_app.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
@@ -9,8 +15,13 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<MarketPlaceContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MarketPlaceDB")));
+//Add automapper package
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
- builder.Services.AddAuthentication(opt => {
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -29,7 +40,13 @@ var builder = WebApplication.CreateBuilder(args);
              });
 
 builder.Services.AddScoped<AuthenticationService, AuthenticationService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    //To avoid JsonException because of possible object cycle
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    //For a pretty JSON print
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option=> {
@@ -76,7 +93,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();
 

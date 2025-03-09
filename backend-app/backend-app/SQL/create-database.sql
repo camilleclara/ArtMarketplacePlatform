@@ -20,7 +20,7 @@ CREATE TABLE Users (
 	salt VARCHAR(255),
 	first_name VARCHAR(255),
 	last_name VARCHAR(50),
-	is_active BIT,
+	is_active BIT NOT NULL,
 	user_type varchar(255),
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
@@ -34,7 +34,7 @@ CREATE TABLE Products (
     description VARCHAR(255),
 	price FLOAT,
 	category VARCHAR(255),
-	is_active BIT,
+	is_active BIT NOT NULL,
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
 );
@@ -84,7 +84,7 @@ CREATE TABLE Chats (
     id INT IDENTITY(1,1) PRIMARY KEY,
 	product_id INT,
 	customer_id INT,
-	is_active BIT,
+	is_active BIT NOT NULL,
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
 );
@@ -105,7 +105,7 @@ CREATE TABLE Reviews (
     customer_id INT,
 	content VARCHAR(255),
 	fromArtisan BIT,
-	isActive BIT,
+	is_active BIT NOT NULL,
 	score INT,
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
@@ -116,7 +116,7 @@ CREATE TABLE DeliveryArtisanPartnerships (
     id INT IDENTITY(1,1) PRIMARY KEY,
     delivery_partner_id INT,
     artisan_id INT,
-    is_active BIT,
+    is_active BIT NOT NULL,
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
 );
@@ -193,4 +193,22 @@ GO
 ALTER TABLE DeliveryArtisanPartnerships
 ADD CONSTRAINT FK_DeliveryArtisanPartnerships_Partner
 FOREIGN KEY (delivery_partner_id) REFERENCES Users(id);
+GO
+
+ALTER TABLE Users
+ADD CONSTRAINT DF_Users_is_active DEFAULT 1 FOR is_active;
+GO
+
+ALTER TABLE Products
+ADD CONSTRAINT DF_Products_is_active DEFAULT 1 FOR is_active;
+GO
+
+ALTER TABLE DeliveryArtisanPartnerships
+ADD CONSTRAINT DF_DAP_is_active DEFAULT 1 FOR is_active;
+GO
+ALTER TABLE Reviews
+ADD CONSTRAINT DF_Reviews_is_active DEFAULT 1 FOR is_active;
+GO
+ALTER TABLE Chats
+ADD CONSTRAINT DF_Chats_is_active DEFAULT 1 FOR is_active;
 GO

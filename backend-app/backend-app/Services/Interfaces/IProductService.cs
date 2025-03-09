@@ -9,9 +9,10 @@ namespace backend_app.Services.Interfaces
         public Task<IEnumerable<ProductDTO>> GetAllAsync();
         public Task<ProductDTO> GetById(int id);
         public Task<ProductDTO> AddAsync(ProductDTO product);
+        public Task<ProductDTO> AddAsyncForArtisan(ProductDTO product, int artisanId);
         public Task<ProductDTO> UpdateAsync(int id, ProductDTO product);
         public Task<IEnumerable<ProductDTO>> GetByCategory(Category category);
         public Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId);
-
+        public Task<bool> SoftDeleteProductAsync(int productId);
     }
 }

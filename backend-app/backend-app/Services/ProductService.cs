@@ -83,5 +83,30 @@ namespace backend_app.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<ProductDTO>(product);
         }
+
+        public Task<ProductDTO> AddAsyncForArtisan(ProductDTO product, int artisanId)
+        {
+            product.ArtisanId = artisanId;
+            return AddAsync(product);
+        }
+
+        public async Task<bool> SoftDeleteProductAsync(int productId)
+        {
+            Product product = await _context.Products.FindAsync(productId);
+
+            if (product == null || !product.IsActive)
+            {
+                // Le produit n'existe pas ou est déjà marqué comme supprimé
+                throw new ArgumentException("No product was found with this id.");
+                //TODO throw exception
+            }
+            // Marquer comme supprimé en définissant IsDeleted à true
+            product.IsActive = false;
+            // Mettre à jour dans la base de données
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

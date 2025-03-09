@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 [Authorize]
-public class AuthenticationController : ControllerBase
+public class AuthController : ControllerBase
 {
 
-    private readonly ILogger<AuthenticationController> _logger;
+    private readonly ILogger<AuthController> _logger;
     private readonly AuthenticationService _authenticationService;
 
-    public AuthenticationController(ILogger<AuthenticationController> logger, 
+    public AuthController(ILogger<AuthController> logger, 
                                     AuthenticationService authenticationService)
     {
         _logger = logger;
@@ -21,21 +21,20 @@ public class AuthenticationController : ControllerBase
     }
 
    
-   [HttpPost("Register")]
+   [HttpPost("register")]
    [AllowAnonymous]
-    public void Register(string login, string firstName, string lastName, string password)
+    public void Register(string login, string firstName, string lastName, string password, string role)
     {
 
-        _authenticationService.RegisterUser(login,firstName,lastName,password);
+        _authenticationService.RegisterUser(login,firstName,lastName,password, role);
     }
 
-   [HttpPost("Login")]
+   [HttpPost("login")]
    [AllowAnonymous]
     public ActionResult Login(string password, string login){
 
         var token= _authenticationService.Login(login, password);
           return Ok(new {Token = token});
     }
-
-    
+ 
 }

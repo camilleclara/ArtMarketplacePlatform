@@ -13,6 +13,7 @@
         public double? Price { get; set; }
 
         public string? Category { get; set; }
+        public bool? IsActive { get; set; }
 
     }
 }

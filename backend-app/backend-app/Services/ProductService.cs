@@ -2,111 +2,80 @@
 using backend_app.Models;
 using backend_app.Models.DTO;
 using backend_app.Models.Enums;
+using backend_app.Repositories;
 using backend_app.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace backend_app.Services
 {
     public class ProductService : IProductService
     {
-        private readonly MarketPlaceContext _context;
+
+        private readonly IProductRepository _repository;
         private readonly IMapper _mapper;
 
-        public ProductService(MarketPlaceContext context, IMapper mapper)
+        public ProductService(IProductRepository repository, IMapper mapper)
         {
-            _context = context;
             _mapper = mapper;
+            _repository = repository;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
-            var products = await _context.Products
-                .Include(p=>p.Artisan)
-                .ToListAsync();
-                
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            var products = await _repository.GetAll();
+            var productDTOS = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            return productDTOS;
         }
 
-        public async Task<ProductDTO> GetById(int id)
+        public async Task<ProductDTO> GetByIdAsync(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _repository.GetById(id);
             return _mapper.Map<ProductDTO>(product);
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetByCategory(Category category)
+        public async Task<ProductDTO> AddAsync(ProductDTO newProduct)
+        {
+            var newProductEntity = _mapper.Map<Product>(newProduct);
+            await _repository.Insert(newProductEntity);
+            return _mapper.Map<ProductDTO>(newProduct);
+        }
+
+        public async Task<ProductDTO> UpdateAsync(int id, ProductDTO productToUpdate)
+        {
+            var productToUpdateEntity = _mapper.Map<Product>(productToUpdate);
+            await _repository.Update(id, productToUpdateEntity);
+            return _mapper.Map<ProductDTO>(productToUpdateEntity);
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            return await _repository.DeleteById(id);
+        }
+
+        public async Task<IEnumerable<ProductDTO>> GetByCategoryAsync(Category category)
         {
             string categoryString = category.ToString();
 
             //Filtrer les produits par catégorie
-            var products = await _context.Products
-                                         .Where(p => p.Category == categoryString)
-                                         .ToListAsync();
+            var productsEntities = await _repository.GetByCategory(categoryString);
+            var productsDTO = _mapper.Map<IEnumerable<ProductDTO>>(productsEntities);
 
             //Mapper les résultats en DTO
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            return productsDTO;
         }
 
 
         public async Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId)
         {
-            var products = await _context.Products
-                                         .Where(p => p.ArtisanId == artisanId)
-                                         .ToListAsync();
-
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
-        }
-
-        public async Task<ProductDTO> UpdateAsync(int id, ProductDTO product)
-        {
-            Product p = await _context.Products.FindAsync(id);
-            if(p == null)
-            {
-                return null;
-                //TODO throw Not Found Exception
-            }
-
-            _mapper.Map(product, p);
-            _context.Products.Update(p);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<ProductDTO>(p);
-
-        }
-
-        public async Task<ProductDTO> AddAsync(ProductDTO product)
-        {
-            if(product == null)
-            {
-                throw new ArgumentNullException(nameof(product));
-            }
-
-            await _context.Products.AddAsync(_mapper.Map<Product>(product));
-            await _context.SaveChangesAsync();
-            return _mapper.Map<ProductDTO>(product);
+            var productsEntities = _repository.GetByAttributeId(artisanId);
+            return _mapper.Map<IEnumerable<ProductDTO>>(productsEntities);
         }
 
         public Task<ProductDTO> AddAsyncForArtisan(ProductDTO product, int artisanId)
         {
             product.ArtisanId = artisanId;
             return AddAsync(product);
-        }
-
-        public async Task<bool> SoftDeleteProductAsync(int productId)
-        {
-            Product product = await _context.Products.FindAsync(productId);
-
-            if (product == null || !product.IsActive)
-            {
-                // Le produit n'existe pas ou est déjà marqué comme supprimé
-                throw new ArgumentException("No product was found with this id.");
-                //TODO throw exception
-            }
-            // Marquer comme supprimé en définissant IsDeleted à true
-            product.IsActive = false;
-            // Mettre à jour dans la base de données
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-
-            return true;
         }
     }
 }

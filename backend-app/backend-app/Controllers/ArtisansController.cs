@@ -89,7 +89,7 @@ public class ArtisansController : ControllerBase
     public async Task<ActionResult<ProductDTO>> DeleteProductForArtisan(int artisanId, int productId, [FromBody] ProductDTO updateDto)
     {
         //TODO check targeted product is artisan's
-        var updatedProduct = await _productService.SoftDeleteProductAsync(productId);
+        var updatedProduct = await _productService.DeleteAsync(productId);
         return Ok(updatedProduct);  // Retourne l'entité mise à jour
     }
 }

@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using backend_app.Mapper;
 using backend_app.Models;
+using backend_app.Repositories;
 using backend_app.Services;
 using backend_app.Services.Authentication;
 using backend_app.Services.Interfaces;
@@ -18,9 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MarketPlaceContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarketPlaceDB")));
 //Add automapper package
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(ProductProfile), typeof(UserProfile));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

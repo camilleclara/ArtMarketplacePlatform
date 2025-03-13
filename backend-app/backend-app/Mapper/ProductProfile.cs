@@ -4,16 +4,14 @@ using backend_app.Models.DTO;
 
 namespace backend_app.Mapper
 {
-    public class MappingProfile: Profile
+    public class ProductProfile: Profile
     {
-        public MappingProfile()
+        public ProductProfile()
         {
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true)); // Définir IsActive à true si null
-            CreateMap<User, UserDTO>();
-            CreateMap<UserDTO, User>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

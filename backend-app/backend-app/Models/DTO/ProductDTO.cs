@@ -2,6 +2,8 @@
 {
     public class ProductDTO
     {
+
+        public ProductDTO() { }
         public int Id { get; set; }
 
         public int? ArtisanId { get; set; }

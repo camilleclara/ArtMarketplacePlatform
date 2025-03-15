@@ -13,7 +13,7 @@ namespace Authentication.Controllers;
 [Authorize]
 public class UsersController : ControllerBase
 {
-   
+
     private readonly ILogger<UsersController> _logger;
     private readonly IUserService _userService;
 

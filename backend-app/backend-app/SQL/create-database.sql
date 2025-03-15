@@ -62,6 +62,7 @@ GO
 CREATE TABLE Deliveries (
     id INT IDENTITY(1,1) PRIMARY KEY,
     order_id INT,
+	is_active BIT NOT NULL,
     deli_status varchar(255),
     estimated_date DATE,
 	delivery_date DATETIME,
@@ -209,6 +210,11 @@ GO
 ALTER TABLE Reviews
 ADD CONSTRAINT DF_Reviews_is_active DEFAULT 1 FOR is_active;
 GO
+
 ALTER TABLE Chats
 ADD CONSTRAINT DF_Chats_is_active DEFAULT 1 FOR is_active;
+GO
+
+ALTER TABLE Deliveries
+ADD CONSTRAINT DF_delivery_is_active DEFAULT 1 FOR is_active;
 GO

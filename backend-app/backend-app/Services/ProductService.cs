@@ -2,7 +2,7 @@
 using backend_app.Models;
 using backend_app.Models.DTO;
 using backend_app.Models.Enums;
-using backend_app.Repositories;
+using backend_app.Repositories.Interfaces;
 using backend_app.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Entity;
@@ -68,7 +68,7 @@ namespace backend_app.Services
 
         public async Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId)
         {
-            var productsEntities = _repository.GetByAttributeId(artisanId);
+            var productsEntities = await _repository.GetByAttributeId(artisanId);
             return _mapper.Map<IEnumerable<ProductDTO>>(productsEntities);
         }
 

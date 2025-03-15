@@ -12,3 +12,17 @@ INSERT INTO Products ( artisan_id, name, description, price, category) VALUES
 	(4, 'Whale painting', 'Acrylic painting of a blue whale under water, by Scott Highlander', 400.50, 'PAINTING'),
 	(4, 'Pottery Kit', 'The perfect getting started kit for pottery enthousiasts ', 20.50, 'POTTERY'),
 	(4, 'Topaze necklace', 'A beautiful topaze chocker necklace', 50.50, 'JEWELS');
+
+INSERT INTO Orders ( artisan_id, customer_id) VALUES
+(4, 1),
+(4, 2);
+
+INSERT INTO Item_Orders (quantity, order_id, product_id) VALUES
+(3,1,1),
+(1,1,2),
+(6,2,3);
+
+INSERT INTO Deliveries (order_id, deli_status, estimated_date, is_active) VALUES
+(1, 'PROCESSING', null, false),
+(1, 'PROCESSING', null, true),
+(2, 'SHIPPED', null, false);

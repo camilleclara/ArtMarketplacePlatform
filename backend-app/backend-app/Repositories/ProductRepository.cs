@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend_app.Models;
 using backend_app.Models.DTO;
+using backend_app.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend_app.Repositories
@@ -65,12 +66,12 @@ namespace backend_app.Repositories
         public async Task<Product> Update(int id, Product entityUpdated)
         {
             var storedProduct = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
-            if(storedProduct == null)
+            if (storedProduct == null)
             {
                 throw new ArgumentException();//TODO throw error not found
             }
             storedProduct.ArtisanId = entityUpdated.ArtisanId;
-            storedProduct.Name  = entityUpdated.Name;
+            storedProduct.Name = entityUpdated.Name;
             storedProduct.Description = entityUpdated.Description;
             storedProduct.Price = entityUpdated.Price;
             storedProduct.Category = entityUpdated.Category;
@@ -78,8 +79,8 @@ namespace backend_app.Repositories
             //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
             await _context.SaveChangesAsync();
-            
-            
+
+
             return (storedProduct);
         }
 

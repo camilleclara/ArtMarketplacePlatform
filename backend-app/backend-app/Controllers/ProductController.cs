@@ -12,7 +12,7 @@ namespace Authentication.Controllers;
 [Route("[controller]")]
 public class ProductController : ControllerBase
 {
-   
+
     private readonly ILogger<ProductController> _logger;
     private readonly IProductService _productService;
 
@@ -82,7 +82,7 @@ public class ProductController : ControllerBase
             }
 
             throw new ArgumentException("Catégorie invalide");
-            
+
         }
         catch (Exception ex)
         {

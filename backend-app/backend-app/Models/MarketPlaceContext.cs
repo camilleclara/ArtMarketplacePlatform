@@ -42,7 +42,7 @@ public partial class MarketPlaceContext : DbContext
     {
         modelBuilder.Entity<Chat>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Chats__3213E83F90498411");
+            entity.HasKey(e => e.Id).HasName("PK__Chats__3213E83F9D1D9795");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Chats"));
 
@@ -52,7 +52,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
-            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -70,7 +72,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Delivery>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Deliveri__3213E83FD57321DD");
+            entity.HasKey(e => e.Id).HasName("PK__Deliveri__3213E83F76A3111C");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Deliveries"));
 
@@ -87,6 +89,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("delivery_date");
             entity.Property(e => e.EstimatedDate).HasColumnName("estimated_date");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -100,7 +105,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<DeliveryArtisanPartnership>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Delivery__3213E83FFD7AEBCB");
+            entity.HasKey(e => e.Id).HasName("PK__Delivery__3213E83FC9CD51AA");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_DeliveryArtisanPartnerships"));
 
@@ -111,7 +116,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("created");
             entity.Property(e => e.DeliveryPartnerId).HasColumnName("delivery_partner_id");
-            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -128,7 +135,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<ItemOrder>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Item_Ord__3213E83F1FA9A303");
+            entity.HasKey(e => e.Id).HasName("PK__Item_Ord__3213E83F91F9D3E2");
 
             entity.ToTable("Item_Orders", tb => tb.HasTrigger("trg_Update_Item_Orders"));
 
@@ -156,7 +163,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Message>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Messages__3213E83FFD782A21");
+            entity.HasKey(e => e.Id).HasName("PK__Messages__3213E83F51C7B1C5");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Messages"));
 
@@ -182,7 +189,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Orders__3213E83F42D1DD9C");
+            entity.HasKey(e => e.Id).HasName("PK__Orders__3213E83F27ADD0D2");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Orders"));
 
@@ -209,7 +216,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Products__3213E83FFBEDEF71");
+            entity.HasKey(e => e.Id).HasName("PK__Products__3213E83F42C587D2");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Products"));
 
@@ -227,7 +234,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("description");
-            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -245,7 +254,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<ProductImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductI__3213E83FA2E0F468");
+            entity.HasKey(e => e.Id).HasName("PK__ProductI__3213E83FC2AB7B37");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_ProductImages"));
 
@@ -268,7 +277,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Reviews__3213E83FAA2295F7");
+            entity.HasKey(e => e.Id).HasName("PK__Reviews__3213E83F3C8A1EF6");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Reviews"));
 
@@ -283,7 +292,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasColumnName("created");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
             entity.Property(e => e.FromArtisan).HasColumnName("fromArtisan");
-            entity.Property(e => e.IsActive).HasColumnName("isActive");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastUpdated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -302,7 +313,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83FE2D22927");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F401E9287");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Users"));
 
@@ -321,7 +332,9 @@ public partial class MarketPlaceContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("hashed_password");
-            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValue(true)
+                .HasColumnName("is_active");
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .IsUnicode(false)

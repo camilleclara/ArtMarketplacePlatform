@@ -4,7 +4,7 @@ using backend_app.Models.DTO;
 
 namespace backend_app.Mapper
 {
-    public class ProductProfile: Profile
+    public class ProductProfile : Profile
     {
         public ProductProfile()
         {

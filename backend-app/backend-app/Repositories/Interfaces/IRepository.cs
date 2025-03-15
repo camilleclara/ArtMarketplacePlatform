@@ -1,4 +1,4 @@
-﻿namespace backend_app.Repositories
+﻿namespace backend_app.Repositories.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : class
     {

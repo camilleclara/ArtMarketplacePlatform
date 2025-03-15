@@ -13,28 +13,29 @@ public class AuthController : ControllerBase
     private readonly ILogger<AuthController> _logger;
     private readonly AuthenticationService _authenticationService;
 
-    public AuthController(ILogger<AuthController> logger, 
+    public AuthController(ILogger<AuthController> logger,
                                     AuthenticationService authenticationService)
     {
         _logger = logger;
-        _authenticationService=authenticationService;
+        _authenticationService = authenticationService;
     }
 
-   
-   [HttpPost("register")]
-   [AllowAnonymous]
+
+    [HttpPost("register")]
+    [AllowAnonymous]
     public void Register(string login, string firstName, string lastName, string password, string role)
     {
 
-        _authenticationService.RegisterUser(login,firstName,lastName,password, role);
+        _authenticationService.RegisterUser(login, firstName, lastName, password, role);
     }
 
-   [HttpPost("login")]
-   [AllowAnonymous]
-    public ActionResult Login(string password, string login){
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public ActionResult Login(string password, string login)
+    {
 
-        var token= _authenticationService.Login(login, password);
-          return Ok(new {Token = token});
+        var token = _authenticationService.Login(login, password);
+        return Ok(new { Token = token });
     }
- 
+
 }

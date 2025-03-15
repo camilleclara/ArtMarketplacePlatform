@@ -15,7 +15,7 @@ public partial class Review
 
     public bool? FromArtisan { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public int? Score { get; set; }
 

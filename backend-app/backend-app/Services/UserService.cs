@@ -2,13 +2,13 @@
 using backend_app.Models;
 using backend_app.Models.DTO;
 using backend_app.Models.Enums;
-using backend_app.Repositories;
+using backend_app.Repositories.Interfaces;
 using backend_app.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend_app.Services
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;

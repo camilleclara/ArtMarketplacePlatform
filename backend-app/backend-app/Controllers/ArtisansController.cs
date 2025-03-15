@@ -10,10 +10,10 @@ namespace Authentication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class ArtisansController : ControllerBase
 {
-   
+
     private readonly ILogger<ArtisansController> _logger;
     private readonly IProductService _productService;
 
@@ -23,7 +23,7 @@ public class ArtisansController : ControllerBase
         _productService = productService;
     }
 
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    //[Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("{artisanId}/products")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -45,7 +45,7 @@ public class ArtisansController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    //[Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPost("{artisanId}/products")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -86,7 +86,7 @@ public class ArtisansController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ProductDTO>> DeleteProductForArtisan(int artisanId, int productId, [FromBody] ProductDTO updateDto)
+    public async Task<ActionResult<ProductDTO>> DeleteProductForArtisan(int artisanId, int productId)
     {
         //TODO check targeted product is artisan's
         var updatedProduct = await _productService.DeleteAsync(productId);

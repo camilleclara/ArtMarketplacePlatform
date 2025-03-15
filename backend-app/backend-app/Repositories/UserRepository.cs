@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using backend_app.Models;
 using backend_app.Models.DTO;
+using backend_app.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend_app.Repositories
@@ -46,7 +47,7 @@ namespace backend_app.Repositories
         public async Task<User> Update(int id, User entityUpdated)
         {
             var storedUser = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
-            if(storedUser == null)
+            if (storedUser == null)
             {
                 throw new ArgumentException();//TODO throw error not found
             }

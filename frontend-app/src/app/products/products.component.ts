@@ -15,7 +15,12 @@ import { ProductCategory } from '../models/product-category.enum';
 export class ProductsComponent {
  products: Product[]=[];
  editingProduct: Product | null = null;
- productForm: FormGroup;
+ productForm: FormGroup = new FormGroup({
+  name: new FormControl("", [Validators.required]),
+  description: new FormControl("", [Validators.required]),
+  price: new FormControl("", [Validators.required]),
+  category: new FormControl("", [Validators.required])
+}) 
 
  //TODO retrieve from backend instead
  categories = Object.values(ProductCategory);
@@ -25,7 +30,11 @@ export class ProductsComponent {
    *
    */
   constructor(private productService: ProductService, private authService: AuthenticationService) {
-    this.productService.GetProductsByArtisanId(authService.getUserId())
+    this.initForm();
+  }
+
+  initForm(){
+    this.productService.GetProductsByArtisanId(this.authService.getUserId())
     .subscribe(response => {
       this.products=response
     });
@@ -35,6 +44,8 @@ export class ProductsComponent {
       price: new FormControl("", [Validators.required]),
       category: new FormControl("", [Validators.required])
     }) 
+    this.editingProduct = null;
+
   }
 
   onEdit(id: number): any{
@@ -51,8 +62,20 @@ export class ProductsComponent {
   }
 
   onSubmit(id: number) {    
+    if (this.productForm.invalid) {
+      return; // Ne rien faire si le formulaire est invalide
+    }
+  
+    // Récupérer les données du formulaire
+    const updatedProduct: Product = {
+      ...this.editingProduct,  // Conserver les autres valeurs (ex: id, artisanId, isActive)
+      ...this.productForm.value, // Mettre à jour avec les nouvelles valeurs du formulaire
+    };
     // TODO: Use EventEmitter with form value    console.warn(this.profileForm.value);  
-    console.log(id)
+    this.productService.UpdateProduct(this.authService.getUserId(),id, updatedProduct).subscribe(
+      (response) => {
+        this.initForm();
 
+      });// Mettre à jour le produit en cours d'édition
   }
 }

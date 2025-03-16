@@ -98,6 +98,24 @@
 						}
 					}
 				</div>
+				
+
+				<div class="mb-3" >
+					<div class="d-flex flex-row">
+						<label for="isActive" class="form-label">Disponible</label>
+						<label class="form-check-label mx-5">
+							<input formControlName="isActive" type="radio" [value]="true" class="form-check-input">
+							Actif
+						  </label>
+						  <label class="form-check-label">
+							<input formControlName="isActive" type="radio" [value]="false" class="form-check-input">
+							Inactif
+						  </label>
+					</div>
+					
+				</div>
+
+
 				<div class="d-flex align-items-end flex-column mb-3">
 					<button type="submit" type="submit" [disabled]="productForm.invalid"  type="submit" class="btn btn-sm btn-primary">Sauvegarder</button>
 				</div>

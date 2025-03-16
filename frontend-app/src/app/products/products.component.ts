@@ -16,11 +16,12 @@ export class ProductsComponent {
   products: Product[]=[];
   editingProduct: Product | null = null;
   productForm: FormGroup = new FormGroup({
-  name: new FormControl("", [Validators.required]),
-  description: new FormControl("", [Validators.required]),
-  price: new FormControl("", [Validators.required]),
-  category: new FormControl("", [Validators.required])
-}) 
+    name: new FormControl("", [Validators.required]),
+    description: new FormControl("", [Validators.required]),
+    price: new FormControl("", [Validators.required]),
+    category: new FormControl("", [Validators.required]),
+    isActive: new FormControl(false, [Validators.required])
+  }) 
 
  //TODO retrieve from backend instead
  categories = Object.values(ProductCategory);
@@ -38,7 +39,8 @@ export class ProductsComponent {
       name: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
       price: new FormControl("", [Validators.required]),
-      category: new FormControl("", [Validators.required])
+      category: new FormControl("", [Validators.required]),
+      isActive: new FormControl(false, [Validators.required])    
     });
     this.editingProduct = null;
   };
@@ -46,11 +48,13 @@ export class ProductsComponent {
   onEdit(id: number): any{
     this.productService.GetArtisanProductById(this.authService.getUserId(),id).subscribe((product: Product) => {
       this.editingProduct = product; 
+      console.log(product)
       this.productForm.patchValue({
         name: product.name,
         description: product.description,
         price: product.price,
-        category: product.category
+        category: product.category,
+        isActive: product.isActive
       });
     });
   };
@@ -70,4 +74,8 @@ export class ProductsComponent {
         this.initForm();
       });
   };
+
+  onDelete(id: number) {
+    //TODO: call to delete item
+  }
 }

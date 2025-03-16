@@ -43,14 +43,56 @@
 						}
 					}
 				</div>
-				<!-- <label for="price">Prix</label>
-				<input id="price" [(ngModel)]="editingProduct.price" name="price" required type="number" />
-			
-				<label for="description">Description</label>
-				<textarea id="description" [(ngModel)]="editingProduct.description" name="description"></textarea>
-			
-				<button type="submit">Sauvegarder</button>
-				<button (click)="">Annuler</button> -->
+
+				<div class="mb-3" >
+					<div class="d-flex flex-column">
+						<label for="description" class="form-label">Description</label>
+						<input formControlName="description"  [(ngModel)]="editingProduct.description" type="text" id="description" class="form-control"/>
+					</div>
+					@if(productForm.get('description')?.invalid && 
+							productForm.get('description')?.errors && 
+						(productForm.get('description')?.dirty || productForm.get('description')?.touched))
+					{
+						@if(productForm.get('description')?.hasError('required')){
+							<small class="text-danger">
+								This field is required.
+							</small>
+						}
+					}
+				</div>
+
+				<div class="mb-3" >
+					<div class="d-flex flex-column">
+						<label for="price" class="form-label">Prix</label>
+						<input formControlName="price"  [(ngModel)]="editingProduct.price" type="text" id="price" class="form-control"/>
+					</div>
+					@if(productForm.get('price')?.invalid && 
+							productForm.get('price')?.errors && 
+						(productForm.get('price')?.dirty || productForm.get('price')?.touched))
+					{
+						@if(productForm.get('price')?.hasError('required')){
+							<small class="text-danger">
+								This field is required.
+							</small>
+						}
+					}
+				</div>
+				<div class="mb-3" >
+					<div class="d-flex flex-column">
+						<label for="category" class="form-label">Catégorie</label>
+						<input formControlName="category"  [(ngModel)]="editingProduct.category" type="text" id="category" class="form-control"/>
+					</div>
+					@if(productForm.get('category')?.invalid && 
+							productForm.get('category')?.errors && 
+						(productForm.get('category')?.dirty || productForm.get('category')?.touched))
+					{
+						@if(productForm.get('category')?.hasError('required')){
+							<small class="text-danger">
+								This field is required.
+							</small>
+						}
+					}
+				</div>
 				<div class="d-flex align-items-end flex-column mb-3">
 					<button type="submit" type="submit" [disabled]="productForm.invalid"  type="submit" class="btn btn-sm btn-primary">Sauvegarder</button>
 				</div>

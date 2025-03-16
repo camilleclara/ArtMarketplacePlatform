@@ -25,8 +25,9 @@ export class ProductsComponent {
     });
     this.productForm = new FormGroup({
       name: new FormControl("", [Validators.required]),
-      //description: new FormControl("", [Validators.required]),
-      //price: new FormControl("", [Validators.required]),
+      description: new FormControl("", [Validators.required]),
+      price: new FormControl("", [Validators.required]),
+      category: new FormControl("", [Validators.required])
     }) 
   }
 

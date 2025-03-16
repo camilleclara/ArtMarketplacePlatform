@@ -8,9 +8,8 @@ import { Product } from '../models/Product.model';
 })
 export class ProductService {
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient) {}
 
-  }
   GetProducts(): Observable<any>{
     return this.http.get("https://localhost:7279/Product")
   }
@@ -28,6 +27,5 @@ export class ProductService {
   }
 
   UpdateProduct(artisanId: number, productId: number, updatedProduct: Product): Observable<Product> {
-    console.log()
     return this.http.put<Product>(`https://localhost:7279/api/Artisans/${artisanId}/products/${productId}`, updatedProduct);  }
 }

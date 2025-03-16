@@ -27,6 +27,7 @@ export class ProductService {
   }
 
   UpdateProduct(artisanId: number, productId: number, updatedProduct: Product): Observable<Product> {
+    console.log(updatedProduct)
     return this.http.put<Product>(`https://localhost:7279/api/Artisans/${artisanId}/products/${productId}`, updatedProduct);  
   }
 

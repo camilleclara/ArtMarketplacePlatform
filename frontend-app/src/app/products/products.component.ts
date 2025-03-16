@@ -26,7 +26,15 @@ export class ProductsComponent {
     name: '',
     description: '',
     isAvailable: true,
-    productImages: []
+    productImages: [
+      {
+        id: 0,
+        name: '',
+        productId: 0,
+        mimeType: "image/jpeg",
+        content: "base64encodedcontent"
+      }
+    ]
   }
 
   productForm: FormGroup = new FormGroup({
@@ -102,9 +110,10 @@ export class ProductsComponent {
       ...this.productForm.value, // Mettre à jour avec les nouvelles valeurs du formulaire
     };
     if(this.edition){
-      
+      console.log(updatedProduct);
       this.productService.UpdateProduct(this.authService.getUserId(),id, updatedProduct).subscribe(
         (response) => {
+          console.log(response)
           this.initForm();
         });
     }
@@ -142,6 +151,6 @@ export class ProductsComponent {
   }
 
   getImageSrc(image: ProductImage): string {
-    return `data:${image.mimetype};base64,${image.content}`;
+    return `data:${image.mimeType};base64,${image.content}`;
   }
 }

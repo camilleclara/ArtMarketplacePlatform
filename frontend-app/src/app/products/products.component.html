@@ -120,9 +120,12 @@
 							</div>
 							
 						</div>
-						@for (im of editingProduct.productImages; track im.id; let i = $index) {
-							<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="img-thumbnail">
+						<div class="d-flex flex-row flex-wrap">
+							@for (im of editingProduct.productImages; track im.id; let i = $index) {
+								<!-- TODO: supprimer et ajouter des images -->
+							<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="rounded mx-auto d-block thumbnail">
 						}
+						</div>
 		
 		
 						<div class="d-flex align-items-end flex-column mb-3">

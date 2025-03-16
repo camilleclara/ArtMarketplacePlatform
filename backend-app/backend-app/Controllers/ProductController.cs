@@ -10,10 +10,9 @@ namespace Authentication.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class ProductController : ControllerBase
 {
-   
+
     private readonly ILogger<ProductController> _logger;
     private readonly IProductService _productService;
 
@@ -23,7 +22,6 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -45,7 +43,6 @@ public class ProductController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpGet("{productId}")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -54,7 +51,7 @@ public class ProductController : ControllerBase
     {
         try
         {
-            ProductDTO product = await _productService.GetById(productId);
+            ProductDTO product = await _productService.GetByIdAsync(productId);
             if (product == null)
             {
                 return NoContent();
@@ -66,7 +63,6 @@ public class ProductController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpGet("category/{categoryString}")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -77,7 +73,7 @@ public class ProductController : ControllerBase
         {
             if (Enum.TryParse<Category>(categoryString, out Category category))
             {
-                IEnumerable<ProductDTO> products = await _productService.GetByCategory(category);
+                IEnumerable<ProductDTO> products = await _productService.GetByCategoryAsync(category);
                 if (products.Count() == 0)
                 {
                     return NoContent();
@@ -86,7 +82,7 @@ public class ProductController : ControllerBase
             }
 
             throw new ArgumentException("Catégorie invalide");
-            
+
         }
         catch (Exception ex)
         {
@@ -126,25 +122,4 @@ public class ProductController : ControllerBase
 
         return Ok(updatedProduct);  // Retourne l'entité mise à jour
     }
-
-
-
-    //[Authorize(Roles = nameof(Roles.ADMIN))]
-    //[HttpGet("Admin")]
-    //public ActionResult<IEnumerable<Product>> GetAdminProducts()
-    //{
-    //    IEnumerable<Product> products = new List<Product>
-    //    {
-    //        new Product { Id = 1, Name = "Produit Admin" },
-    //        new Product { Id = 2, Name = "Produit Badmin" },
-    //        new Product { Id = 3, Name = "Produit Cadmin" }
-    //    };
-
-    //    return Ok(products);
-    //}
-
-
-
-
-
 }

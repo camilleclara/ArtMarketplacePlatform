@@ -17,7 +17,7 @@ public partial class User
 
     public string? LastName { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? UserType { get; set; }
 

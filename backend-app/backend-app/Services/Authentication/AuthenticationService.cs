@@ -64,7 +64,7 @@ namespace backend_app.Services.Authentication
             return Convert.ToHexString(hash);
         }
 
-        public async Task<UserDTO> RegisterUser(string login, string firstName, string lastName,string password)
+        public async Task<UserDTO> RegisterUser(string login, string firstName, string lastName,string password, string role)
         {
             //if (users.Any(user => user.Username.ToLower() == username.ToLower()))
             //{
@@ -72,7 +72,7 @@ namespace backend_app.Services.Authentication
             //}
             var salt = DateTime.Now.ToString("dddd"); // get the day of week. Ex: Sunday
             var passwordHash = HashPassword(password, salt);
-            var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, "CUSTOMER");
+            var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, role);
             await _context.Users.AddAsync(_mapper.Map<User>(newUser));
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDTO>(newUser);

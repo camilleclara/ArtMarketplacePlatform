@@ -9,6 +9,8 @@ public partial class Delivery
 
     public int? OrderId { get; set; }
 
+    public bool IsActive { get; set; }
+
     public string? DeliStatus { get; set; }
 
     public DateOnly? EstimatedDate { get; set; }

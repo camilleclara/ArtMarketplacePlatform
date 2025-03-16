@@ -2,6 +2,8 @@
 {
     public class ProductDTO
     {
+
+        public ProductDTO() { }
         public int Id { get; set; }
 
         public int? ArtisanId { get; set; }
@@ -13,6 +15,7 @@
         public double? Price { get; set; }
 
         public string? Category { get; set; }
+        public bool? IsActive { get; set; }
 
     }
 }

@@ -17,7 +17,7 @@ public partial class Product
 
     public string? Category { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public DateTime? LastUpdated { get; set; }
 

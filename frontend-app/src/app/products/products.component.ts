@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductService } from './product.service';
 import { AuthenticationService } from '../login/authentication.service';
-import { Product } from '../models/Product.model';
+import { Product } from '../models/product.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductCategory } from '../models/product-category.enum';
 

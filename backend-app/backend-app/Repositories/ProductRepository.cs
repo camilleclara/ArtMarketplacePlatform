@@ -75,7 +75,7 @@ namespace backend_app.Repositories
             storedProduct.Description = entityUpdated.Description;
             storedProduct.Price = entityUpdated.Price;
             storedProduct.Category = entityUpdated.Category;
-            storedProduct.IsActive = entityUpdated.IsActive;
+            storedProduct.IsAvailable = entityUpdated.IsAvailable;
             //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
             await _context.SaveChangesAsync();

@@ -23,7 +23,7 @@ public class ArtisansController : ControllerBase
         _productService = productService;
     }
 
-    //[Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("{artisanId}/products")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -45,7 +45,7 @@ public class ArtisansController : ControllerBase
         }
     }
 
-    //[Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPost("{artisanId}/products")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]

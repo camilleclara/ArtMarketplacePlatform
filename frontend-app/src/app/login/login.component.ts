@@ -15,6 +15,7 @@ export class LoginComponent {
   loginForm: FormGroup;
 
   constructor(private authService: AuthenticationService, private router: Router){
+    console.log("login");
     this.loginForm = new FormGroup({
       userName: new FormControl("", [Validators.required ]),
       password: new FormControl("", [Validators.required])
@@ -22,15 +23,11 @@ export class LoginComponent {
   }
 
   login(){
-    console.log(this.loginForm.value);
     this.authService.Login(this.loginForm.value.userName, this.loginForm.value.password).subscribe((response: any)=>{
-      console.log("response", response);
       if(response.token){
         sessionStorage.setItem("jwt", response.token);
-        this.router.navigate(["/"]);
-        //TODO: redirect to page you came from
+        this.router.navigate(["/dashboard"]);
       }
     })
-    console.log(this.loginForm.value);
   }
 }

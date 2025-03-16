@@ -16,9 +16,7 @@ export class AdminComponent {
   constructor(private productService: ProductService) {
     this.productService.GetAdminProducts()
         .subscribe(response => {
-          console.log("response", response)
           this.products=response
-  
         });
     
   }

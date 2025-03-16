@@ -1,4 +1,28 @@
-<p>dashboard-artisan works!</p>
-<div>products</div>
-<div>orders</div>
-<div>reviews</div>
+<div class="container mt-4">
+    <!-- Onglets -->
+    <ul class="nav nav-tabs" id="dashboardTabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="produits-tab" data-bs-toggle="tab" data-bs-target="#produits">📦 Mes Produits</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="commandes-tab" data-bs-toggle="tab" data-bs-target="#commandes">📜 Mes Commandes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews">⭐ Avis Clients</a>
+      </li>
+    </ul>
+  
+    <!-- Contenu des onglets -->
+    <div class="tab-content mt-3">
+      <div class="tab-pane fade show active" id="produits">
+        <app-products></app-products>
+      </div>
+      <div class="tab-pane fade" id="commandes">
+        <app-orders></app-orders>
+      </div>
+      <div class="tab-pane fade" id="reviews">
+        REVIEWS
+      </div>
+    </div>
+  </div>
+  

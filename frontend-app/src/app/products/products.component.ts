@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductService } from './product.service';
+import { AuthenticationService } from '../login/authentication.service';
 
 @Component({
   selector: 'app-products',
@@ -13,11 +14,10 @@ export class ProductsComponent {
   /**
    *
    */
-  constructor(private productService: ProductService) {
-    this.productService.GetProducts()
-        .subscribe(response => {
-          this.products=response
-        });
-    
+  constructor(private productService: ProductService, private authService: AuthenticationService) {
+    this.productService.GetProductsByArtisanId(authService.getUserId())
+    .subscribe(response => {
+      this.products=response
+    });
   }
 }

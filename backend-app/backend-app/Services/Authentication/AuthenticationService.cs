@@ -35,7 +35,8 @@ namespace backend_app.Services.Authentication
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim("custom_info", "info"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Role, _context.Users.FirstOrDefault(x=>x.Login==username).UserType)
+                new Claim(ClaimTypes.Role, _context.Users.FirstOrDefault(x=>x.Login==username).UserType),
+                new Claim(ClaimTypes.NameIdentifier, _context.Users.FirstOrDefault(x=>x.Login==username).Id.ToString()),
             };
 
             var jwtIssuer = _config["Jwt:Issuer"];

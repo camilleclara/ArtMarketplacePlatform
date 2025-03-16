@@ -22,8 +22,14 @@ export class AuthenticationService {
     let token = sessionStorage.getItem("jwt")??"";
     if (!token) return '';
     let decodedToken: any = jwtDecode(token);
-    console.log(decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
     return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+  }
+
+  getUserId(): any {
+    let token = sessionStorage.getItem("jwt")??"";
+    if (!token) return '';
+    let decodedToken: any = jwtDecode(token);
+    return decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
   }
 
    Login(userName: string, password: string): Observable<any>{

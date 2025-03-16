@@ -2,8 +2,8 @@ export interface Product {
     id: number;
     name: string;
     description: string;
-    price: number;
+    price?: number;
     artisanId: number;
-    category: string;
+    category?: string;
     isAvailable: boolean;
 }

@@ -15,6 +15,17 @@ import { ProductCategory } from '../models/product-category.enum';
 export class ProductsComponent {
   products: Product[]=[];
   editingProduct: Product | null = null;
+  creatingProduct: Product | null = null;
+  edition: boolean = false;
+  creation: boolean = false;
+  newProduct: Product = {
+    id: 0,
+    artisanId: this.authService.getUserId(),
+    name: '',
+    description: '',
+    isAvailable: true
+  }
+
   productForm: FormGroup = new FormGroup({
     name: new FormControl("", [Validators.required]),
     description: new FormControl("", [Validators.required]),
@@ -48,7 +59,8 @@ export class ProductsComponent {
   onEdit(id: number): any{
     this.productService.GetArtisanProductById(this.authService.getUserId(),id).subscribe((product: Product) => {
       this.editingProduct = product; 
-      console.log(product)
+      this.edition = true;
+      this.creation = false;
       this.productForm.patchValue({
         name: product.name,
         description: product.description,
@@ -58,6 +70,21 @@ export class ProductsComponent {
       });
     });
   };
+
+  onCreate(){
+    this.creation = true;
+    this.edition = false;
+    this.editingProduct = this.newProduct; 
+      this.edition = true;
+      this.productForm.patchValue({
+        name: this.newProduct.name,
+        description: this.newProduct.description,
+        price: this.newProduct.price,
+        category: this.newProduct.category,
+        isAvailable: this.newProduct.isAvailable
+      });
+  }
+
 
   onSubmit(id: number) {
     //TODO: intercept errors
@@ -69,10 +96,20 @@ export class ProductsComponent {
       ...this.editingProduct,  // Conserver les autres valeurs (ex: id, artisanId, isAvailable)
       ...this.productForm.value, // Mettre à jour avec les nouvelles valeurs du formulaire
     };
-    this.productService.UpdateProduct(this.authService.getUserId(),id, updatedProduct).subscribe(
-      (response) => {
-        this.initForm();
-      });
+    if(this.edition){
+      
+      this.productService.UpdateProduct(this.authService.getUserId(),id, updatedProduct).subscribe(
+        (response) => {
+          this.initForm();
+        });
+    }
+    if(this.creation){
+      this.productService.CreateProduct(updatedProduct.artisanId, updatedProduct).subscribe(
+        (response) => {
+          this.initForm();
+        });
+      console.log("ok")
+    }
   };
 
   onDelete(id: number) {

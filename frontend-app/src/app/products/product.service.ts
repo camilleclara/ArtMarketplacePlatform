@@ -33,4 +33,8 @@ export class ProductService {
   DeleteProduct(artisanId: number, productId: number): Observable<Product> {
     return this.http.delete<Product>(`https://localhost:7279/api/Artisans/${artisanId}/products/${productId}`);  
   }
+
+  CreateProduct(artisanId: number, newProduct: Product): Observable<Product> {
+    return this.http.post<Product>(`https://localhost:7279/api/Artisans/${artisanId}/products`, newProduct);  
+  }
 }

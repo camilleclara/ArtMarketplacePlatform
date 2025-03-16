@@ -70,7 +70,6 @@ namespace backend_app.Repositories
             {
                 throw new ArgumentException();//TODO throw error not found
             }
-            storedProduct.ArtisanId = entityUpdated.ArtisanId;
             storedProduct.Name = entityUpdated.Name;
             storedProduct.Description = entityUpdated.Description;
             storedProduct.Price = entityUpdated.Price;

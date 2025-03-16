@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -8,12 +8,8 @@ import { Observable } from 'rxjs';
 export class ProductService {
 
   constructor(private http:HttpClient) {
-    
+
   }
-  // GetForecast():Observable<any>  {
-  //   const token= sessionStorage.getItem("jwt");
-  //   return this.http.get("https://localhost:7279/WeatherForecast", {headers: {'Authorization':'Bearer '+token, 'Content-Type': 'application/json'} })
-  // }
   GetProducts(): Observable<any>{
     return this.http.get("https://localhost:7279/Product")
   }
@@ -24,5 +20,9 @@ export class ProductService {
 
   GetProductsByArtisanId(id: number): Observable<any>{
     return this.http.get(`https://localhost:7279/api/Artisans/${id}/products`)
+  }
+
+  GetArtisanProductById(artisanId: number, productId: number): Observable<any>{
+    return this.http.get(`https://localhost:7279/api/Artisans/${artisanId}/products/${productId}`)
   }
 }

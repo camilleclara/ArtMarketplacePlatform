@@ -1,20 +1,61 @@
-<p>Table is just a mapping of objects to table rows with <code>&#64;for</code></p>
-
+<div>
+	
 <table class="table table-striped">
 	<thead>
 		<tr>
 			<th scope="col">#</th>
 			<th scope="col">Name</th>
+			<th scope="col">Price</th>
+			<th scope="col"></th>
 		</tr>
 	</thead>
 	<tbody>
-		@for (p of products; track p.date; let i = $index) {
+		@for (p of products; track p.id; let i = $index) {
 			<tr>
 				<th scope="row">{{ i + 1 }}</th>
 				<!--TODO: change to product model-->
-				<td>{{ p.id }}</td>
 				<td>{{ p.name }}</td>
+				<td>{{ p.price }}</td>
+				<td><button class="btn btn-secondary" (click)="onEdit(p.id)">Modifier</button></td>
 			</tr>
 		}
 	</tbody>
 </table>
+<!-- Formulaire d'édition avec une animation de fade -->
+@if(editingProduct){
+	<div class="d-flex flex-column">
+		<h2>Modifier le produit</h2>
+		<form [formGroup]="productForm" class="container"  (ngSubmit)="onSubmit(editingProduct.id)">
+			<div class="container d-flex flex-column">
+				<div class="mb-3" >
+					<div class="d-flex flex-column">
+						<label for="name" class="form-label">Nom</label>
+						<input formControlName="name"  [(ngModel)]="editingProduct.name" type="text" id="name" class="form-control"/>
+					</div>
+					@if(productForm.get('name')?.invalid && 
+							productForm.get('name')?.errors && 
+						(productForm.get('name')?.dirty || productForm.get('name')?.touched))
+					{
+						@if(productForm.get('name')?.hasError('required')){
+							<small class="text-danger">
+								This field is required.
+							</small>
+						}
+					}
+				</div>
+				<!-- <label for="price">Prix</label>
+				<input id="price" [(ngModel)]="editingProduct.price" name="price" required type="number" />
+			
+				<label for="description">Description</label>
+				<textarea id="description" [(ngModel)]="editingProduct.description" name="description"></textarea>
+			
+				<button type="submit">Sauvegarder</button>
+				<button (click)="">Annuler</button> -->
+				<div class="d-flex align-items-end flex-column mb-3">
+					<button type="submit" type="submit" [disabled]="productForm.invalid"  type="submit" class="btn btn-sm btn-primary">Sauvegarder</button>
+				</div>
+			</div>
+		</form>
+	</div>
+}
+</div>

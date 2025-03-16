@@ -64,7 +64,7 @@ public class ArtisansController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPut("{artisanId}/products/{productId}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,6 +78,27 @@ public class ArtisansController : ControllerBase
             return StatusCode(StatusCodes.Status404NotFound);
 
         return Ok(updatedProduct);  // Retourne l'entité mise à jour
+    }
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [HttpGet("{artisanId}/products/{productId}")]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetProductById(int productId)
+    {
+        try
+        {
+            ProductDTO product = await _productService.GetByIdAsync(productId);
+            if (product == null)
+            {
+                return NoContent();
+            }
+            return Ok(product);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
 

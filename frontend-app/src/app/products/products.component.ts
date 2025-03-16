@@ -5,6 +5,7 @@ import { Product } from '../models/product.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductCategory } from '../models/product-category.enum';
 import { CommonModule } from '@angular/common';
+import { ProductImage } from '../models/product-image.model';
 
 @Component({
   selector: 'app-products',
@@ -24,7 +25,8 @@ export class ProductsComponent {
     artisanId: this.authService.getUserId(),
     name: '',
     description: '',
-    isAvailable: true
+    isAvailable: true,
+    productImages: []
   }
 
   productForm: FormGroup = new FormGroup({
@@ -62,12 +64,14 @@ export class ProductsComponent {
       this.editingProduct = product; 
       this.edition = true;
       this.creation = false;
+      console.log(product)
       this.productForm.patchValue({
         name: product.name,
         description: product.description,
         price: product.price,
         category: product.category,
-        isAvailable: product.isAvailable
+        isAvailable: product.isAvailable,
+        productImages: product.productImages
       });
     });
   };
@@ -135,5 +139,9 @@ export class ProductsComponent {
 
   onCancel(){
     this.initForm();
+  }
+
+  getImageSrc(image: ProductImage): string {
+    return `data:${image.mimetype};base64,${image.content}`;
   }
 }

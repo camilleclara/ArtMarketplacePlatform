@@ -120,6 +120,9 @@
 							</div>
 							
 						</div>
+						@for (im of editingProduct.productImages; track im.id; let i = $index) {
+							<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="img-thumbnail">
+						}
 		
 		
 						<div class="d-flex align-items-end flex-column mb-3">

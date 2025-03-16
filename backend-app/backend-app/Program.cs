@@ -1,3 +1,4 @@
+using System.Security.Permissions;
 using System.Text;
 using System.Text.Json.Serialization;
 using backend_app.Mapper;
@@ -20,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MarketPlaceContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarketPlaceDB")));
 //Add automapper package
-builder.Services.AddAutoMapper(typeof(ProductProfile), typeof(UserProfile), typeof(OrderProfile), typeof(DeliveryProfile));
+builder.Services.AddAutoMapper(typeof(ProductProfile), typeof(UserProfile), typeof(OrderProfile), typeof(DeliveryProfile), typeof(ProductImageProfile));
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();

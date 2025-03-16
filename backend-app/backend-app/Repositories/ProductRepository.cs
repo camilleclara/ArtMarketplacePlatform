@@ -53,7 +53,7 @@ namespace backend_app.Repositories
 
         public async Task<Product> GetById(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Products.Include(i => i.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Product> Insert(Product entity)
@@ -75,6 +75,7 @@ namespace backend_app.Repositories
             storedProduct.Price = entityUpdated.Price;
             storedProduct.Category = entityUpdated.Category;
             storedProduct.IsAvailable = entityUpdated.IsAvailable;
+            //TODO update images
             //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
             await _context.SaveChangesAsync();

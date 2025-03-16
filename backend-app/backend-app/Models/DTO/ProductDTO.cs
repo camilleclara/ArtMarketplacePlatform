@@ -16,6 +16,7 @@
 
         public string? Category { get; set; }
         public bool? IsAvailable { get; set; }
+        public virtual ICollection<ProductImageDTO> ProductImages { get; set; } = new List<ProductImageDTO>();
 
     }
 }

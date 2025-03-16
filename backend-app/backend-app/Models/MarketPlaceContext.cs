@@ -262,6 +262,8 @@ public partial class MarketPlaceContext : DbContext
             entity.ToTable(tb => tb.HasTrigger("trg_Update_ProductImages"));
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.MimeType).HasColumnName("mime_type");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.Created)
                 .HasDefaultValueSql("(getdate())")

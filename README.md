@@ -6,5 +6,9 @@ dotnet ef dbcontext scaffold Name=MarketPlaceDB Microsoft.EntityFrameworkCore.Sq
 dashboard 
     artisan
         display all my products
+            Display
+            Edition
+            Creation
+            ->Images
         display all my orders
         display all my customers reviews

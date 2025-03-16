@@ -75,8 +75,10 @@ GO
 -- Les images seront réellement supprimées
 CREATE TABLE ProductImages (
     id INT IDENTITY(1,1) PRIMARY KEY,
+	name VARCHAR(255),
     product_id INT,
 	content VARBINARY(MAX),
+	mime_type VARCHAR(255),
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
 );

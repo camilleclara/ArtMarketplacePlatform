@@ -30,7 +30,7 @@
 				<div class="mb-3" >
 					<div class="d-flex flex-column">
 						<label for="name" class="form-label">Nom</label>
-						<input formControlName="name"  [(ngModel)]="editingProduct.name" type="text" id="name" class="form-control"/>
+						<input formControlName="name" type="text" id="name" class="form-control"/>
 					</div>
 					@if(productForm.get('name')?.invalid && 
 							productForm.get('name')?.errors && 
@@ -47,7 +47,7 @@
 				<div class="mb-3" >
 					<div class="d-flex flex-column">
 						<label for="description" class="form-label">Description</label>
-						<input formControlName="description"  [(ngModel)]="editingProduct.description" type="text" id="description" class="form-control"/>
+						<input formControlName="description"  type="text" id="description" class="form-control"/>
 					</div>
 					@if(productForm.get('description')?.invalid && 
 							productForm.get('description')?.errors && 
@@ -64,7 +64,7 @@
 				<div class="mb-3" >
 					<div class="d-flex flex-column">
 						<label for="price" class="form-label">Prix</label>
-						<input formControlName="price"  [(ngModel)]="editingProduct.price" type="text" id="price" class="form-control"/>
+						<input formControlName="price" type="text" id="price" class="form-control"/>
 					</div>
 					@if(productForm.get('price')?.invalid && 
 							productForm.get('price')?.errors && 
@@ -80,7 +80,12 @@
 				<div class="mb-3" >
 					<div class="d-flex flex-column">
 						<label for="category" class="form-label">Catégorie</label>
-						<input formControlName="category"  [(ngModel)]="editingProduct.category" type="text" id="category" class="form-control"/>
+						
+						<select formControlName="category" type="text" id="category" class="form-select">
+							@for (cat of categories; track $index) {
+								<option [value]="cat">{{cat}}</option>
+							}
+						</select>
 					</div>
 					@if(productForm.get('category')?.invalid && 
 							productForm.get('category')?.errors && 

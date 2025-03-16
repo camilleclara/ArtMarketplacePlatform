@@ -50,7 +50,11 @@ namespace backend_app.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _repository.DeleteById(id);
+            try {
+                await _repository.SoftDeleteById(id);
+                return 1;
+            }
+            catch (Exception ex) { return 0; }
         }
 
         public async Task<IEnumerable<ProductDTO>> GetByCategoryAsync(Category category)

@@ -96,9 +96,26 @@ namespace backend_app.Repositories
         {
             var storedProductsForArtisanId = await _context.Products
                                          .Where(p => p.ArtisanId == id)
+                                         .Where(p => p.IsActive)
                                          .ToListAsync();
 
             return storedProductsForArtisanId;
+        }
+
+        public async Task<Product> SoftDeleteById(int id)
+        {
+            var storedProduct = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+            if (storedProduct == null)
+            {
+                throw new ArgumentException();//TODO throw error not found
+            }
+            storedProduct.IsActive = false;
+            //TODO; update chats and other collections
+            _context.Products.Update(storedProduct);
+            await _context.SaveChangesAsync();
+
+
+            return (storedProduct);
         }
     }
 }

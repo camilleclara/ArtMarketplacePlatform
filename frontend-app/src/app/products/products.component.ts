@@ -20,7 +20,7 @@ export class ProductsComponent {
     description: new FormControl("", [Validators.required]),
     price: new FormControl("", [Validators.required]),
     category: new FormControl("", [Validators.required]),
-    isActive: new FormControl(false, [Validators.required])
+    isAvailable: new FormControl(false, [Validators.required])
   }) 
 
  //TODO retrieve from backend instead
@@ -40,7 +40,7 @@ export class ProductsComponent {
       description: new FormControl("", [Validators.required]),
       price: new FormControl("", [Validators.required]),
       category: new FormControl("", [Validators.required]),
-      isActive: new FormControl(false, [Validators.required])    
+      isAvailable: new FormControl(false, [Validators.required])    
     });
     this.editingProduct = null;
   };
@@ -54,7 +54,7 @@ export class ProductsComponent {
         description: product.description,
         price: product.price,
         category: product.category,
-        isActive: product.isActive
+        isAvailable: product.isAvailable
       });
     });
   };
@@ -66,7 +66,7 @@ export class ProductsComponent {
       return;
     }
     const updatedProduct: Product = {
-      ...this.editingProduct,  // Conserver les autres valeurs (ex: id, artisanId, isActive)
+      ...this.editingProduct,  // Conserver les autres valeurs (ex: id, artisanId, isAvailable)
       ...this.productForm.value, // Mettre à jour avec les nouvelles valeurs du formulaire
     };
     this.productService.UpdateProduct(this.authService.getUserId(),id, updatedProduct).subscribe(
@@ -76,6 +76,26 @@ export class ProductsComponent {
   };
 
   onDelete(id: number) {
-    //TODO: call to delete item
+    const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce produit ?");
+  
+  if (confirmed) {
+    // Appeler le service pour supprimer le produit
+    this.productService.DeleteProduct(this.authService.getUserId(), id).subscribe(
+      (response) => {
+        // Réinitialiser la liste des produits après suppression
+        //TODO: toast de confirmation
+        this.initForm();
+      }
+      //,
+      // (error) => {
+      //   // Gérer l'erreur si nécessaire
+      //   console.error('Erreur lors de la suppression du produit', error);
+      // }
+    );
+  }
+  }
+
+  onCancel(){
+    this.initForm();
   }
 }

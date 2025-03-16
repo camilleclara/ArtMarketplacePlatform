@@ -11,7 +11,7 @@ namespace backend_app.Mapper
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true)); // Définir IsActive à true si null
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsAvailable ?? true)); // Définir IsActive à true si null
         }
     }
 }

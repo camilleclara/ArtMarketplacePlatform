@@ -35,6 +35,7 @@ CREATE TABLE Products (
 	price FLOAT,
 	category VARCHAR(255),
 	is_active BIT NOT NULL,
+	is_available BIT NOT NULL,
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
 );
@@ -202,6 +203,10 @@ GO
 
 ALTER TABLE Products
 ADD CONSTRAINT DF_Products_is_active DEFAULT 1 FOR is_active;
+GO
+
+ALTER TABLE Products
+ADD CONSTRAINT DF_Products_is_available DEFAULT 1 FOR is_available;
 GO
 
 ALTER TABLE DeliveryArtisanPartnerships

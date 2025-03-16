@@ -4,11 +4,12 @@ import { AuthenticationService } from '../login/authentication.service';
 import { Product } from '../models/product.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductCategory } from '../models/product-category.enum';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

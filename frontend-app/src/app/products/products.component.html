@@ -19,7 +19,7 @@
 						<th scope="row">{{ i + 1 }}</th>
 						<!--TODO: change to product model-->
 						<td>{{ p.name }}</td>
-						<td>{{ p.price }}</td>
+						<td>{{ p.price | currency:'EUR':'symbol' }}</td>
 						<td class="d-flex flex-row justify-content-end">
 							<button class="btn btn-danger" (click)="onDelete(p.id)">Supprimer</button>
 							<button class="btn btn-secondary mx-2" (click)="onEdit(p.id)">Modifier</button>

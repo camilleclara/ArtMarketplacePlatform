@@ -9,6 +9,6 @@ dashboard
             Display
             Edition
             Creation
-            ->Images
+            -> Images
         display all my orders
         display all my customers reviews

@@ -1,18 +1,15 @@
-using System.Security.Permissions;
 using System.Text;
 using System.Text.Json.Serialization;
-using backend_app.Mapper;
-using backend_app.Models;
-using backend_app.Repositories;
-using backend_app.Repositories.Interfaces;
-using backend_app.Services;
-using backend_app.Services.Authentication;
-using backend_app.Services.Interfaces;
+using BL.Mapper;
+using BL.Services;
+using BL.Services.Authentication;
+using BL.Services.Interfaces;
+using DAL;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

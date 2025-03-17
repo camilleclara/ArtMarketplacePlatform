@@ -1,11 +1,8 @@
-using backend_app.Models;
-using backend_app.Models.DTO;
-using backend_app.Models.Enums;
-using backend_app.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using BL.Models;
+using BL.Models.Enums;
+using BL.Services.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-
 namespace Authentication.Controllers;
 
 [ApiController]

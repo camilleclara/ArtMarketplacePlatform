@@ -9,6 +9,7 @@ namespace BL.Services.Interfaces
         Task<DeliveryDTO> GetByIdAsync(int id);
         Task<DeliveryDTO> AddAsync(DeliveryDTO entity);
         Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO entity);
+        Task<DeliveryDTO> UpdateStatusAsync(int orderId, DeliveryDTO entity);
         Task<int> DeleteAsync(int id);
         Task<DeliveryDTO> GetActiveDeliveryForOrder(int orderId);
         Task<int> GetActiveDeliveryIdForOrder(int orderId);

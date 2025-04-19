@@ -5,5 +5,6 @@ export interface Order {
     total: number;
     artisanId: number;
     customerId: string;
+    customerName?: string;
     activeDelivery: Delivery;
 }

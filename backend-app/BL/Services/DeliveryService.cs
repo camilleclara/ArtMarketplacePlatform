@@ -3,6 +3,7 @@ using BL.Models;
 using BL.Services.Interfaces;
 using DAL.Repositories.Interfaces;
 using Domain;
+using System.Linq.Expressions;
 namespace BL.Services
 {
     public class DeliveryService : IDeliveryService
@@ -36,11 +37,23 @@ namespace BL.Services
             return _mapper.Map<DeliveryDTO>(newDelivery);
         }
 
-        public async Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO orderToUpdate)
+        public async Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO deliveryToUpdate)
         {
-            var orderToUpdateEntity = _mapper.Map<Delivery>(orderToUpdate);
-            await _repository.Update(id, orderToUpdateEntity);
-            return _mapper.Map<DeliveryDTO>(orderToUpdateEntity);
+            var deliveryToUpdateEntity = _mapper.Map<Delivery>(deliveryToUpdate);
+            await _repository.Update(id, deliveryToUpdateEntity);
+            return _mapper.Map<DeliveryDTO>(deliveryToUpdateEntity);
+        }
+        public async Task<DeliveryDTO> UpdateStatusAsync(int orderId, DeliveryDTO deliveryDTO)
+        {
+            if(deliveryDTO.Id == 0)
+            {
+                deliveryDTO.IsActive = true;
+                return await AddAsync(deliveryDTO);
+            }
+            else
+            {
+                return await UpdateAsync(deliveryDTO.Id, deliveryDTO);
+            }
         }
 
         public async Task<int> DeleteAsync(int id)

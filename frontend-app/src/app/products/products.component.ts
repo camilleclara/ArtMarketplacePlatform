@@ -46,7 +46,6 @@ export class ProductsComponent {
     isAvailable: new FormControl(false, [Validators.required])
   }) 
 
- //TODO retrieve from backend instead
  categories = Object.values(ProductCategory);
 
   constructor(private productService: ProductService, private authService: AuthenticationService) {
@@ -141,8 +140,6 @@ export class ProductsComponent {
 
 
   onSubmit(id: number) {
-    //TODO: intercept errors
-    //TODO: toast for success & errors
     if (this.productForm.invalid) {
       return;
     }

@@ -73,6 +73,7 @@ namespace DAL.Repositories
                 .Where(o => o.ArtisanId == id)
                 .Include(o => o.Deliveries)
                 .Include( o => o.ItemOrders).ThenInclude(io => io.Product)
+                .Include(o=>o.Customer)
                 .ToListAsync();
             return storedOrders;
         }

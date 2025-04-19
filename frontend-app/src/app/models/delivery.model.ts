@@ -1,11 +1,10 @@
-import { ProductImage } from "./product-image.model";
+import { DeliveryStatus } from "./delivery-status.enum copy";
 
 export interface Delivery {
     id: number;
-    name: string;
-    orderId: string;
+    orderId: number;
     price?: number;
-    deliStatus?: number;
+    deliStatus?: DeliveryStatus;
     estimatedDate?: string;
     deliveryDate?: boolean;
 }

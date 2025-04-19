@@ -56,5 +56,13 @@ namespace BL.Services
             return orderDTOS;
         }
 
+        public async Task<IEnumerable<OrderDTO>> GetByArtisanIdAsync(int id)
+        {
+            var orders = await _repository.GetByArtisanId(id);
+            var deliveries = orders.FirstOrDefault().Deliveries;
+            var orderDTOS = _mapper.Map<IEnumerable<OrderDTO>>(orders);
+            return orderDTOS;
+        }
+
     }
 }

@@ -1,0 +1,5 @@
+export enum DeliveryStatus {
+    SHIPPED = "SHIPPED",
+    NEW = "NEW",
+    CANCELLED = "CANCELLED"
+  }

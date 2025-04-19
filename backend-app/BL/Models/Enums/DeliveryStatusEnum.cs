@@ -5,6 +5,7 @@
         DELIVERED,
         SHIPPED,
         PROCESSING,
-        CANCELLED
+        CANCELLED,
+        NEW
     }
 }

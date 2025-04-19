@@ -66,17 +66,18 @@ namespace DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Order>> GetByArtisantId(int artisanId)
+
+        public async Task<IEnumerable<Order>> GetByArtisanId(int id)
         {
-            throw new NotImplementedException();
+            List<Order> storedOrders = await _context.Orders
+                .Where(o => o.ArtisanId == id)
+                .Include(o => o.Deliveries)
+                .Include( o => o.ItemOrders).ThenInclude(io => io.Product)
+                .ToListAsync();
+            return storedOrders;
         }
 
-        public Task<IEnumerable<Order>> GetByArtisanId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Order> UpdateStatusById(int id, string newStatus)
+        public async Task<Order> UpdateStatusById(int id, string newStatus)
         {
             throw new NotImplementedException();
         }

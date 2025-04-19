@@ -63,7 +63,8 @@ export class ProductsComponent {
       description: new FormControl("", [Validators.required]),
       price: new FormControl("", [Validators.required]),
       category: new FormControl("", [Validators.required]),
-      isAvailable: new FormControl(false, [Validators.required])    
+      isAvailable: new FormControl(false, [Validators.required]),
+      productImages: new FormControl([])
     });
     this.editingProduct = null;
   };
@@ -85,19 +86,56 @@ export class ProductsComponent {
       });
     });
   };
-
+  onImageSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (!target.files || target.files.length === 0) return;
+  
+    Array.from(target.files).forEach((file: File) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1];
+  
+        const newImage: ProductImage = {
+          id: 0, // Will be set by backend if necessary
+          name: file.name,
+          productId: this.editingProduct?.id || 0,
+          mimeType: file.type,
+          content: base64
+        };
+  
+        if (this.editingProduct) {
+          if (!this.editingProduct.productImages) {
+            this.editingProduct.productImages = [];
+          }
+        
+          this.editingProduct.productImages.push(newImage);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
   onCreate(){
     this.title = "Créer un produit"
     this.creation = true;
     this.edition = false;
-    this.editingProduct = this.newProduct; 
+    this.editingProduct = {
+      id: 0,
+      artisanId: this.authService.getUserId(),
+      name: '',
+      description: '',
+      price: 0,
+      category: '',
+      isAvailable: true,
+      productImages: []
+    };
       this.edition = true;
       this.productForm.patchValue({
         name: this.newProduct.name,
         description: this.newProduct.description,
         price: this.newProduct.price,
         category: this.newProduct.category,
-        isAvailable: this.newProduct.isAvailable
+        isAvailable: this.newProduct.isAvailable,
+        productImages: this.newProduct.productImages
       });
   }
 
@@ -121,6 +159,7 @@ export class ProductsComponent {
         });
     }
     if(this.creation){
+      console.log(updatedProduct);
       this.productService.CreateProduct(updatedProduct.artisanId, updatedProduct).subscribe(
         (response) => {
           this.initForm();

@@ -12,6 +12,7 @@ namespace BL.Services
         private readonly IProductRepository _repository;
         private readonly IMapper _mapper;
 
+
         public ProductService(IProductRepository repository, IMapper mapper)
         {
             _mapper = mapper;
@@ -35,13 +36,17 @@ namespace BL.Services
         {
             var newProductEntity = _mapper.Map<Product>(newProduct);
             await _repository.Insert(newProductEntity);
+            await _repository.SaveChanges();
             return _mapper.Map<ProductDTO>(newProduct);
         }
 
         public async Task<ProductDTO> UpdateAsync(int id, ProductDTO productToUpdate)
         {
+            //Mapper les properties de base
             var productToUpdateEntity = _mapper.Map<Product>(productToUpdate);
+
             await _repository.Update(id, productToUpdateEntity);
+            await _repository.SaveChanges();
             return _mapper.Map<ProductDTO>(productToUpdateEntity);
         }
 
@@ -49,6 +54,7 @@ namespace BL.Services
         {
             try {
                 await _repository.SoftDeleteById(id);
+                await _repository.SaveChanges();
                 return 1;
             }
             catch (Exception ex) { return 0; }

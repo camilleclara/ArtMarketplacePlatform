@@ -51,19 +51,24 @@ namespace DAL.Repositories
 
         public async Task<Product> GetById(int id)
         {
-            return await _context.Products.Include(i => i.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Products
+                .Include(i => i.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Product> Insert(Product entity)
         {
             await _context.Products.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return entity;
         }
 
         public async Task<Product> Update(int id, Product entityUpdated)
         {
-            var storedProduct = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+            var storedProduct = await _context.Products
+                .Where(p => p.Id == id)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync();
             if (storedProduct == null)
             {
                 throw new ArgumentException();//TODO throw error not found
@@ -73,10 +78,39 @@ namespace DAL.Repositories
             storedProduct.Price = entityUpdated.Price;
             storedProduct.Category = entityUpdated.Category;
             storedProduct.IsAvailable = entityUpdated.IsAvailable;
+
             //TODO update images
+            // Gestion des images
+            // Gestion des images
+            if (entityUpdated.ProductImages != null)
+            {
+                // Étape 1: Conserver les images existantes que nous voulons garder
+                var existingImageIds = entityUpdated.ProductImages
+                    .Where(img => img.Id > 0)
+                    .Select(img => img.Id)
+                    .ToList();
+
+                var imagesToRemove = storedProduct.ProductImages
+                    .Where(img => !existingImageIds.Contains(img.Id))
+                    .ToList();
+
+                foreach (var imageToRemove in imagesToRemove)
+                {
+                    storedProduct.ProductImages.Remove(imageToRemove);
+                    _context.Entry(imageToRemove).State = EntityState.Deleted;
+                }
+                var newImages = entityUpdated.ProductImages.Where(img => img.Id == 0).ToList();
+
+                foreach (var newImage in newImages)
+                {
+                    newImage.ProductId = id;
+                    storedProduct.ProductImages.Add(newImage);
+                }
+            }
             //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
-            await _context.SaveChangesAsync();
+            
+            //await _context.SaveChangesAsync();
 
 
             return (storedProduct);
@@ -86,6 +120,7 @@ namespace DAL.Repositories
         {
             var storedProductsFromCategory = await _context.Products
                                          .Where(p => p.Category == category)
+                                         .Include(i => i.ProductImages)
                                          .ToListAsync();
             return storedProductsFromCategory;
         }
@@ -95,6 +130,7 @@ namespace DAL.Repositories
             var storedProductsForArtisanId = await _context.Products
                                          .Where(p => p.ArtisanId == id)
                                          .Where(p => p.IsActive)
+                                         .Include(i => i.ProductImages)
                                          .ToListAsync();
 
             return storedProductsForArtisanId;
@@ -110,10 +146,18 @@ namespace DAL.Repositories
             storedProduct.IsActive = false;
             //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
-            await _context.SaveChangesAsync();
+            await SaveChanges();
+            //await _context.SaveChangesAsync();
 
 
             return (storedProduct);
         }
+
+        public async Task SaveChanges()
+        {
+            //TODO test and repeat for all entities: a save changes method, so changes are saved only once, called by the service
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

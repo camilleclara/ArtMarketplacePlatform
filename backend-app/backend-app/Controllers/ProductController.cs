@@ -110,7 +110,7 @@ public class ProductController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<ProductDTO>> UpdateGroup(int id, [FromBody] ProductDTO updateDto)
+    public async Task<ActionResult<ProductDTO>> UpdateProduct(int id, [FromBody] ProductDTO updateDto)
     {
         var updatedProduct = await _productService.UpdateAsync(id, updateDto);
 

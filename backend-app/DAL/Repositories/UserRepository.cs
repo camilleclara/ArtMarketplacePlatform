@@ -58,7 +58,6 @@ namespace DAL.Repositories
             storedUser.UserType = entityUpdated.UserType;
             //TODO; update chats and other collections
             _context.Users.Update(storedUser);
-            await _context.SaveChangesAsync();
             return (storedUser);
         }
     }

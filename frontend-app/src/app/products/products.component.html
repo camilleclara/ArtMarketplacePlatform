@@ -120,14 +120,29 @@
 							</div>
 							
 						</div>
-						<div class="d-flex flex-row flex-wrap">
-							@for (im of editingProduct.productImages; track im.id; let i = $index) {
-								<!-- TODO: supprimer et ajouter des images -->
-							<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="rounded mx-auto d-block thumbnail">
-						}
+
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="images" class="form-label">Images du produit</label>
+								<input 
+									type="file" 
+									multiple 
+									(change)="onImageSelected($event)" 
+									id="productImages"
+									class="form-control mt-2 mb-2" 
+									accept="image/*"
+									/>
+								<div class="d-flex flex-row justify-content-start flex-wrap">
+									@for (im of editingProduct.productImages; track im.id; let i = $index) {
+										<!-- TODO: supprimer et ajouter des images -->
+									<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="rounded d-block img-thumbnail ms-1" style="width: 100px; height: 100px; object-fit: cover;">
+								}
+								</div>
+								
+							</div>
+							
 						</div>
-		
-		
+
 						<div class="d-flex align-items-end flex-column mb-3">
 							<div>
 								<button  type="button" (click)="onCancel()" class="btn btn-sm btn-secondary mx-2">Annuler</button>

@@ -1,4 +1,8 @@
-﻿namespace Domain;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Domain;
+
 public partial class User
 {
     public int Id { get; set; }

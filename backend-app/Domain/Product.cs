@@ -1,4 +1,7 @@
-﻿namespace Domain;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Domain;
 
 public partial class Product
 {
@@ -15,11 +18,12 @@ public partial class Product
     public string? Category { get; set; }
 
     public bool IsActive { get; set; }
-    public bool IsAvailable { get; set; }
 
     public DateTime? LastUpdated { get; set; }
 
     public DateTime? Created { get; set; }
+
+    public bool IsAvailable { get; set; }
 
     public virtual User? Artisan { get; set; }
 

@@ -11,7 +11,6 @@ namespace BL.Mapper
             CreateMap<ProductImage, ProductImageDTO>()
                  .ForMember(dest => dest.Content, opt => opt.MapFrom<ByteArrayToBase64Resolver>());
             CreateMap<ProductImageDTO, ProductImage>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Content, opt => opt.MapFrom<Base64ToByteArrayResolver>());
         }
     }

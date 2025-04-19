@@ -23,5 +23,6 @@ namespace BL.Services.Interfaces
         Task<IEnumerable<ProductDTO>> GetByCategoryAsync(Category category);
         Task<ProductDTO> AddAsyncForArtisan(ProductDTO product, int artisanId);
         Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId);
+       
     }
 }

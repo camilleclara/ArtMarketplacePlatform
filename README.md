@@ -9,6 +9,11 @@ dashboard
             Display
             Edition
             Creation
-            -> Images
+            -> Images:
+                [ ] Aligner sur la droite
+                [ ] Bouton pour ajouter des images
+                [ ] Bouton pour supprimer
+                [ ] Bouton apparait au hover
+
         display all my orders
         display all my customers reviews

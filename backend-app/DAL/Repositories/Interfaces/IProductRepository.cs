@@ -9,5 +9,7 @@ namespace DAL.Repositories.Interfaces
         Task<IEnumerable<Product>> GetByAttributeId(int attributeId);
 
         Task<Product> SoftDeleteById(int id);
+
+        Task SaveChanges();
     }
 }

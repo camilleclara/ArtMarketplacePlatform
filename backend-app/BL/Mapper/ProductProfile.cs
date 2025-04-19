@@ -9,6 +9,7 @@ namespace BL.Mapper
         public ProductProfile()
         {
             CreateMap<Product, ProductDTO>();
+
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive ?? true))

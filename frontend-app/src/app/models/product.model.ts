@@ -8,5 +8,5 @@ export interface Product {
     artisanId: number;
     category?: string;
     isAvailable: boolean;
-    productImages?: ProductImage[]
+    productImages?: ProductImage[];
 }

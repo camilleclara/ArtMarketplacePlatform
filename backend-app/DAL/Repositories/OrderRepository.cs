@@ -18,7 +18,11 @@ namespace DAL.Repositories
 
         public async Task<Order> GetById(int id)
         {
-            return await _context.Orders.Include(o => o.Deliveries).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Orders
+                .Include(o => o.Deliveries)
+                .Include(o => o.ItemOrders).ThenInclude(io => io.Product)
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<int> DeleteById(int id)

@@ -13,7 +13,14 @@ namespace BL.Mapper
                         .Where(d => d.IsActive == true) // Null est considéré comme actif
                         .FirstOrDefault()))
                 .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.FirstName + " " + src.Customer.LastName))
-                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.ItemOrders.Sum(io => io.Product.Price * io.Quantity)));
+                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.ItemOrders.Sum(io => io.Product.Price * io.Quantity)))
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.ItemOrders.Select(io => new OrderedProductDTO
+                {
+                    ProductId = io.Product.Id,
+                    Name = io.Product.Name,
+                    Price = io.Product.Price,
+                    Quantity = (int)io.Quantity
+                }).ToList()));
             CreateMap<OrderDTO, Order>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }

@@ -14,7 +14,10 @@ export class OrderService {
   }
   GetOrdersByArtisanId(id: number): Observable<any>{
       return this.http.get(`https://localhost:7279/api/Order/artisan/${id}`)
-    }
+  }
+  GetOrderById(id: number): Observable<any>{
+    return this.http.get(`https://localhost:7279/api/Order/${id}`)
+  }
   UpdateDeliveryStatus(orderid: number, activeDelivery: Delivery)
   {
     return this.http.put(`https://localhost:7279/api/Delivery/status/${orderid}`, activeDelivery)

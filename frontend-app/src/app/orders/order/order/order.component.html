@@ -1,0 +1,21 @@
+<p>View details {{orderId}}</p>
+<table class="table table-bordered mt-4">
+    <thead class="table-light">
+      <tr>
+        <th>Nom du produit</th>
+        <th>Prix unitaire</th>
+        <th>Quantité</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of order?.products; track product.id) {
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.price * product.quantity}}</td>
+        </tr>
+      }
+    </tbody>
+  </table>

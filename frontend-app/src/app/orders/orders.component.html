@@ -35,6 +35,12 @@
 						<td class="d-flex flex-row justify-content-end">
 							@if (editingDeliveryOrderId !== o.id) {
 							  <button class="btn btn-secondary mx-2" (click)="onEditDeliveryStatus(o.id)">Modifier le statut</button>
+							  @if(orderDetails && detailsId == o.id){
+								<button class="btn btn-outline-secondary mx-2" (click)="onHideDetails(o.id)">Cacher les détails</button>
+							  }
+							  @else {
+								<button class="btn btn-outline-secondary mx-2" (click)="onViewDetails(o.id)">Voir les détails</button>
+							  }
 							} 
 							@else {
 							  <button class="btn btn-success mx-2" (click)="onSaveDeliveryStatus(o)">Sauvegarder</button>
@@ -50,3 +56,7 @@
 @else {
 	Vous n'avez aucune commande actuellement.
 }
+@if(detailsId){
+	<app-order [orderId] = "detailsId"></app-order>
+}
+

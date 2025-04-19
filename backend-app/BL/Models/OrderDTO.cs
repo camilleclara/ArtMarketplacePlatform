@@ -1,4 +1,6 @@
-﻿namespace BL.Models
+﻿using Domain;
+
+namespace BL.Models
 {
     public class OrderDTO
     {
@@ -11,6 +13,7 @@
         public string? CustomerName { get; set; }
         public float? Total { get; set; }
         public DeliveryDTO ActiveDelivery { get; set; }
+        public List<OrderedProductDTO>? Products { get; set; } = new();
 
     }
 }

@@ -195,4 +195,16 @@ export class ProductsComponent {
   getImageSrc(image: ProductImage): string {
     return `data:${image.mimeType};base64,${image.content}`;
   }
+
+  removeImage(index: number): void {
+    if (this.editingProduct && this.editingProduct.productImages) {
+      // Supprimer l'image de l'array
+      this.editingProduct.productImages.splice(index, 1);
+      
+      // Mettre à jour le formulaire si nécessaire
+      this.productForm.patchValue({
+        productImages: this.editingProduct.productImages
+      });
+    }
+  }
 }

@@ -30,7 +30,7 @@
 		</table>
 		@if(editingProduct){
 			<div class="d-flex flex-column">
-				<h2>Modifier le produit</h2>
+				<h2>{{title}}</h2>
 				<form [formGroup]="productForm" class="container"  (ngSubmit)="onSubmit(editingProduct.id)">
 					<div class="container d-flex flex-column">
 						<div class="mb-3" >

@@ -15,6 +15,7 @@ import { ProductImage } from '../models/product-image.model';
   styleUrl: './products.component.css'
 })
 export class ProductsComponent {
+  title = "";
   products: Product[]=[];
   editingProduct: Product | null = null;
   creatingProduct: Product | null = null;
@@ -68,6 +69,7 @@ export class ProductsComponent {
   };
 
   onEdit(id: number): any{
+    this.title = "Modifier un produit"
     this.productService.GetArtisanProductById(this.authService.getUserId(),id).subscribe((product: Product) => {
       this.editingProduct = product; 
       this.edition = true;
@@ -85,6 +87,7 @@ export class ProductsComponent {
   };
 
   onCreate(){
+    this.title = "Créer un produit"
     this.creation = true;
     this.edition = false;
     this.editingProduct = this.newProduct; 

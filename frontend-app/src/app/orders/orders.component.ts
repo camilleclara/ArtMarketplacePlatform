@@ -38,7 +38,7 @@ export class OrdersComponent {
       this.orderForm = new FormGroup({
         id: new FormControl("", [Validators.required]),
       customerId: new FormControl("", [Validators.required]),
-      status: new FormControl("", [Validators.required])
+      status: new FormControl("NEW", [Validators.required])
       });
       this.editingOrder = null;
     };
@@ -65,12 +65,10 @@ export class OrdersComponent {
       this.orderService.UpdateDeliveryStatus(order.id, order.activeDelivery)
         .subscribe({
           next: () => {
-            console.log('✅ Statut mis à jour');
             this.editingDeliveryOrderId = null;
           },
           error: (e) => {
-            console.error('❌ Erreur lors de la mise à jour');
-            console.log(e);
+            console.error('Erreur lors de la mise à jour');
           }
         });
     }

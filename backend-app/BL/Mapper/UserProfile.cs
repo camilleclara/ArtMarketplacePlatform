@@ -9,6 +9,8 @@ namespace BL.Mapper
         public UserProfile()
         {
             CreateMap<User, UserDTO>();
+            CreateMap<User, UserSafeDTO>();
+            CreateMap<UserSafeDTO, User>();
             CreateMap<UserDTO, User>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }

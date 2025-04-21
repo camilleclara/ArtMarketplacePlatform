@@ -16,7 +16,16 @@ export class ReviewsComponent {
   reviewsByProduct: { [key: string]: Review[] } = {};
 
   constructor(private reviewService: ReviewService, private authService: AuthenticationService){}
+
   ngOnInit(): void {
+    this.loadInitialData();
+  }
+  reloadData(): void {
+    // Recharger les données comme dans ngOnInit
+    this.loadInitialData();
+  }
+
+  loadInitialData(): void {
     this.reviewService.GetReviewsByArtisanId(this.authService.getUserId())
     .subscribe((response: Review[]) => {
               this.reviews=response
@@ -24,7 +33,6 @@ export class ReviewsComponent {
             });
   }
   groupReviewsByProduct(): void {
-    // Implémentation manuelle du groupement sans lodash
     this.reviewsByProduct = {};
     
     this.reviews.forEach(review => {
@@ -32,33 +40,10 @@ export class ReviewsComponent {
         this.reviewsByProduct[review.productId] = [];
       }
       this.reviewsByProduct[review.productId].push(review);
-      console.log(this.reviewsByProduct)
-      console.log(this.reviewsByProduct[3]);
     });
   }
-
-  getProductName(productId: string): string {
-    const reviews = this.reviewsByProduct[productId];
-    return reviews && reviews.length > 0 ? reviews[0].product.name : 'Produit inconnu';
-  }
-
-  getCustomerReviews(productId: string): Review[] {
-    return this.reviewsByProduct[productId].filter(review => !review.fromArtisan);
-  }
-
-  getArtisanResponse(productId: string, customerId: string): Review | undefined {
-    return this.reviewsByProduct[productId].find(
-      review => review.fromArtisan && review.customerId === customerId
-    );
-  }
+  
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
-  }
-  getFullStars(score: number): number[] {
-    return Array(score).fill(0);
-  }
-  
-  getEmptyStars(score: number): number[] {
-    return Array(5 - score).fill(0);
   }
 }

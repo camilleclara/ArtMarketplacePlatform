@@ -60,6 +60,7 @@ namespace DAL.Repositories
 
         public async Task<Review> Insert(Review entity)
         {
+            entity.IsActive = true;
             await _context.Reviews.AddAsync(entity);
             return entity;
         }

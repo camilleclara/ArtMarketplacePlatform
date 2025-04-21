@@ -2,71 +2,14 @@
 <div class="container my-4">
     <h2 class="mb-4">Avis clients par produit</h2>
     @if(reviews && reviews.length >0){
-        @for (r of reviews; track r.id; let i = $index){
-            <app-review [review] = r ></app-review>
-        }
+        <div class="container my-4">
+            @for (productId of getObjectKeys(reviewsByProduct); track productId) {
+                <app-review [reviewsByProduct] = reviewsByProduct[productId] (refreshRequest)="reloadData()" ></app-review>
+              }
+            
+        </div>
     }
     @else {
         <div>Aucun commentaire pour le moment.</div>
     }
-</div>
-
-<!-- reviews-dashboard.component.html -->
-<div class="container my-4">
-    <h2 class="mb-4">Avis clients par produit</h2>
-    @for (productId of getObjectKeys(reviewsByProduct); track productId) {
-        <div class="card mb-4 shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">{{ getProductName(productId) | uppercase}}</h3>
-          </div>
-          
-          <div class="card-body">
-            <!-- Pour chaque avis client -->
-            @for (review of getCustomerReviews(productId); track review.id; let isLast = $last) {
-              <div class="review-container">
-                <!-- Avis du client -->
-                <div class="customer-review p-3 bg-light rounded mb-2">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="mb-0">&OpenCurlyDoubleQuote;{{ review.content }} &CloseCurlyDoubleQuote;</h5>
-                    <small class="text-muted">
-                        @for (star of getFullStars(review.score); track $index) {
-                            <span class="full-star">★</span>
-                          }
-                        
-                          @for (star of getEmptyStars(review.score); track $index) {
-                            <span class="empty-star">☆</span>
-                          }
-                      
-                    </small>
-                  </div>
-                  <p class="mb-0">{{ review.customer.lastName }} {{review.customer.firstName}} - {{review.created}}</p>
-                </div>
-                
-                <!-- Réponse de l'artisan (si elle existe) -->
-                @if (getArtisanResponse(productId, review.customerId)) {
-                  <div class="artisan-response p-3 bg-info-subtle rounded ms-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5"/>
-                          </svg> <span class="mb-0 ms-1">{{ getArtisanResponse(productId, review.customerId)?.content }}</span></span>
-                      <small class="text-muted">{{review.created}}</small>
-                    </div>
-                  </div>
-                } @else {
-                  <!-- Bouton pour ajouter une réponse si elle n'existe pas -->
-                  <div class="text-end mt-2">
-                    <button class="btn btn-outline-primary btn-sm">
-                      <i class="bi bi-reply"></i> Répondre
-                    </button>
-                  </div>
-                }
-              </div>
-              @if (!isLast) {
-                <hr class="my-3">
-              }
-            }
-          </div>
-        </div>
-      }
-    
 </div>

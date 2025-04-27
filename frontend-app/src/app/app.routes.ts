@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { DashboardAdminComponent } from './dashboard/dashboard-admin/dashboard-admin.component';
 import { DashboardCustomerComponent } from './dashboard/dashboard-customer/dashboard-customer.component';
 import { DashboardDeliveryComponent } from './dashboard/dashboard-delivery/dashboard-delivery.component';
+import { MessagesComponent } from './messages/messages.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -18,6 +19,7 @@ export const routes: Routes = [
     {path: 'dashboard', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard, admGuard]},
+    {path: 'messages', component: MessagesComponent, canActivate: [authGuard, artisanGuard]},
     // {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, artisanGuard]}, -- TODO delivery guard
     // {path: 'dashboard-customer', component: DashboardCustomerComponent, canActivate: [authGuard, artisanGuard]},  --TODO customer guard
     {path: 'admin', component: AdminComponent, canActivate: [authGuard, admGuard]}

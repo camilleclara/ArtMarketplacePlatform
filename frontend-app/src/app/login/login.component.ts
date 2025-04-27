@@ -13,6 +13,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 export class LoginComponent {
 
   loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(private authService: AuthenticationService, private router: Router){
     this.loginForm = new FormGroup({
@@ -22,11 +23,18 @@ export class LoginComponent {
   }
 
   login(){
-    this.authService.Login(this.loginForm.value.userName, this.loginForm.value.password).subscribe((response: any)=>{
-      if(response.token){
-        sessionStorage.setItem("jwt", response.token);
-        this.router.navigate(["/dashboard"]);
+    this.errorMessage = ''; // Reset avant de tenter
+    this.authService.Login(this.loginForm.value.userName, this.loginForm.value.password).subscribe({
+      next: (response: any) => {
+        if(response.token){
+          sessionStorage.setItem("jwt", response.token);
+          this.router.navigate(["/dashboard"]);
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.errorMessage = 'Login ou mot de passe invalide, veuillez réessayer';
       }
-    })
+    });
   }
 }

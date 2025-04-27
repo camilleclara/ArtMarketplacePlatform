@@ -26,8 +26,21 @@ dashboard
             [X] Sort by product
             [X] Answer to review
         View my message
-             [ ] View messages
-             [ ] Respond to messages
+             [x] View messages
+             [x] Respond to messages
+    customer
+        View all Products
+            Filter by category
+            Filter by price
+            Filter by artisan
+        View one product details
+            If I have already purchased it, I can leave a review
+            View artisan's profile
+        Create a basket of products
+            View basket
+            Checkout + select shipping option + entering payment details
+            order cnfirmation & payment sumaary
+        View my orders + delivery status
 
    ```bash
    Scaffold-DbContext "Server=DESKTOP-84DA7B5\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ../Domain -ContextDir ../DAL -Namespace Domain -ContextNamespace DAL -Force

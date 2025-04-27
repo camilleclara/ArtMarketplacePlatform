@@ -1,5 +1,10 @@
 <form [formGroup]="loginForm" class="container" (ngSubmit)="login()">
     <div class="mb-3">
+        @if(errorMessage){
+            <div class="alert alert-danger mt-2">
+                {{ errorMessage }}
+              </div>
+        }
       <label for="exampleInputEmail1" class="form-label">Name</label>
       <input formControlName="userName" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
       <div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from '../login/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,5 +10,16 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
-  //TODO: redirection
+  constructor(private authService: AuthenticationService){}
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+  logout(): void {
+    this.authService.logout();
+    window.location.href = '/login';
+  }
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
 }

@@ -47,4 +47,12 @@ export class AuthenticationService {
    isCustomer(): boolean {
     return this.getUserRole() === this.CUSTOMER_ROLE;
    }
+
+   isLoggedIn(): boolean {
+    const token = sessionStorage.getItem("jwt");
+    return !!token;
+  }
+  logout(): void {
+    sessionStorage.removeItem("jwt");
+  }
 }

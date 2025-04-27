@@ -2,6 +2,7 @@ using AutoMapper;
 using BL.Models;
 using DAL;
 using Domain;
+using MarketPlaceException;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -84,15 +85,14 @@ namespace BL.Services.Authentication
         {
 
             var user = _context.Users.FirstOrDefault(user => user.Login.ToLower() == username.ToLower()) ??
-                            throw new Exception("Login failed; Invalid userID or password");
-
+                            throw new InvalidLoginOrPasswordException("Login failed; Invalid userID or password");
             var passwordHash = HashPassword(password, user.Salt);
             if (user.HashedPassword == passwordHash)
             {
                 var token = GenerateJSONWebToken(username);
                 return token;
             }
-            throw new Exception("Login failed; Invalid userID or password");
+            throw new InvalidLoginOrPasswordException("Login failed; Invalid userID or password");
         }
 
     }

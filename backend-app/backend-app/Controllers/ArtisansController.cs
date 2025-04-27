@@ -71,7 +71,6 @@ public class ArtisansController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ProductDTO>> UpdateProductForArtisan(int artisanId, int productId, [FromBody] ProductDTO updateDto)
     {
-        //TODO check targeted product is artisan's
         var updatedProduct = await _productService.UpdateAsync(productId, updateDto);
 
         if (updatedProduct == null)
@@ -102,7 +101,7 @@ public class ArtisansController : ControllerBase
     }
 
 
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpDelete("{artisanId}/products/{productId}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

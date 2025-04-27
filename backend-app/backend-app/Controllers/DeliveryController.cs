@@ -2,6 +2,7 @@ using BL.Models;
 using BL.Models.Enums;
 using BL.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
@@ -19,6 +20,7 @@ public class DeliveryController : ControllerBase
         _deliveryService = deliveryService;
     }
 
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Delivery>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,6 +42,7 @@ public class DeliveryController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("{deliveryId}")]
     [ProducesResponseType(typeof(IEnumerable<Delivery>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -60,7 +63,7 @@ public class DeliveryController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -79,7 +82,7 @@ public class DeliveryController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +97,7 @@ public class DeliveryController : ControllerBase
         return Ok(updatedDelivery);  // Retourne l'entité mise à jour
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPut("status/{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -105,6 +109,6 @@ public class DeliveryController : ControllerBase
         if (updatedDelivery == null)
             return StatusCode(StatusCodes.Status404NotFound);
 
-        return Ok(updatedDelivery);  // Retourne l'entité mise à jour
+        return Ok(updatedDelivery);
     }
 }

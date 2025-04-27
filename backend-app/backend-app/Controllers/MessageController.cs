@@ -2,6 +2,7 @@ using BL.Models;
 using BL.Models.Enums;
 using BL.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
@@ -18,7 +19,7 @@ public class MessageController : ControllerBase
         _logger = logger;
         _messageService = messageService;
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,7 +40,7 @@ public class MessageController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet("{messageId}")]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -60,6 +61,7 @@ public class MessageController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet("product/{productId}")]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -81,6 +83,7 @@ public class MessageController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("user/{userId}")]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -101,7 +104,7 @@ public class MessageController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -120,7 +123,7 @@ public class MessageController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

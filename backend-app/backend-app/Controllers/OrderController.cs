@@ -2,6 +2,7 @@ using BL.Models;
 using BL.Models.Enums;
 using BL.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
@@ -19,6 +20,7 @@ public class OrderController : ControllerBase
         _orderService = orderService;
     }
 
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -40,6 +42,7 @@ public class OrderController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("{orderId}")]
     [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -61,6 +64,7 @@ public class OrderController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("artisan/{artisanId}")]
     [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -82,7 +86,7 @@ public class OrderController : ControllerBase
         }
     }
 
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -101,7 +105,7 @@ public class OrderController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,6 +117,6 @@ public class OrderController : ControllerBase
         if (updatedOrder == null)
             return StatusCode(StatusCodes.Status404NotFound);
 
-        return Ok(updatedOrder);  // Retourne l'entité mise à jour
+        return Ok(updatedOrder);
     }
 }

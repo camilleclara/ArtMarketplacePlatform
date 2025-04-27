@@ -2,6 +2,7 @@ using BL.Models;
 using BL.Models.Enums;
 using BL.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
@@ -19,6 +20,7 @@ public class ReviewController : ControllerBase
         _reviewService = reviewService;
     }
 
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Review>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,7 +41,7 @@ public class ReviewController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-
+    [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet("{reviewId}")]
     [ProducesResponseType(typeof(IEnumerable<Review>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -60,6 +62,8 @@ public class ReviewController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("product/{productId}")]
     [ProducesResponseType(typeof(IEnumerable<Review>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -81,6 +85,7 @@ public class ReviewController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("artisan/{artisanId}")]
     [ProducesResponseType(typeof(IEnumerable<Review>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -102,6 +107,7 @@ public class ReviewController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -120,7 +126,7 @@ public class ReviewController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

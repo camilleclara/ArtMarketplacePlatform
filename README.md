@@ -22,9 +22,9 @@ dashboard
                     [X] include the total amount
             [X] Update the status "in production", "shipped", ...
         display all my customers reviews
-            [ ] Display all my reviews
-            [ ] Sort by product
-            [ ] Answer to review
+            [X] Display all my reviews
+            [X] Sort by product
+            [X] Answer to review
         View my message
              [ ] View messages
              [ ] Respond to messages

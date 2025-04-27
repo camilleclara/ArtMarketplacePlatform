@@ -1,1 +1,28 @@
-<p>messages works!</p>
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Chats</h5>
+        <ul class="list-group mb-2">
+            @for (chat of chats; track chat.otherUser.id) {
+                <li 
+                  class="list-group-item list-group-item-action"
+                  (click)="selectChat(chat)">
+                  {{ chat.otherUser.firstName }} {{ chat.otherUser.lastName }}
+                </li>
+              }
+        </ul>
+      </div>
+  
+      
+      <div class="col-md-8">
+        @if (selectedChat) {
+            <app-chat [chat]="selectedChat" [currentUserId]="currentUserId"></app-chat>
+          } @else {
+            <div class="text-center mt-5 text-muted">
+              <p>Sélectionnez une conversation pour commencer.</p>
+            </div>
+          }
+      </div>
+    </div>
+  </div>
+  

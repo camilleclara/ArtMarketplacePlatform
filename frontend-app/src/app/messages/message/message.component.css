@@ -1,0 +1,25 @@
+.chat-bubble {
+    max-width: 66%;
+    word-break: break-word;
+    position: relative;
+    padding: 0.75rem 1rem;
+  }
+  .align-right::after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 10px;
+    border-width: 10px 0 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--bs-primary);
+  }
+  .align-left::after {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 10px;
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent var(--bs-light) transparent transparent;
+  }
+  

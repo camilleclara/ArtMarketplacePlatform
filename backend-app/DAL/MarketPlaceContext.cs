@@ -16,8 +16,6 @@ public partial class MarketPlaceContext : DbContext
     {
     }
 
-    public virtual DbSet<Chat> Chats { get; set; }
-
     public virtual DbSet<Delivery> Deliveries { get; set; }
 
     public virtual DbSet<DeliveryArtisanPartnership> DeliveryArtisanPartnerships { get; set; }
@@ -42,39 +40,9 @@ public partial class MarketPlaceContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Chat>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Chats__3213E83F9D1D9795");
-
-            entity.ToTable(tb => tb.HasTrigger("trg_Update_Chats"));
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Created)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("created");
-            entity.Property(e => e.CustomerId).HasColumnName("customer_id");
-            entity.Property(e => e.IsActive)
-                .HasDefaultValue(true)
-                .HasColumnName("is_active");
-            entity.Property(e => e.LastUpdated)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("last_updated");
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
-
-            entity.HasOne(d => d.Customer).WithMany(p => p.Chats)
-                .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK_Chats_Customers");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Chats)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK_Chats_Products");
-        });
-
         modelBuilder.Entity<Delivery>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Deliveri__3213E83F76A3111C");
+            entity.HasKey(e => e.Id).HasName("PK__Deliveri__3213E83FAB447223");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Deliveries"));
 
@@ -107,7 +75,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<DeliveryArtisanPartnership>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Delivery__3213E83FC9CD51AA");
+            entity.HasKey(e => e.Id).HasName("PK__Delivery__3213E83F3E048A52");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_DeliveryArtisanPartnerships"));
 
@@ -137,7 +105,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<ItemOrder>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Item_Ord__3213E83F91F9D3E2");
+            entity.HasKey(e => e.Id).HasName("PK__Item_Ord__3213E83FC12496B8");
 
             entity.ToTable("Item_Orders", tb => tb.HasTrigger("trg_Update_Item_Orders"));
 
@@ -165,12 +133,11 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Message>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Messages__3213E83F51C7B1C5");
+            entity.HasKey(e => e.Id).HasName("PK__Messages__3213E83FFA6CD293");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Messages"));
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ChatId).HasColumnName("chat_id");
             entity.Property(e => e.Content)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -183,15 +150,26 @@ public partial class MarketPlaceContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("last_updated");
+            entity.Property(e => e.MsgFromId).HasColumnName("msg_from_id");
+            entity.Property(e => e.MsgToId).HasColumnName("msg_to_id");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
 
-            entity.HasOne(d => d.Chat).WithMany(p => p.Messages)
-                .HasForeignKey(d => d.ChatId)
-                .HasConstraintName("FK_Chats_Messages");
+            entity.HasOne(d => d.MsgFrom).WithMany(p => p.MessageMsgFroms)
+                .HasForeignKey(d => d.MsgFromId)
+                .HasConstraintName("FK_Message_From");
+
+            entity.HasOne(d => d.MsgTo).WithMany(p => p.MessageMsgTos)
+                .HasForeignKey(d => d.MsgToId)
+                .HasConstraintName("FK_Message_To");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Messages)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Message_Product");
         });
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Orders__3213E83F27ADD0D2");
+            entity.HasKey(e => e.Id).HasName("PK__Orders__3213E83FF2C651DD");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Orders"));
 
@@ -218,7 +196,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Products__3213E83F42C587D2");
+            entity.HasKey(e => e.Id).HasName("PK__Products__3213E83F30898AB0");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Products"));
 
@@ -259,7 +237,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<ProductImage>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductI__3213E83FC2AB7B37");
+            entity.HasKey(e => e.Id).HasName("PK__ProductI__3213E83FA06CF177");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_ProductImages"));
 
@@ -290,7 +268,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Reviews__3213E83F3C8A1EF6");
+            entity.HasKey(e => e.Id).HasName("PK__Reviews__3213E83FB1F51E75");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Reviews"));
 
@@ -326,7 +304,7 @@ public partial class MarketPlaceContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F401E9287");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83FC8CF1179");
 
             entity.ToTable(tb => tb.HasTrigger("trg_Update_Users"));
 

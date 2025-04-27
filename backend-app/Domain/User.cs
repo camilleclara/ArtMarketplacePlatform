@@ -25,11 +25,13 @@ public partial class User
 
     public DateTime? Created { get; set; }
 
-    public virtual ICollection<Chat> Chats { get; set; } = new List<Chat>();
-
     public virtual ICollection<DeliveryArtisanPartnership> DeliveryArtisanPartnershipArtisans { get; set; } = new List<DeliveryArtisanPartnership>();
 
     public virtual ICollection<DeliveryArtisanPartnership> DeliveryArtisanPartnershipDeliveryPartners { get; set; } = new List<DeliveryArtisanPartnership>();
+
+    public virtual ICollection<Message> MessageMsgFroms { get; set; } = new List<Message>();
+
+    public virtual ICollection<Message> MessageMsgTos { get; set; } = new List<Message>();
 
     public virtual ICollection<Order> OrderArtisans { get; set; } = new List<Order>();
 

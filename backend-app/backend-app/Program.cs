@@ -18,17 +18,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MarketPlaceContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarketPlaceDB")));
 //Add automapper package
-builder.Services.AddAutoMapper(typeof(ProductProfile), typeof(UserProfile), typeof(OrderProfile), typeof(DeliveryProfile), typeof(ProductImageProfile), typeof(ReviewProfile));
+builder.Services.AddAutoMapper(typeof(ProductProfile), typeof(UserProfile), typeof(OrderProfile), typeof(DeliveryProfile), typeof(ProductImageProfile), typeof(ReviewProfile), typeof(MessageProfile));
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 

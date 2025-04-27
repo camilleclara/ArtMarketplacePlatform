@@ -19,17 +19,17 @@ public partial class Product
 
     public bool IsActive { get; set; }
 
+    public bool IsAvailable { get; set; }
+
     public DateTime? LastUpdated { get; set; }
 
     public DateTime? Created { get; set; }
 
-    public bool IsAvailable { get; set; }
-
     public virtual User? Artisan { get; set; }
 
-    public virtual ICollection<Chat> Chats { get; set; } = new List<Chat>();
-
     public virtual ICollection<ItemOrder> ItemOrders { get; set; } = new List<ItemOrder>();
+
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
 

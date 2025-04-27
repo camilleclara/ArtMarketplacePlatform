@@ -1,4 +1,4 @@
---USE master;
+﻿--USE Master;
 --GO
 
 --ALTER DATABASE MarketPlace SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -72,7 +72,7 @@ CREATE TABLE Deliveries (
 );
 GO
 
--- Les images seront r�ellement supprim�es
+-- Les images seront réellement supprimées
 CREATE TABLE ProductImages (
     id INT IDENTITY(1,1) PRIMARY KEY,
 	name VARCHAR(255),
@@ -84,19 +84,12 @@ CREATE TABLE ProductImages (
 );
 GO
 
-CREATE TABLE Chats (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-	product_id INT,
-	customer_id INT,
-	is_active BIT NOT NULL,
-	last_updated DATETIME DEFAULT GETDATE(),
-	created DATETIME DEFAULT GETDATE()
-);
-GO
 
 CREATE TABLE Messages (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    chat_id INT,
+	msg_from_id INT,
+	msg_to_id INT,
+    product_id INT,
 	content VARCHAR(255),
 	last_updated DATETIME DEFAULT GETDATE(),
 	created DATETIME DEFAULT GETDATE()
@@ -164,23 +157,23 @@ ADD CONSTRAINT FK_ProductImages_Products
 FOREIGN KEY (product_id) REFERENCES Products(id);
 GO
 
-ALTER TABLE Chats
-ADD CONSTRAINT FK_Chats_Products
+ALTER TABLE Reviews
+ADD CONSTRAINT FK_Reviews_Products
 FOREIGN KEY (product_id) REFERENCES Products(id);
 GO
 
-ALTER TABLE Chats
-ADD CONSTRAINT FK_Chats_Customers
-FOREIGN KEY (customer_id) REFERENCES Users(id);
+ALTER TABLE Messages
+ADD CONSTRAINT FK_Message_From
+FOREIGN KEY (msg_from_id) REFERENCES Users(id);
 GO
 
 ALTER TABLE Messages
-ADD CONSTRAINT FK_Chats_Messages
-FOREIGN KEY (chat_id) REFERENCES Chats(id);
+ADD CONSTRAINT FK_Message_To
+FOREIGN KEY (msg_to_id) REFERENCES Users(id);
 GO
 
-ALTER TABLE Reviews
-ADD CONSTRAINT FK_Reviews_Products
+ALTER TABLE Messages
+ADD CONSTRAINT FK_Message_Product
 FOREIGN KEY (product_id) REFERENCES Products(id);
 GO
 
@@ -218,10 +211,84 @@ ALTER TABLE Reviews
 ADD CONSTRAINT DF_Reviews_is_active DEFAULT 1 FOR is_active;
 GO
 
-ALTER TABLE Chats
-ADD CONSTRAINT DF_Chats_is_active DEFAULT 1 FOR is_active;
-GO
 
 ALTER TABLE Deliveries
 ADD CONSTRAINT DF_delivery_is_active DEFAULT 1 FOR is_active;
 GO
+USE MarketPlace;
+GO
+DECLARE @tableName NVARCHAR(128);
+DECLARE @sql NVARCHAR(MAX);
+
+DECLARE table_cursor CURSOR FOR
+SELECT name
+FROM sys.tables
+WHERE type = 'U'; -- Only user tables
+
+OPEN table_cursor;
+
+FETCH NEXT FROM table_cursor INTO @tableName;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @sql = '
+    CREATE TRIGGER trg_Update_' + @tableName + '
+    ON ' + @tableName + '
+    AFTER UPDATE
+    AS
+    BEGIN
+        -- Update the last_updated field for the modified row
+        UPDATE ' + @tableName + '
+        SET last_updated = GETDATE()
+        WHERE id IN (SELECT id FROM inserted);
+    END';
+    
+    -- Check if trigger already exists, then create it
+    EXEC sp_executesql @sql;
+    
+    FETCH NEXT FROM table_cursor INTO @tableName;
+END;
+
+CLOSE table_cursor;
+DEALLOCATE table_cursor;
+USE MarketPlace;
+GO
+
+INSERT INTO Users (login, hashed_password, salt, first_name, last_name, is_active, user_type) VALUES 
+    ('camcam', 'EE1D043DE283E12CD10A', 'Sunday', 'Camille', 'Berrier-Plater Syberg', 1,  'ADMIN'),
+	('customer', 'EE1D043DE283E12CD10A', 'Sunday', 'Henri', 'Dupont', 1,  'CUSTOMER'),
+	('deliverypartner', 'EE1D043DE283E12CD10A', 'Sunday', 'G�rard', 'Agediss', 1,  'DELIVERYPARTNER'),
+	('artisan', 'EE1D043DE283E12CD10A', 'Sunday', 'Charles', 'Dupont', 1,  'ARTISAN'),
+	('artisan2', 'EE1D043DE283E12CD10A', 'Sunday', 'Vincent', 'Van Gogh', 1,  'ARTISAN'),
+	('artisan3', 'EE1D043DE283E12CD10A', 'Sunday', 'Claude', 'Monet', 1,  'ARTISAN');
+GO
+
+INSERT INTO Products ( artisan_id, name, description, price, category) VALUES
+	(4, 'Whale painting', 'Acrylic painting of a blue whale under water, by Scott Highlander', 400.50, 'PAINTING'),
+	(4, 'Pottery Kit', 'The perfect getting started kit for pottery enthousiasts ', 20.50, 'POTTERY'),
+	(4, 'Topaze necklace', 'A beautiful topaze chocker necklace', 50.50, 'JEWELS'),
+	(5, 'Tournesols', 'Sunflowers, la peinture connue', 5000000, 'PAINTING'),
+	(6, 'Nénuphars', 'Peinture impressioniste de Nénuphars', 560.50, 'PAINTING');
+GO
+
+INSERT INTO Orders ( artisan_id, customer_id) VALUES
+(4, 1),
+(4, 2);
+
+INSERT INTO Item_Orders (quantity, order_id, product_id) VALUES
+(3,1,1),
+(1,1,2),
+(6,2,3);
+
+INSERT INTO Deliveries (order_id, deli_status, estimated_date, is_active) VALUES
+(1, 'PROCESSING', null, 0),
+(1, 'PROCESSING', null, 1),
+(2, 'SHIPPED', null, 0);
+
+INSERT INTO REVIEWS (product_id, customer_id, content, fromArtisan, is_active, score ) values 
+( 3, 2, 'Beautiful', 0, 1, 5), ( 3, 2, 'Thank you :)', 1, 1, 5),  (1, 1, 'Whimsical!', 0, 1, 4);
+
+INSERT INTO Messages(msg_from_id, msg_to_id, content, product_id) values
+(2, 4, 'Hello, could I have more information about this product?', 1),
+(4, 2, 'Hi, thank you for your interest, what would you like to know? Dimensions are 10x50', 1),
+(1, 4, 'Hi, whats up ?', null);

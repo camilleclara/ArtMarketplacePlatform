@@ -75,7 +75,9 @@ namespace BL.Services.Authentication
             var salt = DateTime.Now.ToString("dddd"); // get the day of week. Ex: Sunday
             var passwordHash = HashPassword(password, salt);
             var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, role);
-            await _context.Users.AddAsync(_mapper.Map<User>(newUser));
+            var user = _mapper.Map<User>(newUser);
+            user.IsActive = true;
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDTO>(newUser);
 

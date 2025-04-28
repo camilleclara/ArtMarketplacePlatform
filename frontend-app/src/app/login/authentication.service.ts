@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
+import { UserRegister } from '../models/user-register.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +56,9 @@ export class AuthenticationService {
   }
   logout(): void {
     sessionStorage.removeItem("jwt");
+  }
+
+  register(user: UserRegister):Observable<any> {
+    return this.http.post(`https://localhost:7279/api/Auth/register?login=${user.login}&firstName=${user.firstName}&lastName=${user.lastName}&password=${user.password}&role=${user.role}`, user);
   }
 }

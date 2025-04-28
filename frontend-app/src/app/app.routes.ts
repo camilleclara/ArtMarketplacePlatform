@@ -12,13 +12,16 @@ import { DashboardAdminComponent } from './dashboard/dashboard-admin/dashboard-a
 import { DashboardCustomerComponent } from './dashboard/dashboard-customer/dashboard-customer.component';
 import { DashboardDeliveryComponent } from './dashboard/dashboard-delivery/dashboard-delivery.component';
 import { MessagesComponent } from './messages/messages.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
-    {path: '*', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
+    {path: '', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegisterComponent},
     // {path: 'products', component: ProductsComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
+    {path: 'dashboard-customer', component: DashboardCustomerComponent},
     {path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard, admGuard]},
     {path: 'messages', component: MessagesComponent, canActivate: [authGuard, artisanGuard]},
     // {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, artisanGuard]}, -- TODO delivery guard

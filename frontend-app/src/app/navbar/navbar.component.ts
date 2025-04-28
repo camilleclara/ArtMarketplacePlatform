@@ -22,4 +22,7 @@ export class NavbarComponent {
   isAdmin(): boolean {
     return this.authService.isAdmin();
   }
+  isCustomer(): boolean {
+    return this.authService.isCustomer();
+  }
 }

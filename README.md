@@ -30,16 +30,16 @@ dashboard
              [x] Respond to messages
     customer
         View all Products
-            Filter by category
-            Filter by price
-            Filter by artisan
+            [ ]Filter by category
+            [ ]Filter by price
+            [ ]Filter by artisan
         View one product details
-            If I have already purchased it, I can leave a review
-            View artisan's profile
+            [ ]If I have already purchased it, I can leave a review
+            [ ]View artisan's profile
         Create a basket of products
-            View basket
-            Checkout + select shipping option + entering payment details
-            order cnfirmation & payment sumaary
+            [ ]View basket
+            [ ]Checkout + select shipping option + entering payment details
+            [ ]order cnfirmation & payment sumaary
         View my orders + delivery status
 
    ```bash

@@ -1,1 +1,40 @@
-<p>dashboard-customer works!</p>
+<div class="container my-4">
+    <div class="filters mb-4 d-flex flex-wrap gap-3">
+      <div>
+        <label for="category">Filtrer par catégorie</label>
+        <select [formControl]="categoryFilter" class="form-select">
+          <option value="">Toutes</option>
+          @for (cat of getUniqueCategories(); track $index) {
+            <option [value]="cat">{{cat}}</option>
+          }
+        </select>
+      </div>
+  
+      <div>
+        <label for="artisan">Filtrer par artisan</label>
+        <select [formControl]="artisanFilter" class="form-select">
+          <option value="">Tous</option>
+          @for (artisan of getUniqueArtisans(); track artisan.id) {
+            <option [value]="artisan.id">{{ artisan.name }}</option>
+          }
+        </select>
+      </div>
+  
+      <div>
+        <label for="price">Trier par prix</label>
+        <select [formControl]="priceSortOrder" class="form-select">
+          <option value="asc">Croissant</option>
+          <option value="desc">Décroissant</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="row">
+      @for (p of filteredProducts; track p.id) {
+        <div class="col-md-4 mb-4">
+          <app-customer-product [product]="p"></app-customer-product>
+        </div>
+      }
+    </div>
+  </div>
+  

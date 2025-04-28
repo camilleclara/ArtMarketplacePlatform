@@ -7,6 +7,7 @@
         public int Id { get; set; }
 
         public int? ArtisanId { get; set; }
+        public string? ArtisanName { get; set; }
 
         public string Name { get; set; } = null!;
 

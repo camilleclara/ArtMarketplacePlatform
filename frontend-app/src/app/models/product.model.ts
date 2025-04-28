@@ -6,6 +6,7 @@ export interface Product {
     description: string;
     price?: number;
     artisanId: number;
+    artisanName?: string;
     category?: string;
     isAvailable: boolean;
     productImages?: ProductImage[];

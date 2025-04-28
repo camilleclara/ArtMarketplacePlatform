@@ -13,12 +13,13 @@ import { DashboardCustomerComponent } from './dashboard/dashboard-customer/dashb
 import { DashboardDeliveryComponent } from './dashboard/dashboard-delivery/dashboard-delivery.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
+import { CustomerProductDetailComponent } from './products/customer-product-detail/customer-product-detail.component';
 
 export const routes: Routes = [
     {path: '', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
-    // {path: 'products', component: ProductsComponent, canActivate: [authGuard, artisanGuard]},
+    {path: 'product/:id', component: CustomerProductDetailComponent},
     {path: 'dashboard', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard-customer', component: DashboardCustomerComponent},

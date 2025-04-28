@@ -45,7 +45,9 @@ namespace DAL.Repositories
         public async Task<IEnumerable<Product>> GetAll()
         {
             return await _context.Products
+                .Where(p=>p.IsActive)
                 .Include(p => p.Artisan)
+                .Include(p => p.ProductImages)
                 .ToListAsync();
         }
 

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ModalService } from '../../modal/modal.service';
 import { AuthenticationService } from '../../login/authentication.service';
 import { OrderSummaryModalComponent } from '../../modal/order-summary-modal/order-summary-modal.component';
+import { AuthModalComponent } from '../../modal/auth-modal/auth-modal.component';
+import { ToastService } from '../../toast/toast.service';
 
 @Component({
   selector: 'app-basket',
@@ -22,7 +24,7 @@ export class BasketComponent {
     private basketService: BasketService,
     private router: Router,
     private modalService: ModalService,
-    private authService: AuthenticationService,
+    private authService: AuthenticationService
   ) {}
   
   ngOnInit(): void {
@@ -69,18 +71,27 @@ export class BasketComponent {
     
     modalRef.result.then((result) => {
       if (result === 'confirmed') {
-        // La commande est confirmée, nettoyer le panier
+        //La commande est confirmée, nettoyer le panier
         this.basketService.clearBasket();
+        localStorage.setItem('orderJustConfirmed', 'true');
         this.router.navigate(['/dashboard-customer']);
       }
     }, (reason) => {
-      // Modal fermé sans confirmation
+      //Modal fermée sans confirmation
       console.log('Order modal closed', reason);
     });
   }
 
   showAuthModal(): void {
-    window.alert("need to login or create account");
+    const modalRef = this.modalService.openModal(AuthModalComponent);
+    
+    modalRef.result.then((result) => {
+      if (result === '/login' || result === '/register') {
+        this.router.navigate([result]);
+      }
+    }, (reason) => {
+      console.log('Auth modal closed', reason);
+    });
   }
   
   continueShoppingClick(): void {

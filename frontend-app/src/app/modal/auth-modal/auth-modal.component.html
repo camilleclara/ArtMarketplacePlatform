@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">Authentification requise</h4>
+    <button type="button" class="btn-close" aria-label="Fermer" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Vous devez être connecté pour finaliser votre commande.</p>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button type="button" class="btn btn-primary" (click)="navigate('/login')">Se connecter</button>
+      <button type="button" class="btn btn-outline-primary" (click)="navigate('/register')">Créer un compte</button>
+    </div>
+  </div>

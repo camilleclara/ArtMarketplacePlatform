@@ -4,11 +4,13 @@ import { CustomerProductComponent } from '../../products/customer-product/custom
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../products/product.service';
+import { ToastService } from '../../toast/toast.service';
+import { ToastComponent } from "../../toast/toast/toast.component";
 
 @Component({
   selector: 'app-dashboard-customer',
   standalone: true,
-  imports: [CommonModule, CustomerProductComponent, ReactiveFormsModule],
+  imports: [CommonModule, CustomerProductComponent, ReactiveFormsModule, ToastComponent],
   templateUrl: './dashboard-customer.component.html',
   styleUrl: './dashboard-customer.component.css'
 })
@@ -20,7 +22,7 @@ export class DashboardCustomerComponent {
   artisanFilter = new FormControl('');
   priceSortOrder = new FormControl('asc');
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private toastService: ToastService) {}
 
   ngOnInit() {
     this.productService.GetProducts().subscribe((data: Product[]) => {
@@ -31,6 +33,7 @@ export class DashboardCustomerComponent {
     this.categoryFilter.valueChanges.subscribe(_ => this.applyFilters());
     this.artisanFilter.valueChanges.subscribe(_ => this.applyFilters());
     this.priceSortOrder.valueChanges.subscribe(_ => this.applyFilters());
+    this.checkForRecentOrder();
   }
 
   applyFilters() {
@@ -74,5 +77,19 @@ export class DashboardCustomerComponent {
       }
     }
     return Array.from(uniqueArtisanMap, ([id, name]) => ({ id, name }));
+  }
+
+  checkForRecentOrder() {
+    const orderJustConfirmed = localStorage.getItem('orderJustConfirmed');
+    
+    if (orderJustConfirmed === 'true') {
+      this.toastService.show(
+        'Votre commande a été passée avec succès. Merci pour votre achat !', 
+        'success', 
+        6000
+      );
+      
+      localStorage.removeItem('orderJustConfirmed');
+    }
   }
 }

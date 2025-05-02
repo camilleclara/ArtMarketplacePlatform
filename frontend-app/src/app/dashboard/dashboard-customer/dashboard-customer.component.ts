@@ -27,7 +27,9 @@ export class DashboardCustomerComponent {
   ngOnInit() {
     this.productService.GetProducts().subscribe((data: Product[]) => {
       this.products = data;
+      this.products = this.products.filter(p => p.isAvailable);
       this.filteredProducts = [...this.products];
+      
     });
 
     this.categoryFilter.valueChanges.subscribe(_ => this.applyFilters());

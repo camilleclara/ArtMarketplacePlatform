@@ -46,12 +46,12 @@ public class UsersController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.CUSTOMER))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpGet("{userId}")]
     [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetReviewById(int userId)
+    public async Task<IActionResult> GetUserById(int userId)
     {
         try
         {

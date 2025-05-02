@@ -35,15 +35,16 @@ dashboard
             [X]Filter by artisan
             [X]View one product details
                 [X]If I have already purchased it, I can leave a review
-            [ ]View artisan's profile
-            [ ] View my own profile
+            [X]View artisan's profile
+            [X] View & edit my own profile
         Create a basket of products
             [X]Add, remove from the basket
             [X]View basket
             [X]Checkout + select shipping option + entering payment details
             [X]order confirmation & payment sumaary
         View my orders + delivery status
-            [ ] Get all my orders + delivery status and dipslay
+            [X] Get all my orders + delivery status and dipslay
+            [ ] Make sure as a customer I can only update to "RECEIVED"
     delivery-partner
         [ ]View orders assigned for delivery (+ filter on status or other attribute)
         [ ]Coordinate Pickup with Artisans

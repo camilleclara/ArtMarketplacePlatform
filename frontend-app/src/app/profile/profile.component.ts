@@ -22,6 +22,7 @@ export class ProfileComponent {
   user: Partial<User> | null = null;
   userId: number = 0;
   isCurrentUser: boolean = false;
+  isCustomer: boolean = false;
   loading: boolean = true;
   error: string | null = null;
   editMode: boolean = false;
@@ -38,6 +39,7 @@ export class ProfileComponent {
   ) {}
 
   ngOnInit(): void {
+    this.isCustomer = this.authService.isCustomer();
     this.route.params.subscribe(params => {
       this.userId = +params['id'];
       if (this.userId) {

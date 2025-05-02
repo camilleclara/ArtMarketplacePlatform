@@ -9,7 +9,10 @@ namespace BL.Mapper
         public UserProfile()
         {
             CreateMap<User, UserDTO>();
-            CreateMap<User, UserSafeDTO>();
+            CreateMap<User, UserSafeDTO>().ForMember(dest => dest.OrdersPlaced,
+                       opt => opt.MapFrom(src => src.OrderCustomers.Count))
+            .ForMember(dest => dest.OrdersFulfilled,
+                       opt => opt.MapFrom(src => src.OrderArtisans.Count)); ;
             CreateMap<UserSafeDTO, User>();
             CreateMap<UserDTO, User>().ForMember(dest => dest.Id, opt => opt.Ignore());
         }

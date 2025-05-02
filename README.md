@@ -34,14 +34,14 @@ dashboard
             [X]Filter by price
             [X]Filter by artisan
             [X]View one product details
-                [ ]If I have already purchased it, I can leave a review
+                [X]If I have already purchased it, I can leave a review
             [ ]View artisan's profile
             [ ] View my own profile
         Create a basket of products
             [X]Add, remove from the basket
             [X]View basket
-            [ ]Checkout + select shipping option + entering payment details
-            [ ]order confirmation & payment sumaary
+            [X]Checkout + select shipping option + entering payment details
+            [X]order confirmation & payment sumaary
         View my orders + delivery status
             [ ] Get all my orders + delivery status and dipslay
     delivery-partner

@@ -24,10 +24,10 @@ namespace BL.Services
             return userDTOS;
         }
 
-        public async Task<UserDTO> GetByIdAsync(int id)
+        public async Task<UserSafeDTO> GetByIdAsync(int id)
         {
             var user = await _repository.GetById(id);
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserSafeDTO>(user);
         }
 
         public async Task<UserDTO> AddAsync(UserDTO newUser)
@@ -37,16 +37,26 @@ namespace BL.Services
             return _mapper.Map<UserDTO>(newUser);
         }
 
-        public async Task<UserDTO> UpdateAsync(int id, UserDTO userToUpdate)
+        public async Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO userToUpdate)
         {
             var userToUpdateEntity = _mapper.Map<User>(userToUpdate);
             await _repository.Update(id, userToUpdateEntity);
-            return _mapper.Map<UserDTO>(userToUpdateEntity);
+            return _mapper.Map<UserSafeDTO>(userToUpdateEntity);
         }
 
         public async Task<int> DeleteAsync(int id)
         {
             return await _repository.DeleteById(id);
+        }
+
+        Task<UserDTO> IGenericService<UserDTO>.GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserDTO> UpdateAsync(int id, UserDTO entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

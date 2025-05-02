@@ -15,12 +15,14 @@ import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
 import { CustomerProductDetailComponent } from './products/customer-product-detail/customer-product-detail.component';
 import { BasketComponent } from './basket/basket/basket.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
     { path: 'basket', component: BasketComponent },
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'product/:id', component: CustomerProductDetailComponent},
+    {path: 'profile/:id', component: ProfileComponent},
     {path: 'dashboard', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard-customer', component: DashboardCustomerComponent},

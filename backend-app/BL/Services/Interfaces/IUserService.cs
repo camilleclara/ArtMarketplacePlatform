@@ -6,9 +6,9 @@ namespace BL.Services.Interfaces
     public interface IUserService: IGenericService<UserDTO>
     {
         Task<IEnumerable<UserDTO>> GetAllAsync();
-        Task<UserDTO> GetByIdAsync(int id);
+        Task<UserSafeDTO> GetByIdAsync(int id);
         Task<UserDTO> AddAsync(UserDTO entity);
-        Task<UserDTO> UpdateAsync(int id, UserDTO entity);
+        Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO entity);
         Task<int> DeleteAsync(int id);
     }
 }

@@ -1,0 +1,111 @@
+<div class="container py-5">
+    <app-toast></app-toast>
+  
+    <div class="row mb-4">
+      <div class="col-12">
+        <button class="btn btn-outline-secondary" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i> Retour
+        </button>
+      </div>
+    </div>
+  
+    @if (loading) {
+      <div class="d-flex justify-content-center my-5">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    }
+    
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    }
+  
+    @if (!loading && !error && user) {
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4>{{ user.firstName }} {{ user.lastName }}</h4>
+              @if (isCurrentUser && !editMode) {
+                <button class="btn btn-light" (click)="toggleEditMode()">
+                  <i class="bi bi-pencil"></i> Modifier
+                </button>
+              }
+            </div>
+            
+            <div class="card-body">
+              @if (!editMode) {
+                <!-- Mode affichage -->
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    <h5 class="text-muted">Informations personnelles</h5>
+                    <hr>
+                    <p><strong>User name</strong> {{ user.login }}</p>
+                    <p><strong>Prénom:</strong> {{ user.firstName }}</p>
+                    <p><strong>Nom:</strong> {{ user.lastName }}</p>
+                    <p><strong>Role:</strong> {{ user.userType }}</p>
+                    
+                    @if (user.userType === 'CUSTOMER') {
+                      <div class="mt-4">
+                        <h5 class="text-muted">Statistiques</h5>
+                        <hr>
+                        <p><strong>Nombre de commandes passées:</strong> {{ user.ordersPlaced}}</p>
+                      </div>
+                    }
+                    
+                    @if (user.userType === 'ARTISAN') {
+                      <div class="mt-4">
+                        <h5 class="text-muted">Statistiques</h5>
+                        <hr>
+                        <p><strong>Nombre de commandes reçues:</strong> {{ user.ordersFulfilled }}</p>
+                      </div>
+                    }
+                  </div>
+                 
+                </div>
+              } @else {
+                <!-- Mode édition -->
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                  <div class="mb-3">
+                    <label for="firstName" class="form-label">Prénom</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="firstName" 
+                      formControlName="firstName"
+                      [class.is-invalid]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+                    <div class="invalid-feedback" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+                      <div *ngIf="profileForm.get('firstName')?.errors?.['required']">Le prénom est requis.</div>
+                      <div *ngIf="profileForm.get('firstName')?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères.</div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="lastName" 
+                      formControlName="lastName"
+                      [class.is-invalid]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+                    <div class="invalid-feedback" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+                      <div *ngIf="profileForm.get('lastName')?.errors?.['required']">Le nom est requis.</div>
+                      <div *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères.</div>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary me-2" (click)="toggleEditMode()">Annuler</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid">Enregistrer</button>
+                  </div>
+                </form>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>

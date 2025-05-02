@@ -1,5 +1,6 @@
 using BL.Models;
 using BL.Models.Enums;
+using BL.Services;
 using BL.Services.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ public class UsersController : ControllerBase
 
     [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet("")]
-    [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllUsers()
@@ -43,6 +44,42 @@ public class UsersController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+
+    [Authorize(Roles = nameof(Roles.CUSTOMER))]
+    [HttpGet("{userId}")]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetReviewById(int userId)
+    {
+        try
+        {
+            UserSafeDTO user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+            {
+                return NoContent();
+            }
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    [Authorize(Roles = nameof(Roles.CUSTOMER))]
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> UpdateUser(int id, [FromBody] UserSafeDTO userDto)
+    {
+        var updatedUser = await _userService.UpdateAsync(id, userDto);
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
     }
 
 }

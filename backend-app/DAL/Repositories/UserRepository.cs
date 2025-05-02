@@ -32,7 +32,12 @@ namespace DAL.Repositories
 
         public async Task<User> GetById(int id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var result = await _context.Users
+                .Include(u => u.OrderArtisans)
+                .Include(u => u.OrderCustomers)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return result;
         }
 
         public async Task<User> Insert(User entity)
@@ -51,13 +56,14 @@ namespace DAL.Repositories
             }
             storedUser.FirstName = entityUpdated.FirstName;
             storedUser.LastName = entityUpdated.LastName;
-            storedUser.Login = entityUpdated.Login;
-            storedUser.Salt = entityUpdated.Salt;
-            storedUser.HashedPassword = entityUpdated.HashedPassword;
-            storedUser.IsActive = entityUpdated.IsActive;
-            storedUser.UserType = entityUpdated.UserType;
+            //storedUser.Login = entityUpdated.Login;
+            //storedUser.Salt = entityUpdated.Salt;
+            //storedUser.HashedPassword = entityUpdated.HashedPassword;
+            //storedUser.IsActive = entityUpdated.IsActive;
+            //storedUser.UserType = entityUpdated.UserType;
             //TODO; update chats and other collections
             _context.Users.Update(storedUser);
+            await _context.SaveChangesAsync();
             return (storedUser);
         }
     }

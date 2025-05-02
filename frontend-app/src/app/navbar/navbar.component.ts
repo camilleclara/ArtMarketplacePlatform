@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../login/authentication.service';
+import { BasketIconComponent } from '../basket/basket-icon/basket-icon.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [BasketIconComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BasketItem } from '../../models/basket.model';
 import { BasketService } from '../basket.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ModalService } from '../../modal/modal.service';
 import { AuthenticationService } from '../../login/authentication.service';
 import { OrderSummaryModalComponent } from '../../modal/order-summary-modal/order-summary-modal.component';
@@ -12,7 +12,7 @@ import { ToastService } from '../../toast/toast.service';
 @Component({
   selector: 'app-basket',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.css'
 })

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Product } from '../../models/product.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../product.service';
 import { BasketService } from '../../basket/basket.service';
 import { ToastService } from '../../toast/toast.service';
@@ -12,7 +12,7 @@ import { ReviewComponent } from '../../reviews/review/review.component';
 @Component({
   selector: 'app-customer-product-detail',
   standalone: true,
-  imports: [ToastComponent, CommonModule, ReviewComponent],
+  imports: [ToastComponent, CommonModule, ReviewComponent, RouterModule],
   templateUrl: './customer-product-detail.component.html',
   styleUrl: './customer-product-detail.component.css'
 })

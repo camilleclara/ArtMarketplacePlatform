@@ -3,7 +3,7 @@
     <div class="card-body">
       <h5 class="card-title">{{ product.name }}</h5>
       <p class="card-text">{{ product.price | currency:'EUR' }}</p>
-      <small class="text-muted">Artisan #{{ product.artisanName }}</small> <!-- ou récupérer son nom si nécessaire -->
+      <small class="text-muted">Artisan #<a [routerLink]="['/profile', product.artisanId]">{{ product.artisanName }}</a></small> <!-- ou récupérer son nom si nécessaire -->
       <div class="basket-controls mt-2">
         @if (getQuantityInBasket() === 0) {
           <button class="btn btn-primary w-100" (click)="addToBasket($event)">

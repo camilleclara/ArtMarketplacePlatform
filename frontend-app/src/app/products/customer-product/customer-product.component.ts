@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ProductImage } from '../../models/product-image.model';
 import { BasketService } from '../../basket/basket.service';
 
 @Component({
   selector: 'app-customer-product',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './customer-product.component.html',
   styleUrl: './customer-product.component.css'
 })

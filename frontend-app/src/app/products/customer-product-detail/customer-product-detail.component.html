@@ -61,7 +61,7 @@
           
           <div class="artisan-info mb-4">
             <h6>Artisan</h6>
-            <p class="mb-0">{{ product.artisanName }}</p>
+            <p class="mb-0"><a [routerLink]="['/profile', product.artisanId]">{{ product.artisanName }}</a></p>
           </div>
           
           <div class="description mb-4">

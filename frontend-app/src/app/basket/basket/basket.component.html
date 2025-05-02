@@ -42,7 +42,7 @@
                         }
                         <div>
                           <strong>{{ item.product.name }}</strong>
-                          <div><small class="text-muted">Artisan: {{ item.product.artisanName }}</small></div>
+                          <div><small class="text-muted">Artisan: <a [routerLink]="['/profile', item.product.artisanId]">{{ item.product.artisanName }}</a></small></div>
                         </div>
                       </div>
                     </td>

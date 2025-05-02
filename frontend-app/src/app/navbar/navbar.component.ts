@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../login/authentication.service';
 import { BasketIconComponent } from '../basket/basket-icon/basket-icon.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [BasketIconComponent],
+  imports: [BasketIconComponent, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -25,5 +26,8 @@ export class NavbarComponent {
   }
   isCustomer(): boolean {
     return this.authService.isCustomer();
+  }
+  getUserId(): number{
+    return this.authService.getUserId();
   }
 }

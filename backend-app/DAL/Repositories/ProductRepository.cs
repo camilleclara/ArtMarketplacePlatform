@@ -56,6 +56,7 @@ namespace DAL.Repositories
             return await _context.Products
                 .Where(p => p.IsActive)
                 .Include(i => i.ProductImages)
+                .Include(i => i.Reviews).ThenInclude(r=> r.Customer)
                 .Include(p => p.Artisan)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
@@ -83,9 +84,6 @@ namespace DAL.Repositories
             storedProduct.Category = entityUpdated.Category;
             storedProduct.IsAvailable = entityUpdated.IsAvailable;
 
-            //TODO update images
-            // Gestion des images
-            // Gestion des images
             if (entityUpdated.ProductImages != null)
             {
                 // Étape 1: Conserver les images existantes que nous voulons garder
@@ -111,12 +109,7 @@ namespace DAL.Repositories
                     storedProduct.ProductImages.Add(newImage);
                 }
             }
-            //TODO; update chats and other collections
             _context.Products.Update(storedProduct);
-            
-            //await _context.SaveChangesAsync();
-
-
             return (storedProduct);
         }
 
@@ -163,5 +156,16 @@ namespace DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<int>> GetReviewableProductIdsByCustomerId(int customerId)
+        {
+            return await _context.Orders
+                 .Where(o => o.CustomerId == customerId &&
+                             o.Deliveries.Any(d => d.DeliStatus == "DELIVERED"))
+                 .SelectMany(o => o.ItemOrders)
+                 .Where(io => io.ProductId != null)
+                 .Select(io => io.ProductId.Value)
+                 .Distinct()
+                 .ToListAsync();
+        }
     }
 }

@@ -13,11 +13,11 @@
               <h5 class="mb-0">&OpenCurlyDoubleQuote;{{ review.content }} &CloseCurlyDoubleQuote;</h5>
               <small class="text-muted">
                   @for (star of getFullStars(review.score); track $index) {
-                      <span class="full-star">★</span>
+                      <span class="full-star">&starf;</span>
                     }
                   
                     @for (star of getEmptyStars(review.score); track $index) {
-                      <span class="empty-star">☆</span>
+                      <span class="empty-star">&star;</span>
                     }
                 
               </small>
@@ -36,7 +36,8 @@
               </div>
             </div>
           } @else {
-            @if (respondingToReviewId === review.id) {
+            @if(isProductArtisan()){
+              @if (respondingToReviewId === review.id) {
                 <app-review-response 
                   [review]="review" 
                   (responseSubmitted)="onResponseSubmitted($event)" 
@@ -49,11 +50,28 @@
                   </button>
                 </div>
               }
+            }
           }
         </div>
         @if (!isLast) {
           <hr class="my-3">
         }
+      }
+      @if(!isProductArtisan()){
+        @if(canComment()){
+          @if(!isAddingReview){
+            <div class="d-flex flex-row justify-content-end">
+              <button class="btn btn-outline-secondary mb-3 justify-content-end" (click)="startAddingReview()">
+                Ajouter une évaluation
+              </button>
+            </div>
+          }
+          @else {<app-add-review 
+            [productId]="reviewsByProduct[0].productId"
+            (reviewSubmitted)="onReviewSubmitted($event)"
+            (cancelReview)="cancelAddingReview()">
+          </app-add-review>}
+        } 
       }
     </div>
   </div>

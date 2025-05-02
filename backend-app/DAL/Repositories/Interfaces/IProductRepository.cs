@@ -11,5 +11,6 @@ namespace DAL.Repositories.Interfaces
         Task<Product> SoftDeleteById(int id);
 
         Task SaveChanges();
+        Task<List<int>> GetReviewableProductIdsByCustomerId(int customerId);
     }
 }

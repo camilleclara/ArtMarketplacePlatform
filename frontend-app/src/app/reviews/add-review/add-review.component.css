@@ -1,0 +1,37 @@
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .rating span {
+    cursor: pointer;
+    margin-right: 0.25rem;
+  }
+  
+  .star-filled {
+    color: #ffc107; /* Couleur jaune pour les étoiles remplies */
+  }
+  
+  .star-empty {
+    color: #e4e5e9; /* Couleur grise pour les étoiles vides */
+  }
+  
+  .rating span:hover,
+  .rating span:hover ~ span {
+    color: #ffc107;
+  }
+  
+  /* Pour éviter que le hover n'affecte les étoiles quand on utilise le ngClass */
+  .rating span.star-filled:hover,
+  .rating span.star-filled:hover ~ span {
+    color: #ffc107;
+  }
+  
+  /* Style pour le formulaire */
+  textarea.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }

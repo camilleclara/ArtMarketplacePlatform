@@ -1,4 +1,5 @@
 import { ProductImage } from "./product-image.model";
+import { Review } from "./review.model";
 
 export interface Product {
     id: number;
@@ -10,4 +11,5 @@ export interface Product {
     category?: string;
     isAvailable: boolean;
     productImages?: ProductImage[];
+    reviews?: Review[];
 }

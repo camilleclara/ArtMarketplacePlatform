@@ -84,5 +84,10 @@ namespace BL.Services
             product.ArtisanId = artisanId;
             return AddAsync(product);
         }
+
+        public Task<List<int>> GetReviewableProductIdsByCustomerId(int customerId)
+        {
+            return _repository.GetReviewableProductIdsByCustomerId(customerId);
+        }
     }
 }

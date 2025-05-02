@@ -4,7 +4,7 @@ import { User } from "./user.model";
 export interface Review {
     content: string;
     id: number;
-    productId: string;
+    productId: number;
     customerId: string;
     product: Product;
     customer: User;

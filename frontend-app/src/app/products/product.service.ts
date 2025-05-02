@@ -42,4 +42,8 @@ export class ProductService {
   CreateProduct(artisanId: number, newProduct: Product): Observable<Product> {
     return this.http.post<Product>(`https://localhost:7279/api/Artisans/${artisanId}/products`, newProduct);  
   }
+
+  GetReviewableProductsForCustomer(customerId: number): Observable<any>{
+    return this.http.get<Product>(`https://localhost:7279/Product/reviewable/${customerId}`)
+  }
 }

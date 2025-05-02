@@ -7,11 +7,12 @@ import { ToastService } from '../../toast/toast.service';
 import { ProductImage } from '../../models/product-image.model';
 import { ToastComponent } from '../../toast/toast/toast.component';
 import { CommonModule } from '@angular/common';
+import { ReviewComponent } from '../../reviews/review/review.component';
 
 @Component({
   selector: 'app-customer-product-detail',
   standalone: true,
-  imports: [ToastComponent, CommonModule],
+  imports: [ToastComponent, CommonModule, ReviewComponent],
   templateUrl: './customer-product-detail.component.html',
   styleUrl: './customer-product-detail.component.css'
 })
@@ -62,6 +63,10 @@ export class CustomerProductDetailComponent {
         this.loading = false;
       }
     });
+  }
+
+  getObjectKeys(obj: any): string[] {
+    return Object.keys(obj);
   }
 
   getImageUrl(image: ProductImage): string {
@@ -124,5 +129,12 @@ export class CustomerProductDetailComponent {
 
   goBack(): void {
     this.router.navigate(['/dashboard-customer']);
+  }
+
+  refreshProduct(): void {
+    if (this.product) {
+      this.loadProduct(this.product.id);
+      this.toastService.show('Avis ajouté avec succès', 'success');
+    }
   }
 }

@@ -60,6 +60,27 @@ public class ProductController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+
+    [HttpGet("reviewable/{customerId}")]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetReviewableProductIdsByCustomerId(int customerId)
+    {
+        try
+        {
+            List<int> productIds = await _productService.GetReviewableProductIdsByCustomerId(customerId);
+            if (productIds == null)
+            {
+                return NoContent();
+            }
+            return Ok(productIds);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
     [HttpGet("category/{categoryString}")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

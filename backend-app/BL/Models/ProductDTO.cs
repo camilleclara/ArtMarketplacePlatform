@@ -1,4 +1,6 @@
-﻿namespace BL.Models
+﻿using Domain;
+
+namespace BL.Models
 {
     public class ProductDTO
     {
@@ -18,6 +20,7 @@
         public string? Category { get; set; }
         public bool? IsAvailable { get; set; }
         public virtual ICollection<ProductImageDTO> ProductImages { get; set; } = new List<ProductImageDTO>();
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public bool? IsActive { get; internal set; }
     }
 }

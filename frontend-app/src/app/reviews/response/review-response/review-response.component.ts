@@ -16,6 +16,7 @@ export class ReviewResponseComponent {
   @Output() cancelled = new EventEmitter<void>();
   
   responseForm: FormGroup;
+  
 
   constructor(
     private reviewService: ReviewService,

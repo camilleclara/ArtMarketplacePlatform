@@ -18,6 +18,10 @@ export class ProductService {
     return this.http.get("https://localhost:7279/Product/Admin")
   }
 
+  GetProductById(id: number): Observable<any>{
+    return this.http.get(`https://localhost:7279/Product/${id}`)
+  }
+
   GetProductsByArtisanId(id: number): Observable<any>{
     return this.http.get(`https://localhost:7279/api/Artisans/${id}/products`)
   }

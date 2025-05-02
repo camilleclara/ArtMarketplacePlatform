@@ -48,7 +48,7 @@ public class CustomersController : ControllerBase
     {
         try
         {
-            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByCustomerId(customerId);
+            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByCustomerIdAsync(customerId);
             if (lstReturned.Count() == 0)
             {
                 return NoContent();

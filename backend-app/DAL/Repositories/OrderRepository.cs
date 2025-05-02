@@ -61,7 +61,13 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<Order>> GetByCustomerId(int customerId)
         {
-            var storedOrders = await _context.Orders.Where(o => o.CustomerId == customerId).Include(o => o.Deliveries).ToListAsync();
+            List<Order> storedOrders = await _context.Orders
+                .Where(o => o.CustomerId == customerId)
+                .Include(o => o.Deliveries)
+                .Include(o => o.ItemOrders).ThenInclude(io => io.Product)
+                .Include(o => o.Customer)
+                .Include(o => o.Artisan)
+                .ToListAsync();
             return storedOrders;
         }
 

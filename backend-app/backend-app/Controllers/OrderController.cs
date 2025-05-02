@@ -43,7 +43,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpGet("{orderId}")]
     [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -88,6 +88,28 @@ public class OrderController : ControllerBase
     }
 
     [Authorize(Roles = nameof(Roles.CUSTOMER))]
+    [HttpGet("customer/{customerId}")]
+    [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetOrdersByCustomerId(int customerId)
+    {
+        try
+        {
+            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByCustomerIdAsync(customerId);
+            if (lstReturned == null)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -106,7 +128,7 @@ public class OrderController : ControllerBase
         }
 
     }
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

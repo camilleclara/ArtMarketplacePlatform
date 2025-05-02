@@ -7,6 +7,7 @@ export interface Order {
     artisanId: number;
     customerId: string;
     customerName?: string;
+    artisanName?: string;
     activeDelivery: Delivery;
     products: OrderedProduct[];
 }

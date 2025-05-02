@@ -11,6 +11,7 @@ namespace BL.Models
         public int? ArtisanId { get; set; }
         public int? CustomerId { get; set; }
         public string? CustomerName { get; set; }
+        public string? ArtisanName { get; set; }
         public float? Total { get; set; }
         public DeliveryDTO ActiveDelivery { get; set; }
         public List<OrderedProductDTO>? Products { get; set; } = new();

@@ -57,10 +57,9 @@ namespace BL.Services
             return await _repository.DeleteById(id);
         }
 
-        public async Task<IEnumerable<OrderDTO>> GetByCustomerId(int customerId)
+        public async Task<IEnumerable<OrderDTO>> GetByCustomerIdAsync(int customerId)
         {
             var orders = await _repository.GetByCustomerId(customerId);
-            var deliveries = orders.FirstOrDefault().Deliveries;
             var orderDTOS = _mapper.Map<IEnumerable<OrderDTO>>(orders);
             return orderDTOS;
         }
@@ -68,7 +67,6 @@ namespace BL.Services
         public async Task<IEnumerable<OrderDTO>> GetByArtisanIdAsync(int id)
         {
             var orders = await _repository.GetByArtisanId(id);
-            var deliveries = orders.FirstOrDefault().Deliveries;
             var orderDTOS = _mapper.Map<IEnumerable<OrderDTO>>(orders);
             return orderDTOS;
         }

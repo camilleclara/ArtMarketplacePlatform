@@ -6,7 +6,12 @@
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Status</th>
-					<th scope="col">Client</th>
+					@if(displayForArtisan){
+						<th scope="col">Client</th>
+					}
+					@else {
+						<th scope="col">Artisan</th>
+					}
 					<th scope="col">Total</th>
 					<th scope="col"></th>
 				</tr>
@@ -30,7 +35,13 @@
 							  {{ o.activeDelivery?.deliStatus || 'NEW' }}
 							}
 						  </td>
-						<td>{{ o.customerName }}</td>
+						@if(displayForArtisan){
+							<td>{{ o.customerName }}</td>
+						}
+						@else {
+							<td>{{ o.artisanName }}</td>
+						}
+						
 						<td>{{ o.total  | currency:'EUR':'symbol' }}</td>
 						<td class="d-flex flex-row justify-content-end">
 							@if (editingDeliveryOrderId !== o.id) {

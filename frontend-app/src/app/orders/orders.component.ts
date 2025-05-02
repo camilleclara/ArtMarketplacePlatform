@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Order } from '../models/order.model';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderService } from './order.service';
@@ -15,6 +15,7 @@ import { OrderComponent } from './order/order/order.component';
   styleUrl: './orders.component.css'
 })
 export class OrdersComponent {
+    @Input()displayForArtisan!: boolean;
     orders: Order[]=[];
     orderDetails = false;
     detailsId: number = 0;
@@ -34,16 +35,32 @@ export class OrdersComponent {
   }
   
   initForm(){
+    if(this.displayForArtisan){
+      console.log("in if");
+      console.log(this.displayForArtisan);
       this.orderService.GetOrdersByArtisanId(this.authService.getUserId())
-        .subscribe((response: Order[]) => {
-          this.orders=response
-        });
+      .subscribe((response: Order[]) => {
+        this.orders=response
+      });
       this.orderForm = new FormGroup({
         id: new FormControl("", [Validators.required]),
       customerId: new FormControl("", [Validators.required]),
       status: new FormControl("NEW", [Validators.required])
       });
       this.editingOrder = null;
+      }
+    else {
+      this.orderService.GetOrdersByCustomerId(this.authService.getUserId())
+      .subscribe((response: Order[]) => {
+        this.orders=response
+      });
+      this.orderForm = new FormGroup({
+        id: new FormControl("", [Validators.required]),
+      customerId: new FormControl("", [Validators.required]),
+      status: new FormControl("NEW", [Validators.required])
+      });
+      this.editingOrder = null;
+    }
     };
     onEditDeliveryStatus(orderId: number) {
       this.editingDeliveryOrderId = orderId;
@@ -83,6 +100,7 @@ export class OrdersComponent {
           },
           error: (e) => {
             console.error('Erreur lors de la mise à jour');
+            console.log(e)
           }
         });
     }

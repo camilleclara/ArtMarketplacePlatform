@@ -8,15 +8,17 @@ import { AuthenticationService } from '../login/authentication.service';
 import { ToastService } from '../toast/toast.service';
 import { UserService } from './user.service';
 import { User } from '../models/user.model';
+import { OrdersComponent } from '../orders/orders.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastComponent, OrdersComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+  viewOrders: boolean = false;
   user: Partial<User> | null = null;
   userId: number = 0;
   isCurrentUser: boolean = false;
@@ -112,5 +114,13 @@ export class ProfileComponent {
 
   goBack(): void {
     this.router.navigate(['/dashboard']);
+  }
+
+  showOrders(){
+    this.viewOrders= true;
+  }
+
+  hideOrders(){
+    this.viewOrders = false;
   }
 }

@@ -2,5 +2,6 @@ export enum DeliveryStatus {
     SHIPPED = "SHIPPED",
     NEW = "NEW",
     CANCELLED = "CANCELLED",
-    PROCESSING = "PROCESSING"
-  }
+    PROCESSING = "PROCESSING",
+    RECEIVED = "RECEIVED"
+}

@@ -54,7 +54,9 @@ namespace DAL.Repositories
         public async Task<Product> GetById(int id)
         {
             return await _context.Products
+                .Where(p => p.IsActive)
                 .Include(i => i.ProductImages)
+                .Include(p => p.Artisan)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

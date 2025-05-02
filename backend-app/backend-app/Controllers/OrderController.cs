@@ -1,5 +1,6 @@
 using BL.Models;
 using BL.Models.Enums;
+using BL.Services;
 using BL.Services.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -86,7 +87,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -119,4 +120,5 @@ public class OrderController : ControllerBase
 
         return Ok(updatedOrder);
     }
+
 }

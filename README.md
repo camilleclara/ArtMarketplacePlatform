@@ -33,15 +33,29 @@ dashboard
             [X]Filter by category
             [X]Filter by price
             [X]Filter by artisan
-        View one product details
-            [ ]If I have already purchased it, I can leave a review
+            [X]View one product details
+                [ ]If I have already purchased it, I can leave a review
             [ ]View artisan's profile
+            [ ] View my own profile
         Create a basket of products
-            [ ]Add, remove from the basket
-            [ ]View basket
+            [X]Add, remove from the basket
+            [X]View basket
             [ ]Checkout + select shipping option + entering payment details
-            [ ]order cnfirmation & payment sumaary
+            [ ]order confirmation & payment sumaary
         View my orders + delivery status
+            [ ] Get all my orders + delivery status and dipslay
+    delivery-partner
+        [ ]View orders assigned for delivery (+ filter on status or other attribute)
+        [ ]Coordinate Pickup with Artisans
+        [ ]Update delivery Status
+        [ ]View the status of the deliveries
+    Admin
+        [ ]Manage users (approve, deactivate accounts)
+        [ ]Manage products (approve or delete)
+        [ ]View statistics, products trends and user activities 
+    Artisan
+        [ ]Financial report
+
 
    ```bash
    Scaffold-DbContext "Server=DESKTOP-84DA7B5\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ../Domain -ContextDir ../DAL -Namespace Domain -ContextNamespace DAL -Force

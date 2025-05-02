@@ -32,6 +32,15 @@ namespace BL.Services
         public async Task<OrderDTO> AddAsync(OrderDTO newOrder)
         {
             var newOrderEntity = _mapper.Map<Order>(newOrder);
+            if (newOrder.Products != null && newOrder.Products.Any())
+            {
+                newOrderEntity.ItemOrders = newOrder.Products.Select(p => new ItemOrder
+                {
+                    ProductId = p.ProductId,
+                    Quantity = p.Quantity,
+
+                }).ToList();
+            }
             await _repository.Insert(newOrderEntity);
             return _mapper.Map<OrderDTO>(newOrder);
         }

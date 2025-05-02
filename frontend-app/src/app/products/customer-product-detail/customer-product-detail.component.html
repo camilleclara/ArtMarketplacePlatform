@@ -111,7 +111,7 @@
               <h2 class="mb-4">Avis clients</h2>
               @if(product.reviews && product.reviews.length >0){
                   <div class="container my-4">
-                    <app-review [reviewsByProduct] = product.reviews ></app-review>
+                    <app-review [reviewsByProduct] = product.reviews (refreshRequest)="refreshProduct()"></app-review>
                   </div>
               }
               @else {

@@ -2,6 +2,7 @@ using BL.Models;
 using BL.Models.Enums;
 using BL.Services.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Authentication.Controllers;
 
@@ -28,6 +29,27 @@ public class ProductController : ControllerBase
         try
         {
             IEnumerable<ProductDTO> lstReturned = await _productService.GetAllAsync();
+            if (lstReturned.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpGet("admin")]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAllAdminProducts()
+    {
+        try
+        {
+            IEnumerable<ProductDTO> lstReturned = await _productService.GetAllAdminAsync();
             if (lstReturned.Count() == 0)
             {
                 return NoContent();
@@ -139,5 +161,37 @@ public class ProductController : ControllerBase
             return StatusCode(StatusCodes.Status404NotFound);
 
         return Ok(updatedProduct);  // Retourne l'entité mise à jour
+    }
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpDelete("{productId}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ProductDTO>> DeleteProduct(int productId)
+    {
+        var updatedProduct = await _productService.PermanentDeleteAsync(productId);
+        return Ok(updatedProduct);  // Retourne l'entité mise à jour
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("deactivate/{productId}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ProductDTO>> DeactivateProduct(int productId)
+    {
+        var updatedProduct = await _productService.DeleteAsync(productId);
+        return Ok(updatedProduct);
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("approve/{productId}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ProductDTO>> ApproveProduct(int productId)
+    {
+        var updatedProduct = await _productService.ApproveAsync(productId);
+        return Ok(updatedProduct);
     }
 }

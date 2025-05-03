@@ -9,4 +9,5 @@ export interface User {
     ordersFulfilled: number;
     role: string;
     userType: string;
+    isActive?: boolean;
 }

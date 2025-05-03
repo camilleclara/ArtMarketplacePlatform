@@ -14,10 +14,6 @@ export class ProductService {
     return this.http.get("https://localhost:7279/Product")
   }
 
-  GetAdminProducts(): Observable<any>{
-    return this.http.get("https://localhost:7279/Product/Admin")
-  }
-
   GetProductById(id: number): Observable<any>{
     return this.http.get(`https://localhost:7279/Product/${id}`)
   }

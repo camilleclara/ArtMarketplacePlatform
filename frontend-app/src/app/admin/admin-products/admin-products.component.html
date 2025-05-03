@@ -1,0 +1,277 @@
+<div class="container-fluid">
+    <h2 class="mb-4">Gestion des Produits</h2>
+  
+    <!-- Search and filter bar -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg></span>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Rechercher un produit..."
+            (input)="onSearch($event)">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group" role="group">
+          <button 
+            class="btn btn-outline-secondary" 
+            [class.active]="filterCategory === ''"
+            (click)="onFilterCategory('')">
+            Toutes catégories
+          </button>
+          @for (category of categories; track category) {
+            <button 
+              class="btn btn-outline-secondary" 
+              [class.active]="filterCategory === category"
+              (click)="onFilterCategory(category)">
+              {{ category }}
+            </button>
+          }
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <div class="btn-group" role="group">
+          <button 
+            class="btn btn-outline-secondary" 
+            [class.active]="filterApproval === 'all'"
+            (click)="onFilterApproval('all')">
+            Tous les produits
+          </button>
+          <button 
+            class="btn btn-outline-warning" 
+            [class.active]="filterApproval === 'pending'"
+            (click)="onFilterApproval('pending')">
+            En attente
+          </button>
+        </div>
+      </div> -->
+    </div>
+  
+    @if (isLoading) {
+      <div class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    } @else if (!filteredProducts.length) {
+      <div class="alert alert-info" role="alert">
+        Aucun produit trouvé
+      </div>
+    } @else {
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+        @for (product of filteredProducts; track product.id) {
+          <div class="col">
+            <div class="card h-100">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ product.name }}</h5>
+                <span class="badge bg-primary">{{ product.category }}</span>
+              </div>
+              
+              @if (product.productImages && product.productImages.length > 0) {
+                <div id="carousel-{{ product.id }}" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    @for (image of product.productImages; track image.id; let i = $index) {
+                      <div class="carousel-item {{ i === 0 ? 'active' : '' }}" style="height: 200px;">
+                        <img [src]="getImageSrc(image)" class="d-block w-100" [alt]="product.name" style="object-fit: cover; height: 100%;">
+                      </div>
+                    }
+                  </div>
+                  @if (product.productImages.length > 1) {
+                    <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel-' + product.id" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Précédent</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel-' + product.id" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Suivant</span>
+                    </button>
+                  }
+                </div>
+              } @else {
+                <div class="text-center py-5 bg-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                      </svg>
+                  <p class="mt-2 text-muted">Aucune image</p>
+                </div>
+              }
+              
+              <div class="card-body">
+                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text">
+                  <small class="text-muted">Artisan: {{ product.artisanName || 'ID: ' + product.artisanId }}</small>
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fs-5 fw-bold">{{ product.price | currency:'EUR':'symbol' }}</span>
+                  <span class="badge {{ product.isAvailable ? 'bg-success' : 'bg-danger' }}">
+                    {{ product.isAvailable ? 'Disponible' : 'Indisponible' }}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="card-footer">
+                <div class="btn-group w-100">
+                  @if(product.isActive){
+                    <button class="btn btn-sm btn-outline-warning" (click)="confirmReject(product.id)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg> Rejeter
+                    </button>
+                  }
+                  @else {
+                    <button class="btn btn-sm btn-outline-success" (click)="approveProduct(product.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                      </svg> Approuver
+                  </button>
+                  }
+                  <button class="btn btn-sm btn-outline-primary" (click)="editProduct(product)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                      </svg> Modifier
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                      </svg>Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  
+    <!-- Modal for editing product -->
+    @if (editingProduct) {
+      <div class="modal d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modifier le produit</h5>
+              <button type="button" class="btn-close" (click)="cancelEdit()"></button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="productForm">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Nom</label>
+                      <input 
+                        type="text" 
+                        class="form-control"
+                        id="name"
+                        formControlName="name">
+                      @if (productForm.get('name')?.invalid && 
+                           productForm.get('name')?.errors && 
+                           (productForm.get('name')?.dirty || productForm.get('name')?.touched)) {
+                        <small class="text-danger">
+                          Ce champ est requis.
+                        </small>
+                      }
+                    </div>
+  
+                    <div class="mb-3">
+                      <label for="price" class="form-label">Prix</label>
+                      <div class="input-group">
+                        <span class="input-group-text">€</span>
+                        <input 
+                          type="number" 
+                          class="form-control"
+                          id="price"
+                          min="0"
+                          step="0.01"
+                          formControlName="price">
+                      </div>
+                      @if (productForm.get('price')?.invalid && 
+                           productForm.get('price')?.errors && 
+                           (productForm.get('price')?.dirty || productForm.get('price')?.touched)) {
+                        <small class="text-danger">
+                          Prix invalide.
+                        </small>
+                      }
+                    </div>
+  
+                    <div class="mb-3">
+                      <label for="category" class="form-label">Catégorie</label>
+                      <select 
+                        class="form-select"
+                        id="category"
+                        formControlName="category">
+                        @for (cat of categories; track cat) {
+                          <option [value]="cat">{{ cat }}</option>
+                        }
+                      </select>
+                    </div>
+  
+                    <div class="mb-3">
+                      <div class="form-check form-switch">
+                        <input 
+                          class="form-check-input" 
+                          type="checkbox" 
+                          id="isAvailable"
+                          formControlName="isAvailable">
+                        <label class="form-check-label" for="isAvailable">Disponible</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="description" class="form-label">Description</label>
+                      <textarea 
+                        class="form-control"
+                        id="description"
+                        rows="5"
+                        formControlName="description"></textarea>
+                      @if (productForm.get('description')?.invalid && 
+                           productForm.get('description')?.errors && 
+                           (productForm.get('description')?.dirty || productForm.get('description')?.touched)) {
+                        <small class="text-danger">
+                          Ce champ est requis.
+                        </small>
+                      }
+                    </div>
+  
+                    @if (editingProduct.productImages && editingProduct.productImages.length > 0) {
+                      <div class="mb-3">
+                        <label class="form-label">Images du produit</label>
+                        <div class="d-flex flex-wrap gap-2">
+                          @for (image of editingProduct.productImages; track image.id) {
+                            <div class="position-relative" style="width: 100px; height: 100px;">
+                              <img [src]="getImageSrc(image)" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    } @else {
+                      <div class="alert alert-info">
+                        Ce produit n'a pas d'images.
+                      </div>
+                    }
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+              <button 
+                type="button" 
+                class="btn btn-primary" 
+                [disabled]="productForm.invalid"
+                (click)="saveProduct()">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>

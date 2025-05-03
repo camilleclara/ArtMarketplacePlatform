@@ -25,6 +25,13 @@ namespace BL.Services
             var productDTOS = _mapper.Map<IEnumerable<ProductDTO>>(products);
             return productDTOS;
         }
+        public async Task<IEnumerable<ProductDTO>> GetAllAdminAsync()
+        {
+            var products = await _repository.GetAllAdmin();
+            var productDTOS = _mapper.Map<IEnumerable<ProductDTO>>(products);
+            return productDTOS;
+        }
+
 
         public async Task<ProductDTO> GetByIdAsync(int id)
         {
@@ -60,6 +67,7 @@ namespace BL.Services
             catch (Exception ex) { return 0; }
         }
 
+
         public async Task<IEnumerable<ProductDTO>> GetByCategoryAsync(Category category)
         {
             string categoryString = category.ToString();
@@ -88,6 +96,30 @@ namespace BL.Services
         public Task<List<int>> GetReviewableProductIdsByCustomerId(int customerId)
         {
             return _repository.GetReviewableProductIdsByCustomerId(customerId);
+        }
+
+        public async Task<int> PermanentDeleteAsync(int id)
+        {
+            try
+            {
+                await _repository.DeleteById(id);
+                await _repository.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return 0; }
+        }
+
+        public async Task<int> ApproveAsync(int id)
+        {
+            try
+            {
+                await _repository.ApproveById(id);
+                await _repository.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex) { return 0; }
         }
     }
 }

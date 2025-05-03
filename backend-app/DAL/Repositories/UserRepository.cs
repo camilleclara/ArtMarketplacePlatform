@@ -27,7 +27,9 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.OrderArtisans)
+                .Include(u => u.OrderCustomers).ToListAsync();
         }
 
         public async Task<User> GetById(int id)
@@ -47,7 +49,7 @@ namespace DAL.Repositories
             return entity;
         }
 
-        public async Task<User> Update(int id, User entityUpdated)
+        public async Task<User> Update(int id, User entityUpdated, bool adminRights = false)
         {
             var storedUser = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             if (storedUser == null)
@@ -56,15 +58,47 @@ namespace DAL.Repositories
             }
             storedUser.FirstName = entityUpdated.FirstName;
             storedUser.LastName = entityUpdated.LastName;
-            //storedUser.Login = entityUpdated.Login;
-            //storedUser.Salt = entityUpdated.Salt;
-            //storedUser.HashedPassword = entityUpdated.HashedPassword;
-            //storedUser.IsActive = entityUpdated.IsActive;
-            //storedUser.UserType = entityUpdated.UserType;
-            //TODO; update chats and other collections
+            if (adminRights)
+            {
+                storedUser.Login = entityUpdated.Login;
+                storedUser.Salt = entityUpdated.Salt;
+                storedUser.HashedPassword = entityUpdated.HashedPassword;
+                storedUser.IsActive = entityUpdated.IsActive;
+                storedUser.UserType = entityUpdated.UserType;
+            }
             _context.Users.Update(storedUser);
             await _context.SaveChangesAsync();
             return (storedUser);
         }
+
+        public async Task<User> ApproveAsync(int id)
+        {
+            var storedUser = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            if (storedUser == null)
+            {
+                throw new ArgumentException();//TODO throw error not found
+            }
+            storedUser.IsActive = true;
+            await _context.SaveChangesAsync();
+            return (storedUser);
+        }
+
+        public async Task<User> DeactivateAsync(int id)
+        {
+            var storedUser = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            if (storedUser == null)
+            {
+                throw new ArgumentException();//TODO throw error not found
+            }
+            storedUser.IsActive = false;
+            await _context.SaveChangesAsync();
+            return (storedUser);
+        }
+
+        public async Task<User> Update(int id, User entity)
+        {
+            return await this.Update(id, entity, false);
+        }
+
     }
 }

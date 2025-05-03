@@ -4,7 +4,6 @@ import { ProductsComponent } from './products/products.component';
 import { authGuard } from './login/auth.guard';
 import { admGuard } from './login/adm.guard';
 import { artisanGuard } from './login/artisan.guard';
-import { AdminComponent } from './admin/admin.component';
 import { dashboardGuard } from './login/dashboard.guard';
 import { DashboardArtisanComponent } from './dashboard/dashboard-artisan/dashboard-artisan.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
@@ -30,6 +29,5 @@ export const routes: Routes = [
     {path: 'messages', component: MessagesComponent, canActivate: [authGuard, artisanGuard]},
     // {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, artisanGuard]}, -- TODO delivery guard
     // {path: 'dashboard-customer', component: DashboardCustomerComponent, canActivate: [authGuard, artisanGuard]},  --TODO customer guard
-    {path: 'admin', component: AdminComponent, canActivate: [authGuard, admGuard]},
     {path: '**', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
 ];

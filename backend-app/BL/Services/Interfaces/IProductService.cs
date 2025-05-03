@@ -15,6 +15,8 @@ namespace BL.Services.Interfaces
         //public Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId);
         //public Task<bool> SoftDeleteProductAsync(int productId);
         Task<IEnumerable<ProductDTO>> GetAllAsync();
+        Task<IEnumerable<ProductDTO>> GetAllAdminAsync();
+        
         Task<ProductDTO> GetByIdAsync(int id);
         Task<ProductDTO> AddAsync(ProductDTO entity);
         Task<ProductDTO> UpdateAsync(int id, ProductDTO entity);
@@ -25,6 +27,8 @@ namespace BL.Services.Interfaces
         Task<IEnumerable<ProductDTO>> GetByArtisanId(int artisanId);
 
         Task<List<int>> GetReviewableProductIdsByCustomerId(int customerId);
+        Task<int> ApproveAsync(int id);
+        Task<int> PermanentDeleteAsync(int id);
 
 
     }

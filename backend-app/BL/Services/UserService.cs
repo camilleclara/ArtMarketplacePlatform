@@ -17,10 +17,10 @@ namespace BL.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserSafeDTO>> GetAllAsync()
         {
             var users = await _repository.GetAll();
-            var userDTOS = _mapper.Map<IEnumerable<UserDTO>>(users);
+            var userDTOS = _mapper.Map<IEnumerable<UserSafeDTO>>(users);
             return userDTOS;
         }
 
@@ -37,7 +37,7 @@ namespace BL.Services
             return _mapper.Map<UserDTO>(newUser);
         }
 
-        public async Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO userToUpdate)
+        public async Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO userToUpdate, bool adminRights = false)
         {
             var userToUpdateEntity = _mapper.Map<User>(userToUpdate);
             await _repository.Update(id, userToUpdateEntity);
@@ -57,6 +57,23 @@ namespace BL.Services
         public Task<UserDTO> UpdateAsync(int id, UserDTO entity)
         {
             throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<UserDTO>> IGenericService<UserDTO>.GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<UserSafeDTO> ApproveAsync(int id)
+        {
+            var user = await _repository.ApproveAsync(id);
+            return _mapper.Map<UserSafeDTO>(user);
+        }
+
+        public async Task<UserSafeDTO> DeactivateAsync(int id)
+        {
+            var user = await _repository.DeactivateAsync(id);
+            return _mapper.Map<UserSafeDTO>(user);
         }
     }
 }

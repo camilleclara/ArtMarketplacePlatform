@@ -33,7 +33,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            IEnumerable<UserDTO> lstReturned = await _userService.GetAllAsync();
+            IEnumerable<UserSafeDTO> lstReturned = await _userService.GetAllAsync();
             if (lstReturned.Count() == 0)
             {
                 return NoContent();
@@ -67,14 +67,52 @@ public class UsersController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = nameof(Roles.CUSTOMER))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<UserSafeDTO>> UpdateUser(int id, [FromBody] UserSafeDTO userDto)
     {
-        var updatedUser = await _userService.UpdateAsync(id, userDto);
+        var updatedUser = new UserSafeDTO();
+        if (User.IsInRole("ADMIN"))
+        {
+            updatedUser = await _userService.UpdateAsync(id, userDto, true);
+        }
+        else
+        {
+            updatedUser = await _userService.UpdateAsync(id, userDto);
+        }
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("{id}/approve")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> ApproveUser(int id)
+    {
+        var updatedUser = await _userService.ApproveAsync(id);
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("{id}/deactivate")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> DeactivateUser(int id)
+    {
+        var  updatedUser = await _userService.DeactivateAsync(id);
 
         if (updatedUser == null)
             return StatusCode(StatusCodes.Status404NotFound);

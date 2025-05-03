@@ -12,4 +12,5 @@ export interface Product {
     isAvailable: boolean;
     productImages?: ProductImage[];
     reviews?: Review[];
+    isActive?: boolean;
 }

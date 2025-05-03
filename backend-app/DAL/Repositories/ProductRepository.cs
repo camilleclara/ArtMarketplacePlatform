@@ -19,25 +19,17 @@ namespace DAL.Repositories
 
         public async Task<int> DeleteById(int id)
         {
+           
+            await _context.ProductImages
+                  .Where(img => img.ProductId == id)
+                  .ExecuteDeleteAsync();
+
+            // Supprimer le produit ensuite
             var result = await _context.Products
-                                     .Where(p => p.Id == id)
-                                     .ExecuteDeleteAsync();
+                                       .Where(p => p.Id == id)
+                                       .ExecuteDeleteAsync();
+
             return result;
-
-            //Soft delete
-            //Product product = await _context.Products.FindAsync(id);
-
-            //if (product == null || !product.IsActive)
-            //{
-            //    // Le produit n'existe pas ou est déjà marqué comme supprimé
-            //    throw new ArgumentException("No product was found with this id.");
-            //    //TODO throw exception
-            //}
-            //// Marquer comme supprimé en définissant IsDeleted à true
-            //product.IsActive = false;
-            //// Mettre à jour dans la base de données
-            //_context.Products.Update(product);
-            //await _context.SaveChangesAsync();
 
 
         }
@@ -46,6 +38,13 @@ namespace DAL.Repositories
         {
             return await _context.Products
                 .Where(p=>p.IsActive)
+                .Include(p => p.Artisan)
+                .Include(p => p.ProductImages)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Product>> GetAllAdmin()
+        {
+            return await _context.Products
                 .Include(p => p.Artisan)
                 .Include(p => p.ProductImages)
                 .ToListAsync();
@@ -149,6 +148,21 @@ namespace DAL.Repositories
 
             return (storedProduct);
         }
+
+        public async Task<Product> ApproveById(int id)
+        {
+            var storedProduct = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
+            if (storedProduct == null)
+            {
+                throw new ArgumentException();//TODO throw error not found
+            }
+            storedProduct.IsActive = true;
+            _context.Products.Update(storedProduct);
+            await SaveChanges();
+            return (storedProduct);
+        }
+
+
 
         public async Task SaveChanges()
         {

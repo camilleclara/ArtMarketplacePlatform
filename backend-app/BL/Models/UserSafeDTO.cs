@@ -10,5 +10,6 @@
         public string? UserType { get; set; }
         public int? OrdersPlaced { get; set; }
         public int? OrdersFulfilled { get; set; }
+        public bool? isActive { get; set; }
     }
 }

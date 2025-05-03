@@ -7,9 +7,6 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link" href="/dashboard-customer">Products</a>
-          @if(isAdmin()){
-            <a class="nav-link" href="/admin">Admin</a>
-          }
           @if(isLoggedIn()){
             @if(!isCustomer()){
               <a class="nav-link" href="/dashboard">Dashboard</a>

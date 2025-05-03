@@ -17,7 +17,7 @@ export class MessageService {
 
   sendMessage(message: Message){
     console.log(message);
-    return this.http.post<Message>(`https://localhost:7279/api/Message`, message);
+    return this.http.post<Message>(`https://localhost:7279/Message`, message);
   }
   getChats(messages: Message[], currentUserId: number): Chat[] {
     // Vérifier si nous avons des messages

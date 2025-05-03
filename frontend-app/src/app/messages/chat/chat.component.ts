@@ -25,6 +25,9 @@ export class ChatComponent {
       message: ['', Validators.required]
     });
   }
+  // ngOnInit(){
+  //   console.log("ok")
+  // }
   sendMessage(){
     if (this.messageForm.valid) {
       const messageContent = this.messageForm.value.message.trim();
@@ -38,7 +41,7 @@ export class ChatComponent {
           created: new Date()
         }
         this.chat.messages.push(newMsg);
-        this.messageService.sendMessage(newMsg)
+        this.messageService.sendMessage(newMsg).subscribe(resp => console.log(resp))
         this.messageForm.reset(); // Reset pour vider l'input après envoi
       }
     }

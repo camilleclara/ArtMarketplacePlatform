@@ -9,16 +9,21 @@ import { ToastService } from '../toast/toast.service';
 import { UserService } from './user.service';
 import { User } from '../models/user.model';
 import { OrdersComponent } from '../orders/orders.component';
+import { ChatComponent } from '../messages/chat/chat.component';
+import { Chat } from '../models/chat.model';
+import { MessageService } from '../messages/message.service';
+import { Message } from '../models/message.model';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ToastComponent, OrdersComponent],
+  imports: [CommonModule, ReactiveFormsModule, ToastComponent, OrdersComponent, ChatComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
   viewOrders: boolean = false;
+  messaging: boolean = false;
   user: Partial<User> | null = null;
   userId: number = 0;
   isCurrentUser: boolean = false;
@@ -28,6 +33,15 @@ export class ProfileComponent {
   editMode: boolean = false;
   profileForm!: FormGroup;
   ordersCount: number = 0;
+  currentUserId: number = 0;
+  currentChat: Chat = {
+    otherUser: {
+      id: 0,
+      firstName: '',
+      lastName: ''
+    },
+    messages: []
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -35,11 +49,14 @@ export class ProfileComponent {
     private userService: UserService,
     private authService: AuthenticationService,
     private fb: FormBuilder,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.isCustomer = this.authService.isCustomer();
+    this.currentUserId = this.authService.getUserId();
+    
     this.route.params.subscribe(params => {
       this.userId = +params['id'];
       if (this.userId) {
@@ -59,6 +76,27 @@ export class ProfileComponent {
         this.loading = false;
         this.isCurrentUser = this.authService.getUserId() === userId.toString();
         this.initForm();
+        this.messageService.getMessagesByUserId(this.currentUserId)
+          .subscribe((messages: Message[]) => {
+            var chats = this.messageService.getChats(messages, this.currentUserId);
+            const foundChat = chats.find(c => c.otherUser.id === this.user?.id);
+            if (foundChat) {
+              this.currentChat = foundChat;
+            } else {
+              this.currentChat= {
+                otherUser: {
+                  id: this.user?.id?this.user?.id: 0,
+                  firstName: this.user?.firstName?this.user?.firstName: '',
+                  lastName: this.user?.lastName?this.user?.lastName: ''
+                },
+                messages: []
+              }
+              
+            }
+            console.log(this.currentChat);
+          }, (error) => {
+            console.error("Erreur de récupération des messages:", error);
+          });
       },
       error: (err) => {
         this.error = "Impossible de charger les détails de l'utilisateur";
@@ -124,5 +162,13 @@ export class ProfileComponent {
 
   hideOrders(){
     this.viewOrders = false;
+  }
+
+  startMessaging(){
+    this.messaging = true;
+  }
+
+  hideMessaging(){
+    this.messaging = false;
   }
 }

@@ -36,6 +36,7 @@ dashboard
             [X]View one product details
                 [X]If I have already purchased it, I can leave a review
             [X]View artisan's profile
+                [ ] Envoyer un message à l'artisan
             [X] View & edit my own profile
         Create a basket of products
             [X]Add, remove from the basket
@@ -44,18 +45,24 @@ dashboard
             [X]order confirmation & payment sumaary
         View my orders + delivery status
             [X] Get all my orders + delivery status and dipslay
-            [ ] Make sure as a customer I can only update to "RECEIVED"
+            [X] Make sure as a customer I can only update to "RECEIVED"
+            
+    Admin
+        [ ]Manage users (approve, deactivate accounts)
+        [ ]Manage products (approve or delete)
+        [ ]View statistics, products trends and user activities 
     delivery-partner
         [ ]View orders assigned for delivery (+ filter on status or other attribute)
         [ ]Coordinate Pickup with Artisans
         [ ]Update delivery Status
         [ ]View the status of the deliveries
-    Admin
-        [ ]Manage users (approve, deactivate accounts)
-        [ ]Manage products (approve or delete)
-        [ ]View statistics, products trends and user activities 
+
     Artisan
         [ ]Financial report
+    Delivery -> à domicile ou en point relais
+         - Ajouter au modèle delivery db et code front, code back
+         - Demander de choisir ou moment de la confirmation de paiement
+         - 
 
 
    ```bash

@@ -83,12 +83,12 @@ public class MessageController : ControllerBase
         }
     }
 
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpGet("user/{userId}")]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetMessageByArtisanId(int userId)
+    public async Task<IActionResult> GetMessageByUserId(int userId)
     {
         try
         {
@@ -104,7 +104,7 @@ public class MessageController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]

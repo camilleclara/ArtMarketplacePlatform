@@ -1,5 +1,3 @@
-import { Product } from "./product.model";
-
 export interface User {
     id: number;
     firstName: string;
@@ -11,3 +9,16 @@ export interface User {
     userType: string;
     isActive?: boolean;
 }
+
+export enum UserType {
+    CUSTOMER = 'CUSTOMER',
+    ARTISAN = 'ARTISAN',
+    ADMIN = 'ADMIN',
+    DELIVERY_PARTNER = 'DELIVERYPARTNER'
+  }
+  
+  export interface UserTypeOption {
+    value: string;
+    label: string;
+    badgeClass: string;
+  }

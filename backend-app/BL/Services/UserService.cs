@@ -40,7 +40,7 @@ namespace BL.Services
         public async Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO userToUpdate, bool adminRights = false)
         {
             var userToUpdateEntity = _mapper.Map<User>(userToUpdate);
-            await _repository.Update(id, userToUpdateEntity);
+            await _repository.Update(id, userToUpdateEntity, adminRights);
             return _mapper.Map<UserSafeDTO>(userToUpdateEntity);
         }
 

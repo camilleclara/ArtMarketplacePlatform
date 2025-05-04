@@ -1,35 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { User } from '../../models/user.model';
+import { User, UserTypeOption } from '../../models/user.model';
 import { AdminService } from '../admin.service';
+import { EditUserModalComponent } from '../../modal/edit-user-modal.component.ts/edit-user-modal.component';
+import { ModalService } from '../../modal/modal.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserTypeService } from '../../login/user-type.service';
 
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, EditUserModalComponent],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent {
   users: User[] = [];
   filteredUsers: User[] = [];
-  editingUser: User | null = null;
   isLoading: boolean = false;
   searchTerm: string = '';
   filterRole: string = '';
+  userTypeOptions: UserTypeOption[] = [];
   
-  userForm: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.required]),
-    lastName: new FormControl('', [Validators.required]),
-    login: new FormControl('', [Validators.required, Validators.email]),
-    userType: new FormControl('', [Validators.required])
-  });
-
-  constructor(private adminService: AdminService) { }
+  constructor(
+    private adminService: AdminService,
+    private modalService: ModalService,
+    public userTypeService: UserTypeService
+  ) { }
 
   ngOnInit(): void {
     this.loadUsers();
+    this.userTypeOptions = this.userTypeService.getAllUserTypes();
   }
 
   loadUsers(): void {
@@ -71,13 +73,33 @@ export class AdminUsersComponent {
   }
 
   editUser(user: User): void {
-    this.editingUser = {...user};
-    this.userForm.patchValue({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      login: user.login,
-      userType: user.userType
+    const modalRef = this.modalService.openModal(EditUserModalComponent);
+    modalRef.componentInstance.user = {...user};
+    
+    // S'abonner à l'événement userSaved émis par la modale
+    modalRef.componentInstance.userSaved.subscribe((updatedUser: User) => {
+      this.adminService.updateUser(updatedUser.id, updatedUser).subscribe({
+        next: () => {
+          this.loadUsers();
+        },
+        error: (error) => {
+          console.error('Error updating user', error);
+        }
+      });
     });
+    
+    // S'assurer que nous rechargeons la liste après la fermeture de la modale
+    // (au cas où l'utilisateur est enregistré via la modale)
+    modalRef.result.then(
+      (result) => {
+        // Modale fermée avec le bouton "Enregistrer"
+        this.loadUsers();
+      },
+      (reason) => {
+        // Modale fermée autrement (annulée, clôturée, etc.)
+        console.log('Modal dismissed');
+      }
+    ).catch(error => console.error('Modal error', error));
   }
 
   approveUser(userId: number): void {
@@ -104,34 +126,5 @@ export class AdminUsersComponent {
         }
       });
     }
-  }
-
-  saveUser(): void {
-    if (this.userForm.invalid || !this.editingUser) {
-      return;
-    }
-
-    const updatedUser: User = {
-      ...this.editingUser,
-      firstName: this.userForm.value.firstName,
-      lastName: this.userForm.value.lastName,
-      login: this.userForm.value.login,
-      userType: this.userForm.value.userType
-    };
-
-    this.adminService.updateUser(updatedUser.id, updatedUser).subscribe({
-      next: () => {
-        this.cancelEdit();
-        this.loadUsers();
-      },
-      error: (error) => {
-        console.error('Error updating user', error);
-      }
-    });
-  }
-
-  cancelEdit(): void {
-    this.editingUser = null;
-    this.userForm.reset();
   }
 }

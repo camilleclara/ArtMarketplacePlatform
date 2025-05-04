@@ -61,8 +61,6 @@ namespace DAL.Repositories
             if (adminRights)
             {
                 storedUser.Login = entityUpdated.Login;
-                storedUser.Salt = entityUpdated.Salt;
-                storedUser.HashedPassword = entityUpdated.HashedPassword;
                 storedUser.IsActive = entityUpdated.IsActive;
                 storedUser.UserType = entityUpdated.UserType;
             }

@@ -24,6 +24,7 @@ export class AdminService {
   }
 
   updateUser(userId: number, user: User): Observable<User> {
+    console.log(user);
     return this.http.put<User>(`${this.baseUrl}/api/Users/${userId}`, user);
   }
 

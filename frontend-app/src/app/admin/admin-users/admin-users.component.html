@@ -1,226 +1,118 @@
 <div class="container-fluid">
-    <h2 class="mb-4">Gestion des Utilisateurs</h2>
-  
-    <!-- Search and filter bar -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <div class="input-group">
-          <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-          </svg></span>
-          <input 
-            type="text" 
-            class="form-control" 
-            placeholder="Rechercher un utilisateur..."
-            (input)="onSearch($event)">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="btn-group" role="group">
-          <button 
-            class="btn btn-outline-secondary" 
-            [class.active]="filterRole === ''"
-            (click)="onFilterRole('')">
-            Tous
-          </button>
-          <button 
-            class="btn btn-outline-secondary" 
-            [class.active]="filterRole === 'CUSTOMER'"
-            (click)="onFilterRole('CUSTOMER')">
-            Clients
-          </button>
-          <button 
-            class="btn btn-outline-secondary" 
-            [class.active]="filterRole === 'ARTISAN'"
-            (click)="onFilterRole('ARTISAN')">
-            Artisans
-          </button>
-          <button 
-            class="btn btn-outline-secondary" 
-            [class.active]="filterRole === 'ADMIN'"
-            (click)="onFilterRole('ADMIN')">
-            Admins
-          </button>
-          <button 
-          class="btn btn-outline-secondary" 
-          [class.active]="filterRole === 'DELIVERYPARTNER'"
-          (click)="onFilterRole('DELIVERYPARTNER')">
-          Livreurs
-        </button>
-        </div>
+  <h2 class="mb-4">Gestion des Utilisateurs</h2>
+
+  <!-- Search and filter bar -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg></span>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Rechercher un utilisateur..."
+          (input)="onSearch($event)">
       </div>
     </div>
-  
-    @if (isLoading) {
-      <div class="d-flex justify-content-center my-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Chargement...</span>
-        </div>
+    <div class="col-md-6">
+      <div class="btn-group" role="group">
+        <button 
+          class="btn btn-outline-secondary" 
+          [class.active]="filterRole === ''"
+          (click)="onFilterRole('')">
+          Tous
+        </button>
+        @for (option of userTypeOptions; track option.value) {
+          <button 
+            class="btn btn-outline-secondary" 
+            [class.active]="filterRole === option.value"
+            (click)="onFilterRole(option.value)">
+            {{ option.label }}
+          </button>
+        }
       </div>
-    } @else if (!filteredUsers.length) {
-      <div class="alert alert-info" role="alert">
-        Aucun utilisateur trouvé
-      </div>
-    } @else {
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="table-light">
-            <tr>
-              <th>#</th>
-              <th>Nom</th>
-              <th>Email</th>
-              <th>Rôle</th>
-              <th>Commandes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (user of filteredUsers; track user.id) {
-              <tr>
-                <td>{{ user.id }}</td>
-                <td>
-                    @if (user.isActive) {
-                      {{ user.firstName }} {{ user.lastName }}
-                    } @else {
-                      <del>{{ user.firstName }} {{ user.lastName }}</del>
-                    }
-                  </td>
-                <td>{{ user.login }}</td>
-                <td>
-                  <span [class]="
-                    user.userType === 'ADMIN' ? 'badge bg-danger' : 
-                    user.userType === 'ARTISAN' ? 'badge bg-success' : 
-                    'badge bg-primary'
-                  ">
-                    {{ user.userType }}
-                  </span>
-                </td>
-                <td>
-                  <span class="badge bg-secondary me-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
-                        <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9zM1 7v1h14V7zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5"/>
-                      </svg>{{ user.ordersPlaced || 0 }}
-                  </span>
-                  <span class="badge bg-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                      </svg> {{ user.ordersFulfilled || 0 }}
-                  </span>
-                </td>
-                <td>
-                  <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-secondary" (click)="editUser(user)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                          </svg>
-                    </button>
-                    <button class="btn btn-sm btn-outline-success" (click)="approveUser(user.id)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                          </svg>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" (click)="deactivateUser(user.id)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                          </svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-  
-    <!-- Modal for editing user -->
-    @if (editingUser) {
-      <div class="modal d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modifier l'utilisateur</h5>
-              <button type="button" class="btn-close" (click)="cancelEdit()"></button>
-            </div>
-            <div class="modal-body">
-              <form [formGroup]="userForm">
-                <div class="mb-3">
-                  <label for="firstName" class="form-label">Prénom</label>
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="firstName"
-                    formControlName="firstName">
-                  @if (userForm.get('firstName')?.invalid && 
-                       userForm.get('firstName')?.errors && 
-                       (userForm.get('firstName')?.dirty || userForm.get('firstName')?.touched)) {
-                    <small class="text-danger">
-                      Ce champ est requis.
-                    </small>
-                  }
-                </div>
-  
-                <div class="mb-3">
-                  <label for="lastName" class="form-label">Nom</label>
-                  <input 
-                    type="text" 
-                    class="form-control"
-                    id="lastName"
-                    formControlName="lastName">
-                  @if (userForm.get('lastName')?.invalid && 
-                       userForm.get('lastName')?.errors && 
-                       (userForm.get('lastName')?.dirty || userForm.get('lastName')?.touched)) {
-                    <small class="text-danger">
-                      Ce champ est requis.
-                    </small>
-                  }
-                </div>
-  
-                <div class="mb-3">
-                  <label for="login" class="form-label">Email</label>
-                  <input 
-                    type="email" 
-                    class="form-control"
-                    id="login"
-                    formControlName="login">
-                  @if (userForm.get('login')?.invalid && 
-                       userForm.get('login')?.errors && 
-                       (userForm.get('login')?.dirty || userForm.get('login')?.touched)) {
-                    <small class="text-danger">
-                      Email invalide.
-                    </small>
-                  }
-                </div>
-  
-                <div class="mb-3">
-                  <label for="role" class="form-label">Rôle</label>
-                  <select 
-                    class="form-select"
-                    id="role"
-                    formControlName="userType">
-                    <option value="CUSTOMER">Client</option>
-                    <option value="ARTISAN">Artisan</option>
-                    <option value="ADMIN">Administrateur</option>
-                    <option value="DELIVERYPARTNER">Partenaire livraison</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
-              <button 
-                type="button" 
-                class="btn btn-primary" 
-                [disabled]="userForm.invalid"
-                (click)="saveUser()">
-                Enregistrer
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    }
+    </div>
   </div>
+
+  @if (isLoading) {
+    <div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  } @else if (!filteredUsers.length) {
+    <div class="alert alert-info" role="alert">
+      Aucun utilisateur trouvé
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Login</th>
+            <th>Rôle</th>
+            <th>Commandes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filteredUsers; track user.id) {
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>
+                  @if (user.isActive) {
+                    {{ user.firstName }} {{ user.lastName }}
+                  } @else {
+                    <del>{{ user.firstName }} {{ user.lastName }}</del>
+                  }
+                </td>
+              <td>{{ user.login }}</td>
+              <td>
+                <span [class]="userTypeService.getBadgeClass(user.userType)">
+                  {{ user.userType }}
+                </span>
+              </td>
+              <td>
+                <span class="badge bg-secondary me-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+                      <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9zM1 7v1h14V7zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5m2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5"/>
+                    </svg>{{ user.ordersPlaced || 0 }}
+                </span>
+                <span class="badge bg-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                      <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                    </svg> {{ user.ordersFulfilled || 0 }}
+                </span>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-secondary" (click)="editUser(user)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                  </button>
+                  <button class="btn btn-sm btn-outline-success" (click)="approveUser(user.id)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                          <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                        </svg>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deactivateUser(user.id)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

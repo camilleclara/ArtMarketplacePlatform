@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <h5 class="modal-title">Modifier l'utilisateur</h5>
+    <button type="button" class="btn-close" (click)="cancel()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm">
+      <div class="mb-3">
+        <label for="firstName" class="form-label">Prénom</label>
+        <input 
+          type="text" 
+          class="form-control"
+          id="firstName"
+          formControlName="firstName">
+        @if (userForm.get('firstName')?.invalid && 
+             userForm.get('firstName')?.errors && 
+             (userForm.get('firstName')?.dirty || userForm.get('firstName')?.touched)) {
+          <small class="text-danger">
+            Ce champ est requis.
+          </small>
+        }
+      </div>
+  
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Nom</label>
+        <input 
+          type="text" 
+          class="form-control"
+          id="lastName"
+          formControlName="lastName">
+        @if (userForm.get('lastName')?.invalid && 
+             userForm.get('lastName')?.errors && 
+             (userForm.get('lastName')?.dirty || userForm.get('lastName')?.touched)) {
+          <small class="text-danger">
+            Ce champ est requis.
+          </small>
+        }
+      </div>
+  
+      <div class="mb-3">
+        <label for="login" class="form-label">Email</label>
+        <input 
+          type="text" 
+          class="form-control"
+          id="login"
+          formControlName="login">
+        @if (userForm.get('login')?.invalid && 
+             userForm.get('login')?.errors && 
+             (userForm.get('login')?.dirty || userForm.get('login')?.touched)) {
+          <small class="text-danger">
+            Login invalide.
+          </small>
+        }
+      </div>
+  
+      <div class="mb-3">
+        <label for="role" class="form-label">Rôle</label>
+        <select 
+          class="form-select"
+          id="role"
+          formControlName="userType">
+          @for (option of userTypeOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Annuler</button>
+    <button 
+      type="button" 
+      class="btn btn-primary" 
+      [disabled]="userForm.invalid"
+      (click)="saveUser()">
+      Enregistrer
+    </button>
+  </div>

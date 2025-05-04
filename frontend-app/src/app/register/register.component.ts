@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthenticationService } from '../login/authentication.service';
 import { Router } from '@angular/router';
 import { UserRegister } from '../models/user-register.model';
+import { UserType } from '../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,9 @@ export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
+  CUSTOMER_ROLE = UserType.CUSTOMER;
+  ARTISAN_ROLE = UserType.ARTISAN;
+  DELIVERY_PARTNER_ROLE = UserType.DELIVERY_PARTNER;
 
   constructor(private authService: AuthenticationService, private router: Router) {
     this.registerForm = new FormGroup({

@@ -7,12 +7,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../login/authentication.service';
 import { ToastService } from '../toast/toast.service';
 import { UserService } from './user.service';
-import { User } from '../models/user.model';
+import { User, UserType } from '../models/user.model';
 import { OrdersComponent } from '../orders/orders.component';
 import { ChatComponent } from '../messages/chat/chat.component';
 import { Chat } from '../models/chat.model';
 import { MessageService } from '../messages/message.service';
 import { Message } from '../models/message.model';
+import { UserTypeService } from '../login/user-type.service';
 
 @Component({
   selector: 'app-profile',
@@ -50,7 +51,7 @@ export class ProfileComponent {
     private authService: AuthenticationService,
     private fb: FormBuilder,
     private toastService: ToastService,
-    private messageService: MessageService
+    private messageService: MessageService,  private userTypeService: UserTypeService
   ) {}
 
   ngOnInit(): void {
@@ -170,5 +171,24 @@ export class ProfileComponent {
 
   hideMessaging(){
     this.messaging = false;
+  }
+
+  isUserCustomer(): boolean {
+    return this.user?.userType === UserType.CUSTOMER;
+  }
+
+  // Getter pour vérifier si l'utilisateur est un artisan
+  isUserArtisan(): boolean {
+    return this.user?.userType === UserType.ARTISAN;
+  }
+
+  getUserTypeLabel(): string {
+    if (!this.user) return '';
+    return this.userTypeService.getLabel(this.user.userType ?? 'INCONNU');
+  }
+
+  getUserTypeBadgeClass(): string {
+    if (!this.user) return '';
+    return this.userTypeService.getBadgeClass(this.user.userType ?? 'INCONNU');
   }
 }

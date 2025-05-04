@@ -1,0 +1,122 @@
+<div class="modal d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier le produit</h5>
+          <button type="button" class="btn-close" (click)="cancelEdit()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="productForm">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Nom</label>
+                  <input 
+                    type="text" 
+                    class="form-control"
+                    id="name"
+                    formControlName="name">
+                  @if (productForm.get('name')?.invalid && 
+                       productForm.get('name')?.errors && 
+                       (productForm.get('name')?.dirty || productForm.get('name')?.touched)) {
+                    <small class="text-danger">
+                      Ce champ est requis.
+                    </small>
+                  }
+                </div>
+  
+                <div class="mb-3">
+                  <label for="price" class="form-label">Prix</label>
+                  <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input 
+                      type="number" 
+                      class="form-control"
+                      id="price"
+                      min="0"
+                      step="0.01"
+                      formControlName="price">
+                  </div>
+                  @if (productForm.get('price')?.invalid && 
+                       productForm.get('price')?.errors && 
+                       (productForm.get('price')?.dirty || productForm.get('price')?.touched)) {
+                    <small class="text-danger">
+                      Prix invalide.
+                    </small>
+                  }
+                </div>
+  
+                <div class="mb-3">
+                  <label for="category" class="form-label">Catégorie</label>
+                  <select 
+                    class="form-select"
+                    id="category"
+                    formControlName="category">
+                    @for (cat of categories; track cat) {
+                      <option [value]="cat">{{ cat }}</option>
+                    }
+                  </select>
+                </div>
+  
+                <div class="mb-3">
+                  <div class="form-check form-switch">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      id="isAvailable"
+                      formControlName="isAvailable">
+                    <label class="form-check-label" for="isAvailable">Disponible</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea 
+                    class="form-control"
+                    id="description"
+                    rows="5"
+                    formControlName="description"></textarea>
+                  @if (productForm.get('description')?.invalid && 
+                       productForm.get('description')?.errors && 
+                       (productForm.get('description')?.dirty || productForm.get('description')?.touched)) {
+                    <small class="text-danger">
+                      Ce champ est requis.
+                    </small>
+                  }
+                </div>
+  
+                @if (product && product.productImages && product.productImages.length > 0) {
+                  <div class="mb-3">
+                    <label class="form-label">Images du produit</label>
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (image of product.productImages; track image.id) {
+                        <div class="position-relative" style="width: 100px; height: 100px;">
+                          <img [src]="getImageSrc(image)" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                      }
+                    </div>
+                  </div>
+                } @else {
+                  <div class="alert alert-info">
+                    Ce produit n'a pas d'images.
+                  </div>
+                }
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            [disabled]="productForm.invalid"
+            (click)="saveProduct()">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

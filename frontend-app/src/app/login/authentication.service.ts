@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
+import { User, UserType } from '../models/user.model';
 import { UserRegister } from '../models/user-register.model';
 
 @Injectable({
@@ -10,10 +10,10 @@ import { UserRegister } from '../models/user-register.model';
 })
 export class AuthenticationService {
 
-  ARTISAN_ROLE: string = 'ARTISAN';
-  ADMIN_ROLE: string = 'ADMIN';
-  CUSTOMER_ROLE: string = 'CUSTOMER';
-  DELIVERY_ROLE: string = 'DELIVERY_PARTNER';
+  readonly CUSTOMER_ROLE = UserType.CUSTOMER;
+  readonly ARTISAN_ROLE = UserType.ARTISAN;
+  readonly ADMIN_ROLE = UserType.ADMIN;
+  readonly DELIVERY_PARTNER_ROLE = UserType.DELIVERY_PARTNER;
 
 
   constructor(private http: HttpClient) {

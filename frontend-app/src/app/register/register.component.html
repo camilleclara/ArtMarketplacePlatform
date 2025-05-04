@@ -61,9 +61,9 @@
         <label for="role" class="form-label">Role</label>
         <select formControlName="role" class="form-select" id="role">
             <option value="">Select a role</option>
-            <option value="CUSTOMER">Customer</option>
-            <option value="ARTISAN">Artisan</option>
-            <option value="DELIVERY_PARTNER">Delivery Partner</option>
+            <option value=CUSTOMER_ROLE>Customer</option>
+            <option value="ARTISAN_ROLE">Artisan</option>
+            <option value="DELIVERY_PARTNER_ROLE">Delivery Partner</option>
         </select>
         <div>
             @if(registerForm.get('role')?.invalid && (registerForm.get('role')?.dirty || registerForm.get('role')?.touched)){

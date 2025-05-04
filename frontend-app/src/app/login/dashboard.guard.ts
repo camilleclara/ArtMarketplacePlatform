@@ -19,7 +19,7 @@ export const dashboardGuard: CanActivateFn = (route, state) => {
     router.navigate(['/dashboard-admin']);
     return false;
   }
-  else if (role === authService.DELIVERY_ROLE) {
+  else if (role === authService.DELIVERY_PARTNER_ROLE) {
     router.navigate(['/dashboard-delivery']);
     return false;
   }

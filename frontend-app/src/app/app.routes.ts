@@ -26,7 +26,7 @@ export const routes: Routes = [
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard-customer', component: DashboardCustomerComponent},
     {path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard, admGuard]},
-    {path: 'messages', component: MessagesComponent, canActivate: [authGuard, artisanGuard]},
+    {path: 'messages', component: MessagesComponent, canActivate: [authGuard]},
     // {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, artisanGuard]}, -- TODO delivery guard
     // {path: 'dashboard-customer', component: DashboardCustomerComponent, canActivate: [authGuard, artisanGuard]},  --TODO customer guard
     {path: '**', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},

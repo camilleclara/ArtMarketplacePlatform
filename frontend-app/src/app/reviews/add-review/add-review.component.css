@@ -12,11 +12,11 @@
   }
   
   .star-filled {
-    color: #ffc107; /* Couleur jaune pour les étoiles remplies */
+    color: #ffc107; /*étoiles*/
   }
   
   .star-empty {
-    color: #e4e5e9; /* Couleur grise pour les étoiles vides */
+    color: #e4e5e9; /*gris étoiles vides*/
   }
   
   .rating span:hover,
@@ -24,7 +24,7 @@
     color: #ffc107;
   }
   
-  /* Pour éviter que le hover n'affecte les étoiles quand on utilise le ngClass */
+  /* Pour éviter que le hover n'affecte les étoiles*/
   .rating span.star-filled:hover,
   .rating span.star-filled:hover ~ span {
     color: #ffc107;

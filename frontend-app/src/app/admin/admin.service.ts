@@ -28,12 +28,10 @@ export class AdminService {
     return this.http.put<User>(`${this.baseUrl}/api/Users/${userId}`, user);
   }
 
-  //TODO backend
   approveUser(userId: number): Observable<User> {
     return this.http.put<User>(`${this.baseUrl}/api/users/${userId}/approve`, {});
   }
 
-  //TODO backedn
   deactivateUser(userId: number): Observable<User> {
     return this.http.put<User>(`${this.baseUrl}/api/users/${userId}/deactivate`, {});
   }
@@ -60,20 +58,20 @@ export class AdminService {
     return this.http.delete<void>(`${this.baseUrl}/Product/${productId}`);
   }
 
-  // TODO Statistiques
-  // getOrderStatistics(): Observable<any> {
-  //   return this.http.get<any>(`${this.baseUrl}/statistics/orders`);
-  // }
-  
-  // getTrendingProducts(limit: number = 10): Observable<any> {
-  //   return this.http.get<any>(`${this.baseUrl}/statistics/trending-products?limit=${limit}`);
-  // }
-  
-  // getUserActivityStatistics(): Observable<any> {
-  //   return this.http.get<any>(`${this.baseUrl}/statistics/user-activity`);
-  // }
 
-  // getRecentOrders(limit: number = 10): Observable<Order[]> {
-  //   return this.http.get<Order[]>(`${this.baseUrl}/statistics/recent-orders?limit=${limit}`);
-  // }
+  getOrderStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/statistics/orders`);
+  }
+  
+  getTrendingProducts(limit: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/statistics/trending-products?limit=${limit}`);
+  }
+  
+  getUserActivityStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/statistics/user-activity`);
+  }
+
+  getRecentOrders(limit: number = 10): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.baseUrl}/api/statistics/recent-orders?limit=${limit}`);
+  }
 }

@@ -1,1 +1,299 @@
-<p>admin-statistics works!</p>
+<div class="container-fluid">
+    <h2 class="mb-4">Tableau de Bord</h2>
+  
+    @if (isLoading) {
+      <div class="d-flex justify-content-center my-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    } @else {
+      <!-- Statistics Cards -->
+      <div class="row mb-4">
+        @if (orderStats) {
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Commandes Total</h6>
+                    <h3 class="mb-0">{{ orderStats.totalOrders }}</h3>
+                  </div>
+                  <div class="bg-primary bg-opacity-10 p-3 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                      </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Chiffre d'affaires</h6>
+                    <h3 class="mb-0">{{ orderStats.totalRevenue | currency:'EUR':'symbol':'1.0-0' }}</h3>
+                  </div>
+                  <div class="bg-success bg-opacity-10 p-3 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+                        <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2z"/>
+                      </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+  
+        @if (userActivity) {
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Utilisateurs Actifs</h6>
+                    <h3 class="mb-0">{{ userActivity.activeUsers }}</h3>
+                  </div>
+                  <div class="bg-info bg-opacity-10 p-3 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+                      </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Artisans</h6>
+                    <h3 class="mb-0">{{ userActivity.usersByType.ARTISAN }}</h3>
+                  </div>
+                  <div class="bg-warning bg-opacity-10 p-3 rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-palette" viewBox="0 0 16 16">
+                        <path d="M8 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m4 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M5.5 7a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                        <path d="M16 8c0 3.15-1.866 2.585-3.567 2.07C11.42 9.763 10.465 9.473 10 10c-.603.683-.475 1.819-.351 2.92C9.826 14.495 9.996 16 8 16a8 8 0 1 1 8-8m-8 7c.611 0 .654-.171.655-.176.078-.146.124-.464.07-1.119-.014-.168-.037-.37-.061-.591-.052-.464-.112-1.005-.118-1.462-.01-.707.083-1.61.704-2.314.369-.417.845-.578 1.272-.618.404-.038.812.026 1.16.104.343.077.702.186 1.025.284l.028.008c.346.105.658.199.953.266.653.148.904.083.991.024C14.717 9.38 15 9.161 15 8a7 7 0 1 0-7 7"/>
+                      </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+  
+      <div class="row">
+        <!-- Trending Products -->
+        <div class="col-lg-6 mb-4">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0">
+              <h5 class="mb-0">Produits Tendance</h5>
+            </div>
+            <div class="card-body">
+              @if (!trendingProducts || trendingProducts.length === 0) {
+                <div class="text-center py-4">
+                  <p class="text-muted">Aucun produit tendance à afficher</p>
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Produit</th>
+                        <th>Catégorie</th>
+                        <th>Prix</th>
+                        <th>Ventes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (product of trendingProducts; track product.id) {
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              @if (product.productImages && product.productImages.length > 0) {
+                                <img 
+                                  [src]="'data:' + product.productImages[0].mimeType + ';base64,' + product.productImages[0].content" 
+                                  class="rounded me-2" 
+                                  width="40" 
+                                  height="40" 
+                                  style="object-fit: cover;">
+                              } @else {
+                                <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                      </svg>
+                                </div>
+                              }
+                              <span class="fw-medium">{{ product.name }}</span>
+                            </div>
+                          </td>
+                          <td>{{ product.category }}</td>
+                          <td>{{ product.price | currency:'EUR':'symbol' }}</td>
+                          <td>
+                            <span class="badge bg-success">{{ product.salesCount || 0 }}</span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+  
+        <!-- Recent Orders -->
+        <div class="col-lg-6 mb-4">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white border-0">
+              <h5 class="mb-0">Commandes Récentes</h5>
+            </div>
+            <div class="card-body">
+              @if (!recentOrders || recentOrders.length === 0) {
+                <div class="text-center py-4">
+                  <p class="text-muted">Aucune commande récente à afficher</p>
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Client</th>
+                        <th>Artisan</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (order of recentOrders; track order.id) {
+                        <tr>
+                          <td>#{{ order.id }}</td>
+                          <td>{{ order.customerName || 'ID: ' + order.customerId }}</td>
+                          <td>{{ order.artisanName || 'ID: ' + order.artisanId }}</td>
+                          <td>{{ order.total | currency:'EUR':'symbol' }}</td>
+                          <td>
+                            <span >
+                              {{ order.activeDelivery?.deliStatus || 'NEW' }}
+                            </span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- User Activity and Order Distribution -->
+      <div class="row mb-4">
+        @if (userActivity && userActivity.userTypeDistribution) {
+          <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white border-0">
+                <h5 class="mb-0">Distribution des Utilisateurs</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span>Clients</span>
+                    <span>{{ userActivity.userTypeDistribution.CUSTOMER || 0 }}</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-primary" 
+                         [style.width.%]="getPercentage(
+                            userActivity.userTypeDistribution.CUSTOMER || 0,
+                            (userActivity.userTypeDistribution.CUSTOMER || 0) + 
+                            (userActivity.userTypeDistribution.ARTISAN || 0) + 
+                            (userActivity.userTypeDistribution.ADMIN || 0)
+                          )">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span>Artisans</span>
+                    <span>{{ userActivity.userTypeDistribution.ARTISAN || 0 }}</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-success" 
+                         [style.width.%]="getPercentage(
+                            userActivity.userTypeDistribution.ARTISAN || 0,
+                            (userActivity.userTypeDistribution.CUSTOMER || 0) + 
+                            (userActivity.userTypeDistribution.ARTISAN || 0) + 
+                            (userActivity.userTypeDistribution.ADMIN || 0)
+                          )">
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="d-flex justify-content-between mb-1">
+                    <span>Administrateurs</span>
+                    <span>{{ userActivity.userTypeDistribution.ADMIN || 0 }}</span>
+                  </div>
+                  <div class="progress" style="height: 10px;">
+                    <div class="progress-bar bg-danger" 
+                         [style.width.%]="getPercentage(
+                            userActivity.userTypeDistribution.ADMIN || 0,
+                            (userActivity.userTypeDistribution.CUSTOMER || 0) + 
+                            (userActivity.userTypeDistribution.ARTISAN || 0) + 
+                            (userActivity.userTypeDistribution.ADMIN || 0)
+                          )">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+  
+        @if (orderStats && orderStats.categoryDistribution) {
+          <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white border-0">
+                <h5 class="mb-0">Distribution par Catégorie</h5>
+              </div>
+              <div class="card-body">
+                @for (cat of categories; track cat) {
+                  <div class="mb-4">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span>{{ cat }}</span>
+                      <span>{{ orderStats.categoryDistribution[cat] || 0 }}</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                      <div class="progress-bar" 
+                           [ngClass]="{
+                             'bg-primary': cat === 'PAINTING',
+                             'bg-success': cat === 'POTTERY',
+                             'bg-info': cat === 'JEWELS',
+                             'bg-warning': cat === 'CLOTHES',
+                             'bg-danger': cat === 'FURNITURE'
+                           }"
+                           [style.width.%]="getPercentage(
+                              orderStats.categoryDistribution[cat] || 0,
+                              orderStats.totalOrders
+                            )">
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>

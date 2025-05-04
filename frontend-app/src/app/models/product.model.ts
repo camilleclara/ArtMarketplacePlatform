@@ -13,4 +13,5 @@ export interface Product {
     productImages?: ProductImage[];
     reviews?: Review[];
     isActive?: boolean;
+    salesCount?: number;
 }

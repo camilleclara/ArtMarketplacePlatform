@@ -49,7 +49,6 @@ export class CustomerProductDetailComponent {
     this.productService.GetProductById(productId).subscribe({
       next: (product) => {
         this.product = product;
-        console.log(this.product);
         this.loading = false;
         const quantityInBasket = this.basketService.getItemQuantity(productId);
 

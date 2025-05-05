@@ -22,4 +22,8 @@ export class UserService {
     return this.http.get<User[]>(`https://localhost:7279/api/Users/partners`);
   }
 
+  getAllArtisans(): Observable<User[]> {
+    return this.http.get<User[]>(`https://localhost:7279/api/Users/artisans`);
+  }
+
 }

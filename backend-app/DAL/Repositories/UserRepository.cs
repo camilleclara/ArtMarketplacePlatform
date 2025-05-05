@@ -36,6 +36,11 @@ namespace DAL.Repositories
         {
             return await _context.Users.Where(t => t.UserType == "DELIVERYPARTNER").ToListAsync();
         }
+        public async Task<IEnumerable<User>> GetAllArtisans()
+        {
+            return await _context.Users.Where(t => t.UserType == "ARTISAN").ToListAsync();
+        }
+
 
         public async Task<User> GetById(int id)
         {

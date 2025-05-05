@@ -8,5 +8,6 @@ namespace DAL.Repositories.Interfaces
         Task<User> ApproveAsync(int id);
         Task<User> Update(int id, User entity, bool adminRights);
         Task<IEnumerable<User>> GetAllDeliveryPartners();
+        Task<IEnumerable<User>> GetAllArtisans();
     }
 }

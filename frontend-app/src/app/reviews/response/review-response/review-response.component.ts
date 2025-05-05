@@ -37,7 +37,6 @@ export class ReviewResponseComponent {
       content: this.responseForm.get('content')?.value,
       fromArtisan: true
     };
-    console.log(response);
     this.reviewService.createReview(response).subscribe({
       next: (createdReview) => {
         this.responseSubmitted.emit(createdReview);

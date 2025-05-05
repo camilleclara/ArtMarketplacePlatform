@@ -94,7 +94,6 @@ export class ProfileComponent {
               }
               
             }
-            console.log(this.currentChat);
           }, (error) => {
             console.error("Erreur de récupération des messages:", error);
           });

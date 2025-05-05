@@ -93,6 +93,7 @@ namespace DAL.Repositories
             List<Order> storedOrders = await _context.Orders
                 .Where(o => o.Deliveries.Any(d => d.IsActive && d.PartnerId == id))
                 .Include(o => o.Deliveries)
+                .Include(o=> o.Artisan)
                 .Include(o => o.ItemOrders).ThenInclude(io => io.Product)
                 .Include(o => o.Customer)
                 .ToListAsync();

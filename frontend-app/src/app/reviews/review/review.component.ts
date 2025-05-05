@@ -28,7 +28,6 @@ export class ReviewComponent {
     this.setAllowedToComment();
  }
   getProductName(): string {
-    console.log(this.reviewsByProduct)
     return this.reviewsByProduct[0].product.name
   }
 

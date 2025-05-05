@@ -1,1 +1,13 @@
-<p>dashboard-delivery works!</p>
+<div class="container mt-4">
+    <h2>Tableau de bord des livraisons</h2>
+    <p>Bienvenue sur votre espace partenaire de livraison. Gérez vos livraisons en cours.</p>
+    
+    <div class="card mt-4">
+      <div class="card-header">
+        <h3>Mes livraisons</h3>
+      </div>
+      <div class="card-body">
+        <app-orders [displayForDeliveryPartner]="true"></app-orders>
+      </div>
+    </div>
+  </div>

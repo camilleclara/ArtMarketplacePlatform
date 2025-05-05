@@ -56,7 +56,6 @@ export class AdminStatisticsComponent {
       next: (data) => {
         this.userActivity = data;
         this.isLoading = false;
-        console.log(this.userActivity);
       },
       error: (error) => {
         console.error('Error loading user activity', error);

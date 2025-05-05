@@ -7,5 +7,5 @@ export interface Delivery {
     price?: number;
     deliStatus?: DeliveryStatus;
     estimatedDate?: string;
-    deliveryDate?: boolean;
+    deliveryDate?: string;
 }

@@ -3,9 +3,12 @@
     public enum DeliveryStatus
     {
         DELIVERED,
+        RECEIVED,
         SHIPPED,
         PROCESSING,
         CANCELLED,
-        NEW
+        NEW,
+        INTRANSIT
+
     }
 }

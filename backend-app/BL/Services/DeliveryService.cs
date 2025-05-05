@@ -40,7 +40,7 @@ namespace BL.Services
 
         public async Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO deliveryToUpdate)
         {
-            if(deliveryToUpdate.DeliStatus != null && deliveryToUpdate.DeliStatus == DeliveryStatus.DELIVERED.ToString())
+            if(deliveryToUpdate.DeliStatus != null && (deliveryToUpdate.DeliStatus == DeliveryStatus.DELIVERED.ToString()))
             {
                 deliveryToUpdate.DeliveryDate = DateTime.Now;
             }

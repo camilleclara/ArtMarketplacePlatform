@@ -31,6 +31,13 @@ namespace BL.Services
             return userDTOS;
         }
 
+        public async Task<IEnumerable<UserSafeDTO>> GetAllArtisansUsersAsync()
+        {
+            var users = await _repository.GetAllArtisans();
+            var userDTOS = _mapper.Map<IEnumerable<UserSafeDTO>>(users);
+            return userDTOS;
+        }
+
         public async Task<UserSafeDTO> GetByIdAsync(int id)
         {
             var user = await _repository.GetById(id);

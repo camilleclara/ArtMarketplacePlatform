@@ -13,5 +13,6 @@ namespace BL.Services.Interfaces
         Task<UserSafeDTO> UpdateAsync(int id, UserSafeDTO entity, bool adminRights = false);
         Task<int> DeleteAsync(int id);
         Task<IEnumerable<UserSafeDTO>> GetAllDeliveryPartnerUsersAsync();
+        Task<IEnumerable<UserSafeDTO>> GetAllArtisansUsersAsync();
     }
 }

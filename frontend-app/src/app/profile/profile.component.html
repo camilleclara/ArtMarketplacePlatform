@@ -10,7 +10,7 @@
           <li class="breadcrumb-item active" aria-current="page">Profil</li>
         </ol>
         <div>
-         @if(isCurrentUser && isCustomer){
+         @if(isCurrentUser){
           @if(viewOrders){
             <button class="btn btn-outline-primary btn-sm" (click)="hideOrders()">
               Masquer mes commandes
@@ -60,7 +60,7 @@
                 </div>
                 <div>
                   <h4 class="mb-0">{{ user.firstName }} {{ user.lastName }}</h4>
-                  <span class="small text-white-50">{{ user.userType === 'CUSTOMER' ? 'Client' : 'Artisan' }}</span>
+                  <span class="small text-white-50">{{ getUserTypeLabel() }}</span>
                 </div>
               </div>
               @if (isCurrentUser && !editMode) {

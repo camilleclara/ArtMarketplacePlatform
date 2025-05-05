@@ -63,6 +63,7 @@ GO
 CREATE TABLE Deliveries (
     id INT IDENTITY(1,1) PRIMARY KEY,
     order_id INT,
+	partner_id INT,
 	is_active BIT NOT NULL,
     deli_status varchar(255),
     estimated_date DATE,
@@ -121,6 +122,11 @@ GO
 ALTER TABLE Users
 ADD CONSTRAINT UQ_Users_logins UNIQUE (login);
 GO 
+
+ALTER TABLE Deliveries
+ADD CONSTRAINT FK_Deliveries_Partner
+FOREIGN KEY (partner_id) REFERENCES Users(id);
+GO
 
 ALTER TABLE Products
 ADD CONSTRAINT FK_Products_Artisans

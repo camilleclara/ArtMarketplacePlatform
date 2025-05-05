@@ -25,6 +25,8 @@ public partial class User
 
     public DateTime? Created { get; set; }
 
+    public virtual ICollection<Delivery> Deliveries { get; set; } = new List<Delivery>();
+
     public virtual ICollection<DeliveryArtisanPartnership> DeliveryArtisanPartnershipArtisans { get; set; } = new List<DeliveryArtisanPartnership>();
 
     public virtual ICollection<DeliveryArtisanPartnership> DeliveryArtisanPartnershipDeliveryPartners { get; set; } = new List<DeliveryArtisanPartnership>();

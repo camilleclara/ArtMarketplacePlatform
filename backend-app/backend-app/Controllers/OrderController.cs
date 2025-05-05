@@ -43,7 +43,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpGet("{orderId}")]
     [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -128,7 +128,7 @@ public class OrderController : ControllerBase
         }
 
     }
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

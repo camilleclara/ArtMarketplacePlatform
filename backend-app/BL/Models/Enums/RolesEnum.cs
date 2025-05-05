@@ -5,7 +5,7 @@
         USER,
         CUSTOMER,
         ARTISAN,
-        DELIVERY_PARTNER,
+        DELIVERYPARTNER,
         ADMIN
     }
 }

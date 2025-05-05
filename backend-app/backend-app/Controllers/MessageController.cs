@@ -83,7 +83,7 @@ public class MessageController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpGet("user/{userId}")]
     [ProducesResponseType(typeof(IEnumerable<Message>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -104,7 +104,7 @@ public class MessageController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]

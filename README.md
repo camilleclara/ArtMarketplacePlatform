@@ -48,14 +48,19 @@ dashboard
             [X] Make sure as a customer I can only update to "RECEIVED"
             
     Admin
-        [ ]Manage users (approve, deactivate accounts)
-        [ ]Manage products (approve or delete)
-        [ ]View statistics, products trends and user activities 
+        [X]Manage users (approve, deactivate accounts)
+        [X]Manage products (approve or delete)
+        [X]View statistics, products trends and user activities 
     delivery-partner
-        [ ]View orders assigned for delivery (+ filter on status or other attribute)
-        [ ]Coordinate Pickup with Artisans
-        [ ]Update delivery Status
-        [ ]View the status of the deliveries
+        [ ]L'artisan choisi le delivery partner PROCESSING
+        [ ]Le deliveryPartner indique qu'il va chercher la commande ACCEPTED (for delivery)
+        [ ]Le deliverypartner indique qu'il a récupéré la commande + estimation d'heure de livraison PICKED UP
+        [ ]Le deliveryPartner indique que la commande est en cours de livraison IN TRANSIT
+        [ ]Le deliveryPartner indique qu'il a livré la commande (vs reçu pour le customer) DELIVERED
+        [ ]View orders assigned for delivery (+ filter on status or other attribute) RECEIVED
+        [ ]Coordinate Pickup with Artisans -> messages (link to profile)
+        [ ]Update delivery
+        [ ]View the status of the deliveries (GetAllDeliveriesForPartner())
 
     Artisan
         [ ]Financial report

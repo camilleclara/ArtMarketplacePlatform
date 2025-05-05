@@ -15,6 +15,7 @@ import { RegisterComponent } from './register/register.component';
 import { CustomerProductDetailComponent } from './products/customer-product-detail/customer-product-detail.component';
 import { BasketComponent } from './basket/basket/basket.component';
 import { ProfileComponent } from './profile/profile.component';
+import { deliveryGuard } from './login/delivery.guard';
 
 export const routes: Routes = [
     { path: 'basket', component: BasketComponent },
@@ -25,9 +26,11 @@ export const routes: Routes = [
     {path: 'dashboard', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
     {path: 'dashboard-artisan', component: DashboardArtisanComponent, canActivate: [authGuard, artisanGuard]},
     {path: 'dashboard-customer', component: DashboardCustomerComponent},
+    {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, deliveryGuard]},
     {path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [authGuard, admGuard]},
     {path: 'messages', component: MessagesComponent, canActivate: [authGuard]},
     // {path: 'dashboard-delivery', component: DashboardDeliveryComponent, canActivate: [authGuard, artisanGuard]}, -- TODO delivery guard
     // {path: 'dashboard-customer', component: DashboardCustomerComponent, canActivate: [authGuard, artisanGuard]},  --TODO customer guard
     {path: '**', component: DashboardComponent,canActivate: [authGuard, dashboardGuard]},
+    //TODO error page
 ];

@@ -21,5 +21,9 @@ public partial class Delivery
 
     public DateTime? Created { get; set; }
 
+    public int? PartnerId { get; set; }
+
     public virtual Order? Order { get; set; }
+
+    public virtual User? Partner { get; set; }
 }

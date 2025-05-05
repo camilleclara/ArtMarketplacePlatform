@@ -32,6 +32,11 @@ namespace DAL.Repositories
                 .Include(u => u.OrderCustomers).ToListAsync();
         }
 
+        public async Task<IEnumerable<User>> GetAllDeliveryPartners()
+        {
+            return await _context.Users.Where(t => t.UserType == "DELIVERYPARTNER").ToListAsync();
+        }
+
         public async Task<User> GetById(int id)
         {
             var result = await _context.Users

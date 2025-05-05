@@ -26,7 +26,9 @@ export class LoginComponent {
     this.errorMessage = ''; // Reset avant de tenter
     this.authService.Login(this.loginForm.value.userName, this.loginForm.value.password).subscribe({
       next: (response: any) => {
+        console.log(response);
         if(response.token){
+
           sessionStorage.setItem("jwt", response.token);
           this.router.navigate(["/dashboard"]);
         }

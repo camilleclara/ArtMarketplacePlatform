@@ -107,7 +107,7 @@ public class ReviewController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -126,7 +126,7 @@ public class ReviewController : ControllerBase
         }
 
     }
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

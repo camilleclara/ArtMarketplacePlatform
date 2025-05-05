@@ -97,7 +97,7 @@ public class DeliveryController : ControllerBase
         return Ok(updatedDelivery);  // Retourne l'entité mise à jour
     }
 
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPut("status/{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

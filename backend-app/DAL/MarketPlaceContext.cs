@@ -67,10 +67,15 @@ public partial class MarketPlaceContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("last_updated");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
+            entity.Property(e => e.PartnerId).HasColumnName("partner_id");
 
             entity.HasOne(d => d.Order).WithMany(p => p.Deliveries)
                 .HasForeignKey(d => d.OrderId)
                 .HasConstraintName("FK_Deliveries_Orders");
+
+            entity.HasOne(d => d.Partner).WithMany(p => p.Deliveries)
+                .HasForeignKey(d => d.PartnerId)
+                .HasConstraintName("FK__Deliverie__partn__6E01572D");
         });
 
         modelBuilder.Entity<DeliveryArtisanPartnership>(entity =>

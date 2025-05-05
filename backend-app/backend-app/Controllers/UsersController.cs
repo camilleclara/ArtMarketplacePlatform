@@ -46,7 +46,29 @@ public class UsersController : ControllerBase
         }
     }
 
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
+    [HttpGet("partners")]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAllDeliveryPartnerUsers()
+    {
+        try
+        {
+            IEnumerable<UserSafeDTO> lstReturned = await _userService.GetAllDeliveryPartnerUsersAsync();
+            if (lstReturned.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpGet("{userId}")]
     [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,7 +89,7 @@ public class UsersController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
-    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN")]
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

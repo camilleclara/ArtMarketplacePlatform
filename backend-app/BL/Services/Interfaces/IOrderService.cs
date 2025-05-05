@@ -7,6 +7,7 @@ namespace BL.Services.Interfaces
     {
         Task<IEnumerable<OrderDTO>> GetAllAsync();
         Task<IEnumerable<OrderDTO>> GetByCustomerIdAsync(int id);
+        Task<IEnumerable<OrderDTO>> GetByPartnerIdAsync(int id);
         Task<IEnumerable<OrderDTO>> GetByArtisanIdAsync(int id);
         Task<OrderDTO> GetByIdAsync(int id);
         Task<OrderDTO> AddAsync(OrderDTO entity);

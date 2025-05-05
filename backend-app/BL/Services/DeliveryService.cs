@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BL.Models;
+using BL.Models.Enums;
 using BL.Services.Interfaces;
 using DAL.Repositories.Interfaces;
 using Domain;
@@ -39,6 +40,10 @@ namespace BL.Services
 
         public async Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO deliveryToUpdate)
         {
+            if(deliveryToUpdate.DeliStatus != null && deliveryToUpdate.DeliStatus == DeliveryStatus.DELIVERED.ToString())
+            {
+                deliveryToUpdate.DeliveryDate = DateTime.Now;
+            }
             var deliveryToUpdateEntity = _mapper.Map<Delivery>(deliveryToUpdate);
             await _repository.Update(id, deliveryToUpdateEntity);
             return _mapper.Map<DeliveryDTO>(deliveryToUpdateEntity);

@@ -109,6 +109,28 @@ public class OrderController : ControllerBase
         }
     }
 
+    [Authorize(Roles = nameof(Roles.DELIVERYPARTNER))]
+    [HttpGet("partner/{partnerId}")]
+    [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetOrdersByPartnerId(int partnerId)
+    {
+        try
+        {
+            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByPartnerIdAsync(partnerId);
+            if (lstReturned == null)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
     [Authorize(Roles = nameof(Roles.CUSTOMER))]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

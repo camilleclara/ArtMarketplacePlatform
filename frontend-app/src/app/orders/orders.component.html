@@ -7,6 +7,7 @@
 					<th scope="col">Status</th>
 					@if(displayForArtisan){
 						<th scope="col">Client</th>
+						<th scope="col">Partenaire de livraison</th>
 					}
 					@else {
 						<th scope="col">Artisan</th>
@@ -19,23 +20,44 @@
 				@for (o of orders; track o.id; let i = $index) {
 					<tr>
 						<th scope="row">{{o.id}}</th>
-						<!--TODO: change to order model-->
 						<td>
 							@if (editingDeliveryOrderId === o.id) {
 								<form [formGroup]="orderForm">
-									<select formControlName="status" type="text" id="status" class="form-select">
+									<select formControlName="status" type="text" id="status" class="form-select mb-2">
 									  @for (status of allowedStatuses; track $index) {
 										<option [value]="status" [selected]="status === o.activeDelivery?.deliStatus">{{status}}</option>
 									  }
 									</select>
-								  </form>
+								</form>
 							}
 							@else {
 							  {{ o.activeDelivery?.deliStatus || 'NEW' }}
 							}
-						  </td>
+						</td>
 						@if(displayForArtisan){
 							<td>{{ o.customerName }}</td>
+							<td>
+								@if (editingDeliveryOrderId === o.id) {
+									<form [formGroup]="orderForm">
+										<select formControlName="partnerId" class="form-select">
+											<option [ngValue]="null">Non assigné</option>
+											@for (partner of partners; track partner.id) {
+												<option [ngValue]="partner.id" [selected]="partner.id === o.activeDelivery?.partnerId">
+													{{partner.firstName}} {{partner.lastName}}
+												</option>
+											}
+										</select>
+									</form>
+								}
+								@else {
+									@if (o.activeDelivery?.partnerId) {
+										{{ getPartnerName(o.activeDelivery?.partnerId)}}
+									}
+									@else {
+										Non assigné
+									}
+								}
+							</td>
 						}
 						@else {
 							<td>{{ o.artisanName }}</td>
@@ -56,7 +78,7 @@
 							  <button class="btn btn-success mx-2" (click)="onSaveDeliveryStatus(o)">Sauvegarder</button>
 							  <button class="btn btn-outline-secondary mx-2" (click)="onCancelEdit()">Annuler</button>
 							}
-						  </td>
+						</td>
 					</tr>
 				}
 			</tbody>

@@ -88,6 +88,18 @@ namespace DAL.Repositories
             return storedOrders;
         }
 
+        public async Task<IEnumerable<Order>> GetByPartnerId(int id)
+        {
+            List<Order> storedOrders = await _context.Orders
+                .Where(o => o.Deliveries.Any(d => d.IsActive && d.PartnerId == id))
+                .Include(o => o.Deliveries)
+                .Include(o => o.ItemOrders).ThenInclude(io => io.Product)
+                .Include(o => o.Customer)
+                .ToListAsync();
+
+            return storedOrders;
+        }
+
         public async Task<Order> UpdateStatusById(int id, string newStatus)
         {
             throw new NotImplementedException();

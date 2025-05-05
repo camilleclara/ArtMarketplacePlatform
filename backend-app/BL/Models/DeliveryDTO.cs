@@ -8,6 +8,7 @@ namespace BL.Models
         public int Id { get; set; }
 
         public int? OrderId { get; set; }
+        public int? PartnerId { get; set; }
 
         public bool? IsActive { get; set; }
 

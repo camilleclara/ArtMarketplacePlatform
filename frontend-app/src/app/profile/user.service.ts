@@ -18,4 +18,8 @@ export class UserService {
     return this.http.put<User>(`https://localhost:7279/api/Users/${userId}`, user);
   }
 
+  getAllDeliveryPartners(): Observable<User[]> {
+    return this.http.get<User[]>(`https://localhost:7279/api/Users/partners`);
+  }
+
 }

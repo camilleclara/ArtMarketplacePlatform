@@ -52,22 +52,25 @@ dashboard
         [X]Manage products (approve or delete)
         [X]View statistics, products trends and user activities 
     delivery-partner
-        [ ]L'artisan choisi le delivery partner PROCESSING
-        [ ]Le deliveryPartner indique qu'il va chercher la commande ACCEPTED (for delivery)
-        [ ]Le deliverypartner indique qu'il a récupéré la commande + estimation d'heure de livraison PICKED UP
-        [ ]Le deliveryPartner indique que la commande est en cours de livraison IN TRANSIT
-        [ ]Le deliveryPartner indique qu'il a livré la commande (vs reçu pour le customer) DELIVERED
-        [ ]View orders assigned for delivery (+ filter on status or other attribute) RECEIVED
-        [ ]Coordinate Pickup with Artisans -> messages (link to profile)
-        [ ]Update delivery
-        [ ]View the status of the deliveries (GetAllDeliveriesForPartner())
-
+        [X]L'artisan choisi le delivery partner PROCESSING
+        [X]Le deliveryPartner indique qu'il va chercher la commande ACCEPTED (for delivery)
+        [X]Le deliverypartner indique qu'il a récupéré la commande + estimation d'heure de livraison PICKED UP
+        [X]Le deliveryPartner indique que la commande est en cours de livraison IN TRANSIT
+        [X]Le deliveryPartner indique qu'il a livré la commande (vs reçu pour le customer) DELIVERED
+        [X]View orders assigned for delivery (+ filter on status or other attribute) RECEIVED
+        [X]Coordinate Pickup with Artisans -> messages (link to profile)
+        [X]Update delivery
+        [X]View the status of the deliveries (GetAllDeliveriesForPartner())
+    Passer de DB first à code first
+        []Migration qui déclenche la création de la db + remplissage
+        []Test sur laptop
+        []Testing de l'application
     Artisan
         [ ]Financial report
     Delivery -> à domicile ou en point relais
          - Ajouter au modèle delivery db et code front, code back
          - Demander de choisir ou moment de la confirmation de paiement
-         - 
+
 
 
    ```bash

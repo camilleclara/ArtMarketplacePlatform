@@ -52,6 +52,7 @@ namespace DAL.Repositories
             storedDelivery.OrderId = entityUpdated.OrderId;
             storedDelivery.DeliStatus = entityUpdated.DeliStatus;
             storedDelivery.EstimatedDate = entityUpdated.EstimatedDate;
+            if(storedDelivery.DeliveryDate == null) { storedDelivery.DeliveryDate = entityUpdated.DeliveryDate; } 
             storedDelivery.PartnerId = entityUpdated.PartnerId;
             _context.Deliveries.Update(storedDelivery);
             await _context.SaveChangesAsync();

@@ -30,7 +30,7 @@ export class OrderService {
     return this.http.put(`https://localhost:7279/api/Delivery/status/${orderid}`, activeDelivery)
   }
   createOrder(order: any): Observable<any> {
-    console.log(order);
+    console.log("create");
     return this.http.post(`https://localhost:7279/api/Order`, order);
   }
 }

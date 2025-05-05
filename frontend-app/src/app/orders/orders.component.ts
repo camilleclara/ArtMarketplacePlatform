@@ -175,7 +175,7 @@ export class OrdersComponent {
   }
   
   onViewDetails(orderId: number){
-
+    console.log(this.orders);
     this.orderDetails = true;
     this.detailsId = orderId;
   }
@@ -215,49 +215,84 @@ export class OrdersComponent {
   }
   
   onSaveDeliveryStatus(order: Order) {
-    console.log(this.orderForm.get('estimatedDeliveryDate')?.value);
-    if (order.activeDelivery != null){
+    console.log('Données de la livraison avant mise à jour:', order.activeDelivery);
+    
+    if (order.activeDelivery != null) {
+      // Si activeDelivery existe déjà, mettre à jour ses propriétés
       order.activeDelivery.deliStatus = this.orderForm.get('status')?.value;
-      
-      // Ajouter le partenaire de livraison sélectionné
       order.activeDelivery.partnerId = this.orderForm.get('partnerId')?.value;
       
       // Ajouter l'heure estimée de livraison si disponible
       const estimatedTime = this.orderForm.get('estimatedDeliveryDate')?.value;
       order.activeDelivery.estimatedDate = estimatedTime;
-
-    }
-    else {
+    } else {
+      console.log("Creating new delivery");
+      // Créer un nouvel objet activeDelivery uniquement si nécessaire
       order.activeDelivery = { 
-        id: 0, 
+        id: 0, // Pour une nouvelle livraison
         orderId: order.id, 
         deliStatus: this.orderForm.get('status')?.value,
         partnerId: this.orderForm.get('partnerId')?.value,
         estimatedDate: this.orderForm.get('estimatedDeliveryDate')?.value || undefined
-      }
+      };
     }
     
-    console.log('Mise à jour de la commande:', order);
+    console.log('Données envoyées pour mise à jour:', order.activeDelivery);
+    
     this.orderService.UpdateDeliveryStatus(order.id, order.activeDelivery)
       .subscribe({
-        next: (updatedDelivery:any) => {
-          // Mettre à jour l'objet order dans la liste locale
-          const index = this.orders.findIndex(o => o.id === order.id);
-          if (index !== -1) {
-            // Mise à jour de la livraison dans notre liste locale
-            this.orders[index].activeDelivery = updatedDelivery;
-            // Forcer la détection de changement en créant une nouvelle référence
-            this.orders = [...this.orders];
-          }
+        next: (updatedDelivery: any) => {
+          console.log('Réponse du serveur après mise à jour:', updatedDelivery);
+          
+          // Réinitialiser le formulaire et l'état d'édition
           this.editingDeliveryOrderId = null;
-          // Réinitialiser les statuts autorisés après sauvegarde
           this.resetAllowedStatuses();
+          
+          // Forcer le rechargement complet des commandes depuis le backend
+          this.reloadOrders();
         },
         error: (e) => {
-          console.error('Erreur lors de la mise à jour');
-          console.log(e)
+          console.error('Erreur lors de la mise à jour:', e);
         }
       });
+  }
+  
+  // Nouvelle méthode pour recharger les commandes depuis le backend
+  reloadOrders() {
+    if (this.displayForArtisan) {
+      this.orderService.GetOrdersByArtisanId(this.authService.getUserId())
+        .subscribe({
+          next: (response: Order[]) => {
+            console.log('Commandes rechargées depuis le backend:', response);
+            this.orders = response;
+          },
+          error: (error) => {
+            console.error('Erreur lors du rechargement des commandes:', error);
+          }
+        });
+    } else if (this.displayForDeliveryPartner) {
+      this.orderService.GetOrdersByPartnerId(this.authService.getUserId())
+        .subscribe({
+          next: (response: Order[]) => {
+            console.log('Commandes rechargées depuis le backend:', response);
+            this.orders = response;
+          },
+          error: (error) => {
+            console.error('Erreur lors du rechargement des commandes:', error);
+          }
+        });
+    } else {
+      this.orderService.GetOrdersByCustomerId(this.authService.getUserId())
+        .subscribe({
+          next: (response: Order[]) => {
+            console.log('Commandes rechargées depuis le backend:', response);
+            this.orders = response;
+          },
+          error: (error) => {
+            console.error('Erreur lors du rechargement des commandes:', error);
+          }
+        });
+    }
   }
   
   getPartnerName(id: number|undefined){

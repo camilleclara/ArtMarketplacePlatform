@@ -40,10 +40,13 @@ namespace BL.Services
 
         public async Task<DeliveryDTO> UpdateAsync(int id, DeliveryDTO deliveryToUpdate)
         {
-            if(deliveryToUpdate.DeliStatus != null && (deliveryToUpdate.DeliStatus == DeliveryStatus.DELIVERED.ToString()))
+
+            if (deliveryToUpdate.DeliStatus != null && (deliveryToUpdate.DeliStatus == DeliveryStatus.DELIVERED.ToString() || deliveryToUpdate.DeliStatus == DeliveryStatus.RECEIVED.ToString()))
             {
                 deliveryToUpdate.DeliveryDate = DateTime.Now;
             }
+            
+
             var deliveryToUpdateEntity = _mapper.Map<Delivery>(deliveryToUpdate);
             await _repository.Update(id, deliveryToUpdateEntity);
             return _mapper.Map<DeliveryDTO>(deliveryToUpdateEntity);

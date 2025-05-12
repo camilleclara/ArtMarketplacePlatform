@@ -71,8 +71,45 @@ dashboard
          - Ajouter au modèle delivery db et code front, code back
          - Demander de choisir ou moment de la confirmation de paiement
 
-
+dotnet ef migrations add InitialCreate --project DAL --startup-project backend-app
+dotnet ef database update --project DAL --startup-project backend-app
+dotnet ef database update --project DAL --startup-project backend-app
+dotnet ef migrations add AddTriggersToTables --project DAL --startup-project backend-app
+dotnet ef database update
+dotnet ef migrations add SeedInitialData --project DAL --startup-project backend-app
+dotnet ef database update
 
    ```bash
    Scaffold-DbContext "Server=DESKTOP-84DA7B5\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ../Domain -ContextDir ../DAL -Namespace Domain -ContextNamespace DAL -Force
    ```
+
+1. Cloner le dépôt et ouvrir le projet
+Le nouveau développeur doit cloner le dépôt dans son environnement local et ouvrir le projet dans Visual Studio ou dans un éditeur de code comme VS Code.
+
+2. Restaurer les dépendances NuGet
+Avant de pouvoir exécuter des commandes Entity Framework Core (EF Core), le développeur doit restaurer toutes les dépendances du projet.
+
+Dans le terminal (depuis le répertoire du projet), il peut exécuter :
+    dotnet restore
+
+
+3. Configurer la chaîne de connexion de la base de données
+Le développeur doit configurer la chaîne de connexion de la base de données dans le fichier appsettings.json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MarketPlace;Trusted_Connection=True;MultipleActiveResultSets=true"
+    --"MarketPlaceDB": "Server=DESKTOP-84DA7B5\\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True"
+  }
+}
+4. Créer la base de données et appliquer les migrations
+Une fois les dépendances et la chaîne de connexion configurées, le développeur doit créer la base de données et appliquer les migrations de l'application pour la mettre à jour avec toutes les modifications de la base de données.
+
+pour appliquer les migrations :
+
+    dotnet ef database update --project DAL --startup-project backend-app
+
+5. Lancer l'application
+Une fois la base de données mise à jour, le développeur peut lancer l'application normalement en exécutant :
+
+    dotnet run --project backend-app
+Cela démarre l'application dans le mode de développement. Si tout est configuré correctement, l'application sera opérationnelle et utilisera la base de données mise à jour avec les tables et les triggers ajoutés.

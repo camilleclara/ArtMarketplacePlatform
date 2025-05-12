@@ -101,7 +101,7 @@
                                 <button class="btn btn-outline-secondary mx-2" (click)="onHideDetails(o.id)">Cacher les détails</button>
                               }
                               @else {
-                                <button class="btn btn-outline-secondary mx-2" (click)="onViewDetails(o.id)">Voir les détails</button>
+                                <button class="btn btn-outline-secondary mx-2" (click)="onViewDetails(o.id)" [disabled]="detailsId && detailsId !== o.id">Voir les détails</button>
                               }
                             } 
                             @else {

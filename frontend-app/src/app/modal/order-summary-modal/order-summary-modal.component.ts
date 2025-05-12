@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from '../../login/authentication.service';
 import { OrderService } from '../../orders/order.service';
 import { forkJoin } from 'rxjs';
+import { UserService } from '../../profile/user.service';
 
 @Component({
   selector: 'app-order-summary-modal',
@@ -21,6 +22,7 @@ export class OrderSummaryModalComponent {
     public activeModal: NgbActiveModal,
     private router: Router, 
     private authService: AuthenticationService,
+    private userService: UserService,
     private orderService: OrderService
   ) {}
 
@@ -100,5 +102,6 @@ export class OrderSummaryModalComponent {
   getFinalTotal(): number {
     return this.totalPrice + this.getDeliveryCost();
   }
+
 }
 

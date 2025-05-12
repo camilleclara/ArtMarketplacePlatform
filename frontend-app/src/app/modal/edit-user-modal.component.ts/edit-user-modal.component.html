@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Modifier l'utilisateur</h5>
+    <h5 class="modal-title">Modifier un profil</h5>
     <button type="button" class="btn-close" (click)="cancel()"></button>
   </div>
   <div class="modal-body">
@@ -30,6 +30,21 @@
         @if (userForm.get('lastName')?.invalid && 
              userForm.get('lastName')?.errors && 
              (userForm.get('lastName')?.dirty || userForm.get('lastName')?.touched)) {
+          <small class="text-danger">
+            Ce champ est requis.
+          </small>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Adresse</label>
+        <input 
+          type="text" 
+          class="form-control"
+          id="address"
+          formControlName="address">
+        @if (userForm.get('address')?.invalid && 
+             userForm.get('address')?.errors && 
+             (userForm.get('address')?.dirty || userForm.get('address')?.touched)) {
           <small class="text-danger">
             Ce champ est requis.
           </small>

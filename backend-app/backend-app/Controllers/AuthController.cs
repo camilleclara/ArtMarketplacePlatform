@@ -24,10 +24,10 @@ public class AuthController : ControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public void Register(string login, string firstName, string lastName, string password, string role)
+    public void Register(string login, string firstName, string lastName, string password, string role, string address)
     {
 
-        _authenticationService.RegisterUser(login, firstName, lastName, password, role);
+        _authenticationService.RegisterUser(login, firstName, lastName, password, role, address);
     }
 
     [HttpPost("login")]

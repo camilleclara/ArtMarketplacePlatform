@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain;
 
@@ -24,6 +25,9 @@ public partial class User
     public DateTime? LastUpdated { get; set; }
 
     public DateTime? Created { get; set; }
+
+    [Column("full_address")]
+    public string? Address { get; set; }
 
     public virtual ICollection<Delivery> Deliveries { get; set; } = new List<Delivery>();
 

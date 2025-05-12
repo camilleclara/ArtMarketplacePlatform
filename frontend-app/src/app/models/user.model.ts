@@ -7,6 +7,7 @@ export interface User {
     ordersFulfilled: number;
     role: string;
     userType: string;
+    address: string;
     isActive?: boolean;
 }
 

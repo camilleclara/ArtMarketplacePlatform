@@ -27,6 +27,7 @@ export class RegisterComponent {
       lastName: new FormControl('', [Validators.required]),
       login: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
+      address: new FormControl('', [Validators.required]),
       role: new FormControl('', [Validators.required])
     });
   }

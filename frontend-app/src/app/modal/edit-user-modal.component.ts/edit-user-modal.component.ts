@@ -21,7 +21,8 @@ import { UserTypeService } from '../../login/user-type.service';
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     login: new FormControl('', [Validators.required, ]),
-    userType: new FormControl('', [Validators.required])
+    userType: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required])
   });
 
   userTypeOptions: UserTypeOption[] = [];
@@ -40,7 +41,8 @@ import { UserTypeService } from '../../login/user-type.service';
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         login: this.user.login,
-        userType: this.user.userType
+        userType: this.user.userType,
+        address: this.user.address
       });
     }
   }
@@ -55,14 +57,15 @@ import { UserTypeService } from '../../login/user-type.service';
       firstName: this.userForm.value.firstName,
       lastName: this.userForm.value.lastName,
       login: this.userForm.value.login,
-      userType: this.userForm.value.userType
+      userType: this.userForm.value.userType,
+      address: this.userForm.value.address
     };
 
     // Émettre l'événement avec l'utilisateur mis à jour
     this.userSaved.emit(updatedUser);
     
     // Fermer la modale avec le résultat (l'utilisateur mis à jour)
-    // Cela sera capturé par le `result.then()` dans le composant parent
+    // ça sera capturé par le `result.then()` dans le parent
     this.activeModal.close(updatedUser);
   }
 

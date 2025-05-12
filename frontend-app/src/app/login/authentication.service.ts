@@ -59,6 +59,6 @@ export class AuthenticationService {
   }
 
   register(user: UserRegister):Observable<any> {
-    return this.http.post(`https://localhost:7279/api/Auth/register?login=${user.login}&firstName=${user.firstName}&lastName=${user.lastName}&password=${user.password}&role=${user.role}`, user);
+    return this.http.post(`https://localhost:7279/api/Auth/register?login=${user.login}&firstName=${user.firstName}&lastName=${user.lastName}&password=${user.password}&role=${user.role}&address=${user.address}`, user);
   }
 }

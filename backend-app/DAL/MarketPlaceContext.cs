@@ -324,6 +324,10 @@ public partial class MarketPlaceContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("first_name");
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("full_address");
             entity.Property(e => e.HashedPassword)
                 .HasMaxLength(255)
                 .IsUnicode(false)

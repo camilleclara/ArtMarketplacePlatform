@@ -20,6 +20,7 @@ CREATE TABLE Users (
 	salt VARCHAR(255),
 	first_name VARCHAR(255),
 	last_name VARCHAR(50),
+	full_address VARCHAR(255),
 	is_active BIT NOT NULL,
 	user_type varchar(255),
 	last_updated DATETIME DEFAULT GETDATE(),

@@ -66,7 +66,7 @@ namespace BL.Services.Authentication
             return Convert.ToHexString(hash);
         }
 
-        public async Task<UserDTO> RegisterUser(string login, string firstName, string lastName,string password, string role)
+        public async Task<UserDTO> RegisterUser(string login, string firstName, string lastName,string password, string role, string address)
         {
             //if (users.Any(user => user.Username.ToLower() == username.ToLower()))
             //{
@@ -74,7 +74,7 @@ namespace BL.Services.Authentication
             //}
             var salt = DateTime.Now.ToString("dddd"); // get the day of week. Ex: Sunday
             var passwordHash = HashPassword(password, salt);
-            var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, role);
+            var newUser = new UserDTO(login,firstName,lastName, passwordHash, salt, role, address);
             var user = _mapper.Map<User>(newUser);
             user.IsActive = true;
             await _context.Users.AddAsync(user);

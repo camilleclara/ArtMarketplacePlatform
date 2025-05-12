@@ -68,6 +68,7 @@ namespace DAL.Repositories
             }
             storedUser.FirstName = entityUpdated.FirstName;
             storedUser.LastName = entityUpdated.LastName;
+            storedUser.Address = entityUpdated.Address;
             if (adminRights)
             {
                 storedUser.Login = entityUpdated.Login;

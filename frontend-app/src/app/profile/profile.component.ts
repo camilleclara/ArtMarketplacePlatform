@@ -110,7 +110,8 @@ export class ProfileComponent {
 
     this.profileForm = this.fb.group({
       firstName: [this.user.firstName, [Validators.required, Validators.minLength(2)]],
-      lastName: [this.user.lastName, [Validators.required, Validators.minLength(2)]]
+      lastName: [this.user.lastName, [Validators.required, Validators.minLength(2)]],
+      address: [this.user.address, [Validators.required, Validators.minLength(2)]]
     });
   }
 
@@ -136,6 +137,7 @@ export class ProfileComponent {
       ...this.user,
       firstName: this.profileForm.value.firstName,
       lastName: this.profileForm.value.lastName,
+      address: this.profileForm.value.address,
 
     };
 

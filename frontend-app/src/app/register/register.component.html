@@ -44,6 +44,17 @@
             }
         </div>
     </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <input formControlName="address" type="text" class="form-control" id="address">
+        <div>
+            @if(registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)){
+                @if(registerForm.get('address')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
 
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
@@ -61,9 +72,9 @@
         <label for="role" class="form-label">Role</label>
         <select formControlName="role" class="form-select" id="role">
             <option value="">Select a role</option>
-            <option value=CUSTOMER_ROLE>Customer</option>
-            <option value="ARTISAN_ROLE">Artisan</option>
-            <option value="DELIVERY_PARTNER_ROLE">Delivery Partner</option>
+            <option value=CUSTOMER>Customer</option>
+            <option value="ARTISAN">Artisan</option>
+            <option value="DELIVERY_PARTNER">Delivery Partner</option>
         </select>
         <div>
             @if(registerForm.get('role')?.invalid && (registerForm.get('role')?.dirty || registerForm.get('role')?.touched)){

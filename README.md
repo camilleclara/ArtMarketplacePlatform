@@ -26,7 +26,7 @@ Le backend est une webapi .NET core, utilisant EntityFramework pour les interact
 
 6. Ouvrir le projet frontend-app dans VS Code
 
-7. Assurez-vous que l'url et le port ciblant le backend sont corrects (dans le fichier)
+7. Assurez-vous que l'url et le port ciblant le backend sont corrects (baseUrl dans le fichier environment.ts)
 
 7. Installer les dépendances nécessaires
 ```npm install```

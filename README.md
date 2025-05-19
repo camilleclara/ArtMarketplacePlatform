@@ -1,115 +1,70 @@
 # ArtMarketplacePlatform
-dotnet ef dbcontext scaffold "Server=DESKTOP-84DA7B5\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --context MarketPlaceContext --force
 
-dotnet ef dbcontext scaffold Name=MarketPlaceDB Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --context MarketPlaceContext --force
+ArtMarketPlacePlatform est une application pour un MarketPlace en ligne, où des artisans peuvent mettre en vente des produits qui seront rendus disponibles aux utilisateurs.
 
-dashboard 
-    artisan
-        display all my products
-            Display
-            Edition
-            Creation
-            -> Images:
-                [X] Aligner sur la droite
-                [X] Bouton pour ajouter des images
-                [X] Bouton pour supprimer
-                [X] Bouton apparait au hover
+Le frontend est une application angular, utilisant bootstrap.
+Le backend est une webapi .NET core, utilisant EntityFramework pour les interactions avec la base de données
 
-        display all my orders
-            [X] Display orders for my products
-                [X] GetOrdersByArtisanId 
-                    [X] include products via item_orders
-                    [X] include the total amount
-            [X] Update the status "in production", "shipped", ...
-        display all my customers reviews
-            [X] Display all my reviews
-            [X] Sort by product
-            [X] Answer to review
-        View my message
-             [x] View messages
-             [x] Respond to messages
-    customer
-        View all Products
-            [X]Filter by category
-            [X]Filter by price
-            [X]Filter by artisan
-            [X]View one product details
-                [X]If I have already purchased it, I can leave a review
-            [X]View artisan's profile
-                [ ] Envoyer un message à l'artisan
-            [X] View & edit my own profile
-        Create a basket of products
-            [X]Add, remove from the basket
-            [X]View basket
-            [X]Checkout + select shipping option + entering payment details
-            [X]order confirmation & payment sumaary
-        View my orders + delivery status
-            [X] Get all my orders + delivery status and dipslay
-            [X] Make sure as a customer I can only update to "RECEIVED"
-            
-    Admin
-        [X]Manage users (approve, deactivate accounts)
-        [X]Manage products (approve or delete)
-        [X]View statistics, products trends and user activities 
-    delivery-partner
-        [X]L'artisan choisi le delivery partner PROCESSING
-        [X]Le deliveryPartner indique qu'il va chercher la commande ACCEPTED (for delivery)
-        [X]Le deliverypartner indique qu'il a récupéré la commande + estimation d'heure de livraison PICKED UP
-        [X]Le deliveryPartner indique que la commande est en cours de livraison IN TRANSIT
-        [X]Le deliveryPartner indique qu'il a livré la commande (vs reçu pour le customer) DELIVERED
-        [X]View orders assigned for delivery (+ filter on status or other attribute) RECEIVED
-        [X]Coordinate Pickup with Artisans -> messages (link to profile)
-        [X]Update delivery
-        [X]View the status of the deliveries (GetAllDeliveriesForPartner())
-    Passer de DB first à code first
-        []Migration qui déclenche la création de la db + remplissage
-        []Test sur laptop
-        []Testing de l'application
-    Artisan
-        [ ]Financial report
-    Delivery -> à domicile ou en point relais
-         - Ajouter au modèle delivery db et code front, code back
-         - Demander de choisir ou moment de la confirmation de paiement
-
-dotnet ef migrations add InitialCreate --project DAL --startup-project backend-app
-dotnet ef database update --project DAL --startup-project backend-app
-dotnet ef database update --project DAL --startup-project backend-app
-dotnet ef migrations add AddTriggersToTables --project DAL --startup-project backend-app
-dotnet ef database update
-dotnet ef migrations add SeedInitialData --project DAL --startup-project backend-app
-dotnet ef database update
-
-   ```bash
-   Scaffold-DbContext "Server=DESKTOP-84DA7B5\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir ../Domain -ContextDir ../DAL -Namespace Domain -ContextNamespace DAL -Force
-   ```
+## Comment démarrer l'application ?
 
 1. Cloner le dépôt et ouvrir le projet
-Le nouveau développeur doit cloner le dépôt dans son environnement local et ouvrir le projet dans Visual Studio ou dans un éditeur de code comme VS Code.
 
-2. Restaurer les dépendances NuGet
-Avant de pouvoir exécuter des commandes Entity Framework Core (EF Core), le développeur doit restaurer toutes les dépendances du projet.
+2. Dans le projet backend-app, ouvrir la solution à l'aide de VisualStudio
 
-Dans le terminal (depuis le répertoire du projet), il peut exécuter :
-    dotnet restore
+3. Configurer la chaîne de connexion de la base de données dans le fichier appsettings.json
+    {
+        "ConnectionStrings": {
+            "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MarketPlace;Trusted_Connection=True;MultipleActiveResultSets=true"
 
-
-3. Configurer la chaîne de connexion de la base de données
-Le développeur doit configurer la chaîne de connexion de la base de données dans le fichier appsettings.json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MarketPlace;Trusted_Connection=True;MultipleActiveResultSets=true"
-    --"MarketPlaceDB": "Server=DESKTOP-84DA7B5\\SQLEXPRESS;Database=MarketPlace;Trusted_Connection=True;TrustServerCertificate=True"
-  }
-}
+        }
+    }
 4. Créer la base de données et appliquer les migrations
-Une fois les dépendances et la chaîne de connexion configurées, le développeur doit créer la base de données et appliquer les migrations de l'application pour la mettre à jour avec toutes les modifications de la base de données.
+```dotnet ef database update --project DAL --startup-project backend-app```
 
-pour appliquer les migrations :
+5. Lancer l'application backend
+```dotnet run --project backend-app```
 
-    dotnet ef database update --project DAL --startup-project backend-app
+6. Ouvrir le projet frontend-app dans VS Code
 
-5. Lancer l'application
-Une fois la base de données mise à jour, le développeur peut lancer l'application normalement en exécutant :
+7. Assurez-vous que l'url et le port ciblant le backend sont corrects (dans le fichier)
 
-    dotnet run --project backend-app
-Cela démarre l'application dans le mode de développement. Si tout est configuré correctement, l'application sera opérationnelle et utilisera la base de données mise à jour avec les tables et les triggers ajoutés.
+7. Installer les dépendances nécessaires
+```npm install```
+
+9. Lancer le projet 
+```npm run ng serve```
+
+10. Identifiez-vous à l'aide d'un de ces profils:
+ - Login: 'camcam'; Password 'password' (rôle admin)
+ - Login: 'artisan'; Password 'password' (rôle artisan)
+ - Login: 'customer'; Password 'password' (rôle customer)
+ - Login: 'deliverypartner'; Password 'password' (rôle deliverypartner)
+
+## Les fonctionnalités:
+Toutes les fonctionnalités demandées ont été implémentées, mais la gestion des livraisons reste très basique.
+
+- Possibilité de Login/Logout/Register;
+- Gestion des rôles avec JWT Token;
+- Utilisateur, y compris non-connecté (onglet "Products");
+    - Possibilité de browser les produits disponibles, avec filtres de recherche;
+    - Possibilité de remplir un panier avec des articles;
+    - Possibilité de visualiser et gérer son panier;
+- Utilisateur inscrit/Customer:
+    - Possibilité de passer commande;
+    - Possibilité de visualiser son propre profil, y compris l'historique des commandes;
+    - Possibilite de modifier le statut d'une commande à 'RECEIVED';
+    - Possibilité de voir le profil des autres utilisateurs;
+    - Possibilité d'envoyer un message aux autres utilisateurs;
+    - Possibilité de voir l'historique des messages;
+    - Possibilité de laisser un commentaire sur un produit déjà acheté;
+- Dashboard admin:
+    - Visualisation des statistiques de produits, commandes, utilisateurs
+    - Gestion des utilisateurs (Visualisation, modifications, déletions, approbation), avec filtres de recherches
+    - Gestion des produits (Visualisation, modifications, déletions, approbation), avec filtres de recherches
+- Dashboard artisan:
+    - Gestion des produits de l'artisan (création, suppression, modification) avec gestion des images
+    - Gestion des commandes: possibilité de modifier le statut (PROCESSING, SHIPPED, CANCELLED) et de choisir le partenaire de livraison, possibilité de voir les détails de la commande
+    - Avis clients: possibilité de voir les avis des produits de l'artisan, et de produire une réponse
+    - Statistiques dashboard;
+- Dashboard delivery partner:
+    - Gestion des livraisons, y compris update des statuts 

@@ -4,12 +4,13 @@ import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { User, UserType } from '../models/user.model';
 import { UserRegister } from '../models/user-register.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
+  private baseUrl = environment.apiUrl;
   readonly CUSTOMER_ROLE = UserType.CUSTOMER;
   readonly ARTISAN_ROLE = UserType.ARTISAN;
   readonly ADMIN_ROLE = UserType.ADMIN;
@@ -35,7 +36,7 @@ export class AuthenticationService {
   }
 
    Login(userName: string, password: string): Observable<any>{
-      return this.http.post(`https://localhost:7279/api/Auth/login?password=${password}&login=${userName}`, null);
+      return this.http.post(`${this.baseUrl}/api/Auth/login?password=${password}&login=${userName}`, null);
    }
 
    isAdmin(): boolean {
@@ -59,6 +60,6 @@ export class AuthenticationService {
   }
 
   register(user: UserRegister):Observable<any> {
-    return this.http.post(`https://localhost:7279/api/Auth/register?login=${user.login}&firstName=${user.firstName}&lastName=${user.lastName}&password=${user.password}&role=${user.role}&address=${user.address}`, user);
+    return this.http.post(`${this.baseUrl}/api/Auth/register?login=${user.login}&firstName=${user.firstName}&lastName=${user.lastName}&password=${user.password}&role=${user.role}&address=${user.address}`, user);
   }
 }

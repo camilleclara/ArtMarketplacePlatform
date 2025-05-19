@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Product } from '../models/product.model';
 import { Order } from '../models/order.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  private baseUrl = 'https://localhost:7279';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

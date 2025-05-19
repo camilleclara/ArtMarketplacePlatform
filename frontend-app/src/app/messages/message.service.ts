@@ -3,21 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Message } from '../models/message.model';
 import { Chat } from '../models/chat.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-
+ private baseUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
   getMessagesByUserId(userId: number): Observable<any> {
-    return this.http.get(`https://localhost:7279/Message/user/${userId}`)
+    return this.http.get(`${this.baseUrl}/Message/user/${userId}`)
   }
 
   sendMessage(message: Message){
     console.log(message);
-    return this.http.post<Message>(`https://localhost:7279/Message`, message);
+    return this.http.post<Message>(`${this.baseUrl}/Message`, message);
   }
   getChats(messages: Message[], currentUserId: number): Chat[] {
     // Vérifier si nous avons des messages

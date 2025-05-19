@@ -1,0 +1,50 @@
+<div class="card mt-3">
+    <div class="card-header">
+      <h5>Ajouter une évaluation</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3 d-flex flex-row">
+          <label for="rating" class="form-label me-2 mt-2">Note:</label>
+          <span class="rating">
+            @for (star of [5,4,3,2,1]; track star) {
+                <span 
+                    (click)="setRating(star)" 
+                    (mouseenter)="hoverRating = star" 
+                    (mouseleave)="hoverRating = 0"
+                    [ngClass]="{'star-filled': (hoverRating || currentRating) >= star, 'star-empty': (hoverRating || currentRating) < star}">
+                  @if ((hoverRating || currentRating) >= star) {
+                    &starf;
+                  } @else {
+                    &star;
+                  }
+                </span>
+              }
+            </span>
+          <div *ngIf="reviewForm.get('rating')?.invalid && reviewForm.get('rating')?.touched" class="text-danger">
+            Veuillez sélectionner une note
+          </div>
+        </div>
+        
+        <div class="form-group mb-3">
+          <label for="comment" class="form-label">Commentaire</label>
+          <textarea 
+            class="form-control" 
+            id="comment" 
+            rows="3" 
+            formControlName="comment"
+            placeholder="Partagez votre expérience avec ce produit..."
+          ></textarea>
+          <div *ngIf="reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched" class="text-danger">
+            <div *ngIf="reviewForm.get('comment')?.errors?.['required']">Un commentaire est requis</div>
+            <div *ngIf="reviewForm.get('comment')?.errors?.['minlength']">Le commentaire doit contenir au moins 10 caractères</div>
+          </div>
+        </div>
+        
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="reviewForm.invalid">Publier</button>
+        </div>
+      </form>
+    </div>
+  </div>

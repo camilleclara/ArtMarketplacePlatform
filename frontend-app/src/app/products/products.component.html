@@ -1,20 +1,161 @@
-<p>Table is just a mapping of objects to table rows with <code>&#64;for</code></p>
 
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th scope="col">#</th>
-			<th scope="col">Name</th>
-		</tr>
-	</thead>
-	<tbody>
-		@for (p of products; track p.date; let i = $index) {
-			<tr>
-				<th scope="row">{{ i + 1 }}</th>
-				<!--TODO: change to product model-->
-				<td>{{ p.id }}</td>
-				<td>{{ p.name }}</td>
-			</tr>
+<div class="my-4">
+	<button (click)="onCreate()"class="btn btn-primary mx-2" >Créer un produit</button>
+</div>
+@if(products && products.length > 0){
+	<div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Name</th>
+					<th scope="col">Price</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (p of products; track p.id; let i = $index) {
+					<tr>
+						<th scope="row">{{ i + 1 }}</th>
+						<td>{{ p.name }}</td>
+						<td>{{ p.price | currency:'EUR':'symbol' }}</td>
+						<td class="d-flex flex-row justify-content-end">
+							<button class="btn btn-danger" (click)="onDelete(p.id)">Supprimer</button>
+							<button class="btn btn-secondary mx-2" (click)="onEdit(p.id)">Modifier</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		@if(editingProduct){
+			<div class="d-flex flex-column">
+				<h2>{{title}}</h2>
+				<form [formGroup]="productForm" class="container"  (ngSubmit)="onSubmit(editingProduct.id)">
+					<div class="container d-flex flex-column">
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="name" class="form-label">Nom</label>
+								<input formControlName="name" type="text" id="name" class="form-control"/>
+							</div>
+							@if(productForm.get('name')?.invalid && 
+									productForm.get('name')?.errors && 
+								(productForm.get('name')?.dirty || productForm.get('name')?.touched))
+							{
+								@if(productForm.get('name')?.hasError('required')){
+									<small class="text-danger">
+										This field is required.
+									</small>
+								}
+							}
+						</div>
+		
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="description" class="form-label">Description</label>
+								<input formControlName="description"  type="text" id="description" class="form-control"/>
+							</div>
+							@if(productForm.get('description')?.invalid && 
+									productForm.get('description')?.errors && 
+								(productForm.get('description')?.dirty || productForm.get('description')?.touched))
+							{
+								@if(productForm.get('description')?.hasError('required')){
+									<small class="text-danger">
+										This field is required.
+									</small>
+								}
+							}
+						</div>
+		
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="price" class="form-label">Prix</label>
+								<input formControlName="price" type="text" id="price" class="form-control"/>
+							</div>
+							@if(productForm.get('price')?.invalid && 
+									productForm.get('price')?.errors && 
+								(productForm.get('price')?.dirty || productForm.get('price')?.touched))
+							{
+								@if(productForm.get('price')?.hasError('required')){
+									<small class="text-danger">
+										This field is required.
+									</small>
+								}
+							}
+						</div>
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="category" class="form-label">Catégorie</label>
+								
+								<select formControlName="category" type="text" id="category" class="form-select">
+									@for (cat of categories; track $index) {
+										<option [value]="cat">{{cat}}</option>
+									}
+								</select>
+							</div>
+							@if(productForm.get('category')?.invalid && 
+									productForm.get('category')?.errors && 
+								(productForm.get('category')?.dirty || productForm.get('category')?.touched))
+							{
+								@if(productForm.get('category')?.hasError('required')){
+									<small class="text-danger">
+										This field is required.
+									</small>
+								}
+							}
+						</div>
+						
+		
+						<div class="mb-3" >
+							<div class="d-flex flex-row">
+								<label for="isAvailable" class="form-label">Disponible</label>
+								<label class="form-check-label mx-5">
+									<input formControlName="isAvailable" type="radio" [value]="true" class="form-check-input">
+									Actif
+								  </label>
+								  <label class="form-check-label">
+									<input formControlName="isAvailable" type="radio" [value]="false" class="form-check-input">
+									Inactif
+								  </label>
+							</div>
+						</div>
+						<div class="mb-3" >
+							<div class="d-flex flex-column">
+								<label for="images" class="form-label">Images du produit</label>
+								<input 
+									type="file" 
+									multiple 
+									(change)="onImageSelected($event)" 
+									id="productImages"
+									class="form-control mt-2 mb-2" 
+									accept="image/*"
+									/>
+								<div class="d-flex flex-row justify-content-start flex-wrap">
+									@for (im of editingProduct.productImages; track im.id; let i = $index) {
+										<!-- TODO: supprimer et ajouter des images -->
+									<div class="product-image-container">
+										<img *ngIf="im.content" [src]="getImageSrc(im)" alt="Product Image" class="rounded d-block img-thumbnail ms-1" style="width: 100px; height: 100px; object-fit: cover;">
+										<button type="button" class="btn btn-danger btn-sm delete-image-btn" (click)="removeImage(i)">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+												<path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+											  </svg>
+										</button>
+									</div>
+								}
+								</div>
+							</div>
+						</div>
+						<div class="d-flex align-items-end flex-column mb-3">
+							<div>
+								<button  type="button" (click)="onCancel()" class="btn btn-sm btn-secondary mx-2">Annuler</button>
+								<button type="submit" [disabled]="productForm.invalid"class="btn btn-sm btn-primary">Sauvegarder</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
 		}
-	</tbody>
-</table>
+		</div>
+}
+@else {
+	Vous n'avez aucun produit actuellement.
+}

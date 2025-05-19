@@ -1,0 +1,123 @@
+@if(orders && orders.length > 0){
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Status</th>
+                    @if(displayForArtisan){
+                        <th scope="col">Client</th>
+                        <th scope="col">Partenaire de livraison</th>
+                    }
+                    @else if(displayForDeliveryPartner){
+                        <th scope="col">Client</th>
+                        <th scope="col">Artisan</th>
+                        <th scope="col">Estimation livraison</th>
+                    }
+                    @else {
+                        <th scope="col">Artisan</th>
+                    }
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (o of orders; track o.id; let i = $index) {
+                    <tr>
+                        <th scope="row">{{o.id}}</th>
+                        <td>
+                            @if (editingDeliveryOrderId === o.id) {
+                                <form [formGroup]="orderForm">
+                                    <select formControlName="status" type="text" id="status" class="form-select mb-2">
+                                      @for (status of allowedStatuses; track $index) {
+                                        <option [value]="status" [selected]="status === o.activeDelivery?.deliStatus">{{status}}</option>
+                                      }
+                                    </select>
+                                </form>
+                            }
+                            @else {
+                              {{ o.activeDelivery?.deliStatus || 'NEW' }}
+                            }
+                        </td>
+                        @if(displayForArtisan){
+                            <td>{{ o.customerName }}</td>
+                            <td>
+                                @if (editingDeliveryOrderId === o.id) {
+                                    <form [formGroup]="orderForm">
+                                        <select formControlName="partnerId" class="form-select">
+                                            <option [ngValue]="null">Non assigné</option>
+                                            @for (partner of partners; track partner.id) {
+                                                <option [ngValue]="partner.id" [selected]="partner.id === o.activeDelivery?.partnerId">
+                                                    {{partner.firstName}} {{partner.lastName}}
+                                                </option>
+                                            }
+                                        </select>
+                                    </form>
+                                }
+                                @else {
+                                    @if (o.activeDelivery?.partnerId) {
+                                        {{ getPartnerName(o.activeDelivery?.partnerId)}}
+                                    }
+                                    @else {
+                                        Non assigné
+                                    }
+                                }
+                            </td>
+                        }
+                        @else if(displayForDeliveryPartner){
+                            <td>{{ o.customerName }}</td>
+                            <td>
+                                <a [routerLink]="['/profile', o.artisanId]">{{ o.artisanName }}</a>
+                            </td>
+                            <td>
+                                @if (editingDeliveryOrderId === o.id) {
+                                    <form [formGroup]="orderForm">
+                                        <input 
+                                            type="date" 
+											id="estimatedDeliveryDate"
+                                            formControlName="estimatedDeliveryDate" 
+                                           
+                                        >
+                                    </form>
+                                }
+                                @else {
+                                    @if (o.activeDelivery?.estimatedDate) {
+                                        {{ o.activeDelivery.estimatedDate | date:'dd/MM/yyyy' }}
+                                    }
+                                    @else {
+                                        Non définie
+                                    }
+                                }
+                            </td>
+                        }
+                        @else {
+                            <td>{{ o.artisanName }}</td>
+                        }
+                        <td>{{ o.total  | currency:'EUR':'symbol' }}</td>
+                        <td class="d-flex flex-row justify-content-end">
+                            @if (editingDeliveryOrderId !== o.id) {
+                              <button class="btn btn-secondary mx-2" (click)="onEditDeliveryStatus(o.id)">Modifier le statut</button>
+                              @if(orderDetails && detailsId == o.id){
+                                <button class="btn btn-outline-secondary mx-2" (click)="onHideDetails(o.id)">Cacher les détails</button>
+                              }
+                              @else {
+                                <button class="btn btn-outline-secondary mx-2" (click)="onViewDetails(o.id)" [disabled]="detailsId && detailsId !== o.id">Voir les détails</button>
+                              }
+                            } 
+                            @else {
+                              <button class="btn btn-success mx-2" (click)="onSaveDeliveryStatus(o)">Sauvegarder</button>
+                              <button class="btn btn-outline-secondary mx-2" (click)="onCancelEdit()">Annuler</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+}
+@else {
+    Vous n'avez aucune commande actuellement.
+}
+@if(detailsId){
+    <app-order [orderId] = "detailsId"></app-order>
+}

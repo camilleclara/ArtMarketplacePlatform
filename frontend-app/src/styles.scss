@@ -1,0 +1,38 @@
+// $primary: #41648b; // pastel green
+// $secondary: #2f6932e1; 
+// $success: #80dfa7;
+// $info: #AED6F1; // pastel blue
+// $warning: #fa8707; // pastel yellow
+// $danger: #f63c16; // pastel red
+// $light: #F7F7F7; // light background color
+// $dark: #333333; // darker text color
+$primary: #5f8f96;   // Un bleu plus doux mais toujours dynamique
+$secondary: #4a756d; // Un vert foncé, mais pas trop saturé, pour garder une touche naturelle
+$success: #a4d8b6;   // Un vert pastel, mais plus clair pour un aspect frais
+$info: #bdd9eb;      // Un bleu clair pour garder la légèreté
+$warning: #f7c67f;   // Un orange doux, légèrement plus pale que celui initial
+$danger: #e57373;    // Un rouge pastel plus doux, moins agressif
+$light: #f6f6f6;     // Un gris clair pour le fond, pas trop éclatant
+$dark: #333333;      // Texte plus sombre pour bien ressortir sur les fonds clairs
+
+
+$navbar-bg: lighten($primary, 20%);;
+// $navbar-link-color: #YOUR_TEXT_COLOR;
+// $navbar-link-hover-color: #YOUR_HOVER_COLOR;
+// $navbar-link-active-color: #YOUR_ACTIVE_LINK_COLOR;
+// $navbar-toggler-icon-bg: #YOUR_TOGGLER_COLOR;
+
+// Import Bootstrap's variables, functions, and mixins (after defining custom colors)
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/bootstrap";
+
+// $primary: #A3D9B1; // pastel green
+// $secondary: #F6A7B9; // pastel pink
+// $success: #A8D5BA; // pastel teal
+// $info: #AED6F1; // pastel blue
+// $warning: #F4E1A1; // pastel yellow
+// $danger: #F5B0C1; // pastel red
+// $light: #F7F7F7; // light background color
+// $dark: #333333; // darker text color

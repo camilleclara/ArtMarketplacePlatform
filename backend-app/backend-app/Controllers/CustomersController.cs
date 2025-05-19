@@ -1,10 +1,7 @@
-using backend_app.Models;
-using backend_app.Models.DTO;
-using backend_app.Models.Enums;
-using backend_app.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using BL.Models;
+using BL.Services.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
 
 namespace Authentication.Controllers;
 
@@ -51,7 +48,7 @@ public class CustomersController : ControllerBase
     {
         try
         {
-            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByCustomerId(customerId);
+            IEnumerable<OrderDTO> lstReturned = await _orderService.GetByCustomerIdAsync(customerId);
             if (lstReturned.Count() == 0)
             {
                 return NoContent();

@@ -1,20 +1,25 @@
 <form [formGroup]="loginForm" class="container" (ngSubmit)="login()">
     <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Name</label>
+        @if(errorMessage){
+            <div class="alert alert-danger mt-2">
+                {{ errorMessage }}
+              </div>
+        }
+      <label for="exampleInputEmail1" class="form-label">Login</label>
       <input formControlName="userName" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
       <div>
-      @if(loginForm.get('userName')?.invalid && 
-                loginForm.get('userName')?.errors && 
-            (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched))
-            {
-                @if(loginForm.get('userName')?.hasError('required')){
+        @if(loginForm.get('userName')?.invalid && 
+                    loginForm.get('userName')?.errors && 
+                (loginForm.get('userName')?.dirty || loginForm.get('userName')?.touched))
+                {
+                    @if(loginForm.get('userName')?.hasError('required')){
 
-                    <small class="text-danger">
-                        This field is required.
-                    </small>
+                        <small class="text-danger">
+                            This field is required.
+                        </small>
+                    }
                 }
-            }
-    </div>
+        </div>
     </div>
     <div class="mb-3">
       <label for="exampleInputPassword1" class="form-label">Password</label>

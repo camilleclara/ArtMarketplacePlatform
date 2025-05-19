@@ -1,10 +1,11 @@
-using backend_app.Models;
-using backend_app.Models.DTO;
-using backend_app.Models.Enums;
-using backend_app.Services.Interfaces;
+using BL.Models;
+using BL.Models.Enums;
+using BL.Services;
+using BL.Services.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
+
 
 namespace Authentication.Controllers;
 
@@ -25,14 +26,14 @@ public class UsersController : ControllerBase
 
     [Authorize(Roles = nameof(Roles.ADMIN))]
     [HttpGet("")]
-    [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllUsers()
     {
         try
         {
-            IEnumerable<UserDTO> lstReturned = await _userService.GetAllAsync();
+            IEnumerable<UserSafeDTO> lstReturned = await _userService.GetAllAsync();
             if (lstReturned.Count() == 0)
             {
                 return NoContent();
@@ -43,6 +44,126 @@ public class UsersController : ControllerBase
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
+    [HttpGet("partners")]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAllDeliveryPartnerUsers()
+    {
+        try
+        {
+            IEnumerable<UserSafeDTO> lstReturned = await _userService.GetAllDeliveryPartnerUsersAsync();
+            if (lstReturned.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
+
+    }
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
+    [HttpGet("artisans")]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAllArtisansUsers()
+    {
+        try
+        {
+            IEnumerable<UserSafeDTO> lstReturned = await _userService.GetAllArtisansUsersAsync();
+            if (lstReturned.Count() == 0)
+            {
+                return NoContent();
+            }
+            return Ok(lstReturned);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
+
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
+    [HttpGet("{userId}")]
+    [ProducesResponseType(typeof(IEnumerable<UserSafeDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetUserById(int userId)
+    {
+        try
+        {
+            UserSafeDTO user = await _userService.GetByIdAsync(userId);
+            if (user == null)
+            {
+                return NoContent();
+            }
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    [Authorize(Roles = "ARTISAN, CUSTOMER, ADMIN, DELIVERYPARTNER")]
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> UpdateUser(int id, [FromBody] UserSafeDTO userDto)
+    {
+        var updatedUser = new UserSafeDTO();
+        if (User.IsInRole("ADMIN"))
+        {
+            updatedUser = await _userService.UpdateAsync(id, userDto, true);
+        }
+        else
+        {
+            updatedUser = await _userService.UpdateAsync(id, userDto);
+        }
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("{id}/approve")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> ApproveUser(int id)
+    {
+        var updatedUser = await _userService.ApproveAsync(id);
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
+    }
+
+    [Authorize(Roles = nameof(Roles.ADMIN))]
+    [HttpPut("{id}/deactivate")]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserSafeDTO>> DeactivateUser(int id)
+    {
+        var  updatedUser = await _userService.DeactivateAsync(id);
+
+        if (updatedUser == null)
+            return StatusCode(StatusCodes.Status404NotFound);
+
+        return Ok(updatedUser);
     }
 
 }

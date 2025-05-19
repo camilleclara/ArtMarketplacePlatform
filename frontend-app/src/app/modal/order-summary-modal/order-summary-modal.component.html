@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h4 class="modal-title">Récapitulatif de votre commande</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <div class="modal-body">
+    <h5>Produits commandés</h5>
+    <div class="mb-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of basketItems">
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.product.price | currency:'EUR' }}</td>
+            <td>{{ (item.product.price || 0) * item.quantity | currency:'EUR' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      @if(numberOfArtisans()>1){
+        <div class="alert alert-warning d-flex align-items-center">
+          <div>
+            Votre panier contient des produits provenant de plusieurs artisans. Cela générera plusieurs commandes distinctes.
+          </div>
+        </div>
+      }
+    </div>
+    <div class="d-flex justify-content-between mb-2">
+      <span>Sous-total:</span>
+      <span>{{ totalPrice | currency:'EUR' }}</span>
+    </div>
+    <div class="d-flex justify-content-between mb-2">
+      <span>Livraison ({{ numberOfArtisans() }} artisan(s)):</span>
+      <span>{{ getDeliveryCost() | currency:'EUR' }}</span>
+    </div>
+    <div class="d-flex justify-content-between fw-bold mb-2">
+      <span>Total:</span>
+      <span>{{ getFinalTotal() | currency:'EUR' }}</span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-block w-100" (click)="confirmOrder()">
+      Confirmer la commande
+    </button>
+  </div>

@@ -1,4 +1,5 @@
-using backend_app.Services.Authentication;
+using BL.Services.Authentication;
+using MarketPlaceException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,10 +24,10 @@ public class AuthController : ControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public void Register(string login, string firstName, string lastName, string password, string role)
+    public void Register(string login, string firstName, string lastName, string password, string role, string address)
     {
 
-        _authenticationService.RegisterUser(login, firstName, lastName, password, role);
+        _authenticationService.RegisterUser(login, firstName, lastName, password, role, address);
     }
 
     [HttpPost("login")]
@@ -34,8 +35,20 @@ public class AuthController : ControllerBase
     public ActionResult Login(string password, string login)
     {
 
-        var token = _authenticationService.Login(login, password);
-        return Ok(new { Token = token });
+        try
+        {
+            var token = _authenticationService.Login(login, password);
+            return Ok(new { Token = token });
+        }
+        catch(InvalidLoginOrPasswordException e)
+        {
+            return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+
     }
 
 }

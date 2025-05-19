@@ -1,0 +1,123 @@
+<div class="container py-5">
+    <app-toast></app-toast>
+  
+    <div class="row mb-4">
+      <div class="col-12">
+        <button class="btn btn-outline-secondary" (click)="goBack()">
+          Retour aux produits
+        </button>
+      </div>
+    </div>
+  
+    @if (loading) {
+      <div class="d-flex justify-content-center my-5">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    }
+    @if (error) {
+      <div class="alert alert-danger">
+        {{ error }}
+      </div>
+    }
+  
+    @if (!loading && !error && product) {
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="product-image-container">
+            <img [src]="getCurrentImage()" class="img-fluid main-image" [alt]="product.name">
+          </div>
+          
+          @if (getImages().length > 1) {
+            <div class="row mt-3 thumbnail-container">
+              @for (image of getImages(); track $index) {
+                <div class="col-3 mb-2">
+                  <img 
+                    [src]="getImageUrl(image)" 
+                    class="img-thumbnail" 
+                    [class.selected]="selectedImageIndex === $index"
+                    [alt]="product.name + ' image ' + ($index + 1)"
+                    (click)="selectImage($index)">
+                </div>
+              }
+            </div>
+          }
+        </div>
+        
+        <div class="col-md-6">
+          <h2 class="product-title">{{ product.name }}</h2>
+          
+          <div class="d-flex align-items-center mb-3">
+            <span class="badge bg-secondary me-2">{{ product.category }}</span>
+            @if (product.isAvailable) {
+              <span class="badge bg-success">Disponible</span>
+            } @else {
+              <span class="badge bg-danger">Non disponible</span>
+            }
+          </div>
+          
+          <h3 class="price mb-4">{{ product.price | currency:'EUR' }}</h3>
+          
+          <div class="artisan-info mb-4">
+            <h6>Artisan</h6>
+            <p class="mb-0"><a [routerLink]="['/profile', product.artisanId]">{{ product.artisanName }}</a></p>
+          </div>
+          
+          <div class="description mb-4">
+            <h6>Description</h6>
+            <p>{{ product.description }}</p>
+          </div>
+          
+          @if (product.isAvailable) {
+            <div class="mb-4">
+              <h6>Quantité</h6>
+              <div class="d-flex align-items-center quantity-selector">
+                <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center" (click)="decreaseQuantity()">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+                      </svg>
+                </button>
+                <span class="mx-3">{{ quantity }}</span>
+                <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center" (click)="increaseQuantity()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                      </svg>
+                </button>
+              </div>
+            </div> 
+            
+            <div class="d-grid gap-2">
+              <button 
+                class="btn btn-primary" 
+                (click)="addToBasket()"
+                [disabled]="!product.isAvailable">
+                Ajouter au panier
+              </button>
+              <button class="btn btn-outline-primary" (click)="goToBasket()">
+                Voir le panier
+              </button>
+            </div>
+          } @else {
+            <div class="alert alert-warning">
+              Ce produit n'est pas disponible actuellement.
+            </div>
+          }
+        </div>
+      </div>
+      <div class="row">
+        
+      <div class="container my-4">
+              <h2 class="mb-4">Avis clients</h2>
+              @if(product.reviews && product.reviews.length >0){
+                  <div class="container my-4">
+                    <app-review [reviewsByProduct] = product.reviews (refreshRequest)="refreshProduct()"></app-review>
+                  </div>
+              }
+              @else {
+                  <div>Aucun commentaire pour le moment.</div>
+              }
+      </div>
+      </div>
+      }
+  </div>

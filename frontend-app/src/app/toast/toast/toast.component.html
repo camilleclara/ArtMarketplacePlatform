@@ -1,0 +1,13 @@
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1200">
+    <ngb-toast *ngIf="toast" 
+              [autohide]="false"
+              [class]="'bg-' + toast.type + ' text-light'"
+              (hidden)="close()">
+      <div class="d-flex">
+        <div class="toast-body">
+          {{ toast.message }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="close()"></button>
+      </div>
+    </ngb-toast>
+  </div>

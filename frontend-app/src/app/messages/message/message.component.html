@@ -1,0 +1,11 @@
+<div class="d-flex mb-2" [ngClass]="{
+    'justify-content-end': message.msgFromId == currentUserId,
+    'justify-content-start': message.msgFromId != currentUserId
+  }">
+    <div class="chat-bubble p-2 rounded position-relative" [ngClass]="{
+      'bg-primary text-white align-right': message.msgFromId == currentUserId,
+      'bg-light align-left': message.msgFromId != currentUserId
+    }">
+      {{ message.content }}
+    </div>
+  </div>

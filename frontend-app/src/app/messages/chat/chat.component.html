@@ -1,0 +1,26 @@
+<div class="border p-3 rounded">
+    <h5>Conversation avec {{ chat.otherUser.firstName }} {{ chat.otherUser.lastName }}</h5>
+  
+    <div class="d-flex flex-column mt-3 h-100">
+        @for (message of chat.messages; track message.id) {
+          <app-message 
+            [message]="message" 
+            [currentUserId]="currentUserId">
+          </app-message>
+        }
+        
+        <!-- Zone d'input en Reactive Forms -->
+        <div class="mt-auto">
+          <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="d-flex align-items-center gap-2">
+            <input 
+              type="text" 
+              formControlName="message" 
+              class="form-control" 
+              placeholder="Écris ton message..."
+            />
+            <button type="submit" class="btn btn-primary" [disabled]="messageForm.invalid">Envoyer</button>
+          </form>
+        </div>
+      </div>
+  </div>
+  

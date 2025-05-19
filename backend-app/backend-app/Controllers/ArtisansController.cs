@@ -1,10 +1,10 @@
-using backend_app.Models;
-using backend_app.Models.DTO;
-using backend_app.Models.Enums;
-using backend_app.Services.Interfaces;
+using BL.Models;
+using BL.Models.Enums;
+using BL.Services.Interfaces;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
+
 
 namespace Authentication.Controllers;
 
@@ -23,7 +23,7 @@ public class ArtisansController : ControllerBase
         _productService = productService;
     }
 
-    //[Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpGet("{artisanId}/products")]
     [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -45,7 +45,7 @@ public class ArtisansController : ControllerBase
         }
     }
 
-    //[Authorize(Roles = nameof(Roles.ARTISAN))]
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPost("{artisanId}/products")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -64,14 +64,13 @@ public class ArtisansController : ControllerBase
         }
 
     }
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpPut("{artisanId}/products/{productId}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<ProductDTO>> UpdateProductForArtisan(int artisanId, int productId, [FromBody] ProductDTO updateDto)
     {
-        //TODO check targeted product is artisan's
         var updatedProduct = await _productService.UpdateAsync(productId, updateDto);
 
         if (updatedProduct == null)
@@ -79,9 +78,30 @@ public class ArtisansController : ControllerBase
 
         return Ok(updatedProduct);  // Retourne l'entité mise à jour
     }
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
+    [HttpGet("{artisanId}/products/{productId}")]
+    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetProductById(int productId)
+    {
+        try
+        {
+            ProductDTO product = await _productService.GetByIdAsync(productId);
+            if (product == null)
+            {
+                return NoContent();
+            }
+            return Ok(product);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
 
 
-
+    [Authorize(Roles = nameof(Roles.ARTISAN))]
     [HttpDelete("{artisanId}/products/{productId}")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

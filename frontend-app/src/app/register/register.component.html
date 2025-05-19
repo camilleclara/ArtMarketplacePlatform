@@ -1,0 +1,89 @@
+<form [formGroup]="registerForm" class="container" (ngSubmit)="register()">
+    <div class="mb-3">
+        @if(errorMessage){
+            <div class="alert alert-danger mt-2">
+                {{ errorMessage }}
+            </div>
+        }
+        @if(successMessage){
+            <div class="alert alert-success mt-2">
+                {{ successMessage }}
+            </div>
+        }
+        <label for="firstName" class="form-label">First Name</label>
+        <input formControlName="firstName" type="text" class="form-control" id="firstName">
+        <div>
+            @if(registerForm.get('firstName')?.invalid && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)){
+                @if(registerForm.get('firstName')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input formControlName="lastName" type="text" class="form-control" id="lastName">
+        <div>
+            @if(registerForm.get('lastName')?.invalid && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)){
+                @if(registerForm.get('lastName')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="login" class="form-label">Login</label>
+        <input formControlName="login" type="text" class="form-control" id="login">
+        <div>
+            @if(registerForm.get('login')?.invalid && (registerForm.get('login')?.dirty || registerForm.get('login')?.touched)){
+                @if(registerForm.get('login')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <input formControlName="address" type="text" class="form-control" id="address">
+        <div>
+            @if(registerForm.get('address')?.invalid && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)){
+                @if(registerForm.get('address')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input formControlName="password" type="password" class="form-control" id="password">
+        <div>
+            @if(registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)){
+                @if(registerForm.get('password')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <select formControlName="role" class="form-select" id="role">
+            <option value="">Select a role</option>
+            <option value=CUSTOMER>Customer</option>
+            <option value="ARTISAN">Artisan</option>
+            <option value="DELIVERY_PARTNER">Delivery Partner</option>
+        </select>
+        <div>
+            @if(registerForm.get('role')?.invalid && (registerForm.get('role')?.dirty || registerForm.get('role')?.touched)){
+                @if(registerForm.get('role')?.hasError('required')){
+                    <small class="text-danger">This field is required.</small>
+                }
+            }
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">Register</button>
+</form>

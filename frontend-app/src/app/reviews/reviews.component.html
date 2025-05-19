@@ -1,0 +1,15 @@
+
+<div class="container my-4">
+    <h2 class="mb-4">Avis clients par produit</h2>
+    @if(reviews && reviews.length >0){
+        <div class="container my-4">
+            @for (productId of getObjectKeys(reviewsByProduct); track productId) {
+                <app-review [reviewsByProduct] = reviewsByProduct[productId] (refreshRequest)="reloadData()" ></app-review>
+              }
+            
+        </div>
+    }
+    @else {
+        <div>Aucun commentaire pour le moment.</div>
+    }
+</div>

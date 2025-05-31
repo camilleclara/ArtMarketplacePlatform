@@ -12,12 +12,14 @@ Le backend est une webapi .NET core, utilisant EntityFramework pour les interact
 2. Dans le projet backend-app, ouvrir la solution à l'aide de VisualStudio
 
 3. Configurer la chaîne de connexion de la base de données dans le fichier appsettings.json
+```
     {
         "ConnectionStrings": {
             "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=MarketPlace;Trusted_Connection=True;MultipleActiveResultSets=true"
 
         }
     }
+```
 4. Créer la base de données et appliquer les migrations
 ```dotnet ef database update --project DAL --startup-project backend-app```
 
